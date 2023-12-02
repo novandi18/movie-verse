@@ -65,6 +65,9 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.compose.navigation)
+    implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.pager)
+    implementation(libs.androidx.material.icons)
 
     api(libs.retrofit)
     api(libs.retrofit.gson)
@@ -73,11 +76,13 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
+    debugImplementation(libs.androidx.ui.tooling)
     ksp(libs.room.compiler)
 
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
     ksp(libs.dagger.compiler)
+    implementation(libs.androidx.hilt.navigation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

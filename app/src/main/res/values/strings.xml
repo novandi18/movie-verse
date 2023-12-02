@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Movie Verse</string>
+    <string name="home">Home</string>
+    <string name="trending">Trending</string>
+    <string name="explore">Explore</string>
+    <string name="discover">Discover</string>
+    <string name="now_playing">NOW PLAYING</string>
+    <string name="upcoming">UPCOMING</string>
+    <string name="top_rated">TOP RATED</string>
+    <string name="popular">Most Popular</string>
+    <string name="trending_desc">Movies that are currently trending.</string>
 </resources>

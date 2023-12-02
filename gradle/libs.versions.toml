@@ -1,5 +1,5 @@
 [versions]
-androidApplication = "8.1.4"
+androidApplication = "8.2.0"
 kotlinAndroid = "1.9.20"
 androidxCore = "1.12.0"
 androidxLifecycle = "2.6.2"
@@ -15,6 +15,10 @@ ksp = "1.9.20-1.0.14"
 hilt = "2.48.1"
 coil = "2.5.0"
 composeNavigation = "2.7.5"
+androidxHiltNavigation = "1.1.0"
+androidxFoundation = "1.6.0-beta02"
+compose = "1.6.0-beta02"
+uiTooling = "1.5.4"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidApplication" }
@@ -47,3 +51,8 @@ dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", ve
 dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "hilt" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
+androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
+androidx-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigation" }
+androidx-pager = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidxFoundation" }
+androidx-material-icons = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }

@@ -9,5 +9,6 @@ import kotlinx.parcelize.RawValue
 data class NavigationItem(
     val title: String,
     val icon: @RawValue ImageVector,
-    val screen: @RawValue Screen
+    val screen: @RawValue Screen,
+    val contentDescription: String
 ) : Parcelable
