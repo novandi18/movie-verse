@@ -9,4 +9,5 @@ interface MovieUseCase {
     fun getPopularMovies(): Flow<Resource<List<Movie>>>
     fun getNowPlayingMovies(): Flow<Resource<List<Movie>>>
     fun getTopRatedMovies(): Flow<Resource<List<Movie>>>
+    fun getTrendingMovies(): Flow<Resource<List<Movie>>>
 }

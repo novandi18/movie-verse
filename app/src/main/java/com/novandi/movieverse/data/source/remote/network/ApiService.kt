@@ -28,4 +28,9 @@ interface ApiService {
         @Query("page") page: Int = 1,
         @Query("language") language: String = "en-US"
     ) : MovieResponse
+
+    @GET("trending/movie/day")
+    suspend fun getTrendingMovies(
+        @Query("language") language: String = "en-US"
+    ) : MovieResponse
 }

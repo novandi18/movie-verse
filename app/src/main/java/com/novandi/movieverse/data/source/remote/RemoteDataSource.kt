@@ -31,7 +31,7 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun getPopularMovies(): Flow<ApiResponse<List<MovieResponseItems>>> = flow {
         try {
             val response = apiService.getPopularMovies()
-            if (response.results.isNotEmpty()){
+            if (response.results.isNotEmpty()) {
                 emit(ApiResponse.Success(response.results))
             } else {
                 emit(ApiResponse.Empty)
@@ -45,7 +45,7 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun getNowPlayingMovies(): Flow<ApiResponse<List<MovieResponseItems>>> = flow {
         try {
             val response = apiService.getNowPlayingMovies()
-            if (response.results.isNotEmpty()){
+            if (response.results.isNotEmpty()) {
                 emit(ApiResponse.Success(response.results))
             } else {
                 emit(ApiResponse.Empty)
@@ -59,7 +59,21 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun getTopRatedMovies(): Flow<ApiResponse<List<MovieResponseItems>>> = flow {
         try {
             val response = apiService.getTopRatedMovies()
-            if (response.results.isNotEmpty()){
+            if (response.results.isNotEmpty()) {
+                emit(ApiResponse.Success(response.results))
+            } else {
+                emit(ApiResponse.Empty)
+            }
+        } catch (e : Exception){
+            emit(ApiResponse.Error(e.toString()))
+            Log.e("RemoteDataSource", e.toString())
+        }
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun getTrendingMovies(): Flow<ApiResponse<List<MovieResponseItems>>> = flow {
+        try {
+            val response = apiService.getTrendingMovies()
+            if (response.results.isNotEmpty()) {
                 emit(ApiResponse.Success(response.results))
             } else {
                 emit(ApiResponse.Empty)
