@@ -10,6 +10,7 @@ class MovieInteractor @Inject constructor(
     private val movieRepository: MovieRepository
 ) : MovieUseCase {
     override fun getUpcomingMovies(): Flow<Resource<List<Movie>>> = movieRepository.getUpcomingMovies()
-
     override fun getPopularMovies(): Flow<Resource<List<Movie>>> = movieRepository.getPopularMovies()
+    override fun getNowPlayingMovies(): Flow<Resource<List<Movie>>> = movieRepository.getNowPlayingMovies()
+    override fun getTopRatedMovies(): Flow<Resource<List<Movie>>> = movieRepository.getTopRatedMovies()
 }

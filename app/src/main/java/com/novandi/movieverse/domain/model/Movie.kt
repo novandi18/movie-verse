@@ -10,6 +10,7 @@ data class Movie(
     val poster: String,
     val releaseDate: String,
     val overview: String,
-    val voteAverage: String,
+    val voteAverage: Double,
+    val genre: String,
     val movieType: String
 ) : Parcelable

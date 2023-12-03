@@ -11,14 +11,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovieDao {
     @Query("SELECT * FROM movie WHERE movie_type = :movieType")
-    fun getUpcomingMovies(movieType: String = "upcoming") : Flow<List<MovieEntity>>
-
-    @Query("SELECT * FROM movie WHERE movie_type = :movieType")
-    fun getPopularMovies(movieType: String = "popular") : Flow<List<MovieEntity>>
+    fun getMovies(movieType: String) : Flow<List<MovieEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(movie: List<MovieEntity>)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateMovie(movie: MovieEntity)
 }

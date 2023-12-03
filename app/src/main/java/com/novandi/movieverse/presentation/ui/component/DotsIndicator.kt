@@ -19,7 +19,7 @@ fun DotsIndicator(
     totalDots: Int,
     selectedIndex: Int,
     selectedColor: Color = Red40,
-    unSelectedColor: Color = White,
+    unSelectedColor: Color = White.copy(.6f),
     dotSize: Dp
 ) {
     LazyRow(

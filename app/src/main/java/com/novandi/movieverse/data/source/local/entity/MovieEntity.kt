@@ -23,7 +23,10 @@ data class MovieEntity(
     val overview: String,
 
     @ColumnInfo(name = "vote_average")
-    val voteAverage: String,
+    val voteAverage: Double,
+
+    @ColumnInfo(name = "genre")
+    val genre: String,
 
     @ColumnInfo(name = "movie_type")
     val movieType: String

@@ -25,12 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.novandi.movieverse.R
+import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieCard(image: String, fullWidth: Boolean = false) {
+fun MovieCard(movie: Movie, fullWidth: Boolean = false) {
     Card(
         modifier = Modifier.then(
             if (fullWidth) Modifier.fillMaxWidth()
@@ -53,7 +54,7 @@ fun MovieCard(image: String, fullWidth: Boolean = false) {
                         else Modifier.height(140.dp)
                     )
                     .clip(shape = RoundedCornerShape(16.dp)),
-                model = image,
+                model = movie.poster,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(id = R.drawable.image_placeholder),
@@ -63,7 +64,7 @@ fun MovieCard(image: String, fullWidth: Boolean = false) {
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = "Avengers: End Game",
+                    text = movie.title,
                     color = White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
@@ -71,14 +72,14 @@ fun MovieCard(image: String, fullWidth: Boolean = false) {
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "Action",
+                    text = movie.genre,
                     color = White,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Thin,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                MovieRating(rating = 8.7)
+                MovieRating(rating = movie.voteAverage)
             }
         }
     }
@@ -88,6 +89,8 @@ fun MovieCard(image: String, fullWidth: Boolean = false) {
 @Composable
 private fun MovieCardPreview() {
     MovieVerseTheme {
-        MovieCard("")
+        MovieCard(
+            Movie(1, "", "", "", "", 1.1, "", "")
+        )
     }
 }

@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.pager)
     implementation(libs.androidx.material.icons)
+    implementation(libs.androidx.livedata)
 
     api(libs.retrofit)
     api(libs.retrofit.gson)

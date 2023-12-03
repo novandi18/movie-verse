@@ -1,37 +1,43 @@
 package com.novandi.movieverse.presentation.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import com.novandi.movieverse.R
-import com.novandi.movieverse.presentation.ui.component.Carousel
+import com.novandi.movieverse.data.response.Resource
+import com.novandi.movieverse.domain.model.Movie
+import com.novandi.movieverse.presentation.ui.component.CardCarousel
 import com.novandi.movieverse.presentation.ui.component.MovieSection
 import com.novandi.movieverse.presentation.ui.theme.Black
+import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.Red80
 import com.novandi.movieverse.presentation.ui.theme.White
@@ -41,11 +47,10 @@ import com.novandi.movieverse.presentation.viewmodel.HomeViewModel
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val movies = listOf(
-        "https://i.pinimg.com/originals/66/bd/9b/66bd9b1f8354a9aa6900dee35bc2a911.jpg",
-        "https://japanesemusicid.com/wp-content/uploads/2018/11/I-Want-to-Eat-Your-Pancreas-Encore-Films.jpg",
-        "https://static.wikia.nocookie.net/disasterfilm/images/5/51/2012_poster.jpg"
-    )
+    val popularMovies by viewModel.popularMovies.observeAsState(initial = Resource.Loading())
+    val nowPlayingMovies by viewModel.nowPlayingMovies.observeAsState(initial = Resource.Loading())
+    val upcomingMovies by viewModel.upcomingMovies.observeAsState(initial = Resource.Loading())
+    val topRatedMovies by viewModel.topRatedMovies.observeAsState(initial = Resource.Loading())
 
     val largeRadialGradient = object : ShaderBrush() {
         override fun createShader(size: Size): Shader {
@@ -74,36 +79,46 @@ fun HomeScreen(
             fontWeight = FontWeight.Bold
         )
 
-        Card(
-            modifier = Modifier
-                .height(200.dp)
-                .padding(top = 20.dp, start = 18.dp, end = 18.dp),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Carousel(
-                itemsCount = movies.size,
-                itemContent = { index ->
-                    AsyncImage(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable { },
-                        model = movies[index],
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        placeholder = painterResource(id = R.drawable.image_placeholder),
-                        error = painterResource(id = R.drawable.image_error)
-                    )
-                }
-            )
-        }
+        CarouselContent(movies = popularMovies)
+        Spacer(modifier = Modifier.padding(vertical = 16.dp))
+        MovieSection(sectionName = stringResource(id = R.string.now_playing), nowPlayingMovies)
+        Spacer(modifier = Modifier.padding(vertical = 16.dp))
+        MovieSection(sectionName = stringResource(id = R.string.upcoming), upcomingMovies)
+        Spacer(modifier = Modifier.padding(vertical = 16.dp))
+        MovieSection(sectionName = stringResource(id = R.string.top_rated), topRatedMovies)
+        Spacer(modifier = Modifier.padding(vertical = 16.dp))
+    }
+}
 
-        Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MovieSection(sectionName = stringResource(id = R.string.now_playing))
-        Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MovieSection(sectionName = stringResource(id = R.string.upcoming))
-        Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MovieSection(sectionName = stringResource(id = R.string.top_rated))
-        Spacer(modifier = Modifier.padding(vertical = 16.dp))
+@Composable
+private fun CarouselContent(movies: Resource<List<Movie>>) {
+    var data by remember { mutableStateOf<List<Movie>?>(null) }
+    var loading by rememberSaveable { mutableStateOf(false) }
+
+    when (movies) {
+        is Resource.Loading -> loading = true
+        is Resource.Success -> {
+            loading = false
+            data = movies.data
+        }
+        is Resource.Error -> {
+            loading = false
+            data = listOf()
+        }
+    }
+
+    if (loading) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(top = 20.dp, start = 18.dp, end = 18.dp)
+                .background(color = Gray, shape = RoundedCornerShape(16.dp))
+        )
+    } else {
+        if (data != null) {
+            CardCarousel(movies = data!!)
+        }
     }
 }
 

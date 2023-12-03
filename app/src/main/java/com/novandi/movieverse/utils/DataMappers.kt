@@ -5,7 +5,7 @@ import com.novandi.movieverse.data.source.remote.response.MovieResponseItems
 import com.novandi.movieverse.domain.model.Movie
 
 object DataMappers {
-    fun mapResponsesToEntities(input: List<MovieResponseItems>, movieType: String): List<MovieEntity> {
+    fun mapResponsesToEntities(input: List<MovieResponseItems>, movieType: MovieType): List<MovieEntity> {
         val list = ArrayList<MovieEntity>()
         input.map {
             val movie = MovieEntity(
@@ -15,7 +15,8 @@ object DataMappers {
                 releaseDate = it.releaseDate,
                 overview = it.overview,
                 voteAverage = it.voteAverage,
-                movieType = movieType
+                movieType = movieType.name,
+                genre = getMovieGenre(it.genres)
             )
             list.add(movie)
         }
@@ -32,7 +33,8 @@ object DataMappers {
                 releaseDate = it.releaseDate,
                 overview = it.overview,
                 voteAverage = it.voteAverage,
-                movieType = it.movieType
+                movieType = it.movieType,
+                genre = it.genre
             )
         }
 
@@ -43,6 +45,7 @@ object DataMappers {
         releaseDate = input.releaseDate,
         overview = input.overview,
         voteAverage = input.voteAverage,
-        movieType = input.movieType
+        movieType = input.movieType,
+        genre = input.genre
     )
 }

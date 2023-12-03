@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.novandi.movieverse.R
+import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.component.MovieCard
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
@@ -57,7 +58,7 @@ fun TrendingScreen() {
             contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
             items(movies.size) {
-                MovieCard(image = movies[it], fullWidth = true)
+                MovieCard(movie = Movie(1, "", "", "", "", 1.1, "", ""), fullWidth = true)
             }
         }
         Spacer(modifier = Modifier.padding(vertical = 16.dp))

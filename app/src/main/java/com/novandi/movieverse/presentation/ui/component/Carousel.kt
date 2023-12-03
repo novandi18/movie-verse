@@ -14,7 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,14 +43,22 @@ fun Carousel(
                 .padding(bottom = 8.dp)
                 .align(Alignment.BottomCenter),
             shape = CircleShape,
-            color = Color.Black.copy(alpha = 0.4f)
+            color = Color.Transparent
         ) {
             DotsIndicator(
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                 totalDots = itemsCount,
                 selectedIndex = if (isDragged) pagerState.currentPage else pagerState.targetPage,
-                dotSize = 8.dp
+                dotSize = 6.dp
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun CarouselPreview() {
+    MovieVerseTheme {
+        Carousel(itemsCount = 5) {}
     }
 }

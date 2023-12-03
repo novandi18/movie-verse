@@ -1,5 +1,6 @@
 package com.novandi.movieverse.presentation.ui.component
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,21 +10,44 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.novandi.movieverse.data.response.Resource
+import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
 
 @Composable
-fun MovieSection(sectionName: String) {
-    val movies = listOf(
-        "https://i.pinimg.com/originals/66/bd/9b/66bd9b1f8354a9aa6900dee35bc2a911.jpg",
-        "https://japanesemusicid.com/wp-content/uploads/2018/11/I-Want-to-Eat-Your-Pancreas-Encore-Films.jpg",
-        "https://static.wikia.nocookie.net/disasterfilm/images/5/51/2012_poster.jpg"
-    )
+fun MovieSection(
+    sectionName: String,
+    movies: Resource<List<Movie>>,
+    cardFullWidth: Boolean = false
+) {
+    val context = LocalContext.current
+    var data by remember { mutableStateOf<List<Movie>?>(null) }
+    var loading by rememberSaveable { mutableStateOf(true) }
+
+    when (movies) {
+        is Resource.Loading -> loading = true
+        is Resource.Success -> {
+            loading = false
+            data = movies.data
+        }
+        is Resource.Error -> {
+            loading = false
+            data = listOf()
+            Toast.makeText(context, movies.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -37,21 +61,30 @@ fun MovieSection(sectionName: String) {
             fontWeight = FontWeight.Bold
         )
 
-        LazyRow(
-            state = rememberLazyListState(),
-            contentPadding = PaddingValues(horizontal = 8.dp)
-        ) {
-            items(movies.size) {
-                MovieCard(image = movies[it])
+        if (loading) {
+            MovieCardSkeleton(fullWidth = cardFullWidth)
+        } else {
+            if (data != null) {
+                LazyRow(
+                    state = rememberLazyListState(),
+                    contentPadding = PaddingValues(horizontal = 8.dp)
+                ) {
+                    items(data!!.size) { index ->
+                        MovieCard(movie = data!![index], fullWidth = cardFullWidth)
+                    }
+                }
             }
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun MovieSectionPreview() {
     MovieVerseTheme {
-        MovieSection("NOW PLAYING")
+        MovieSection(
+            "NOW PLAYING",
+            Resource.Loading()
+        )
     }
 }

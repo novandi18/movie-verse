@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.novandi.movieverse.R
+import com.novandi.movieverse.data.response.Resource
 import com.novandi.movieverse.presentation.ui.component.MovieSection
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
@@ -40,7 +41,7 @@ fun ExploreScreen() {
         )
 
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MovieSection(sectionName = stringResource(id = R.string.popular))
+        MovieSection(sectionName = stringResource(id = R.string.popular), Resource.Loading())
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
     }
 }

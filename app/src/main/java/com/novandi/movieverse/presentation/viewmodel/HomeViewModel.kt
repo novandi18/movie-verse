@@ -12,4 +12,6 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     val upcomingMovies = movieUseCase.getUpcomingMovies().asLiveData()
     val popularMovies = movieUseCase.getPopularMovies().asLiveData()
+    val nowPlayingMovies = movieUseCase.getNowPlayingMovies().asLiveData()
+    val topRatedMovies = movieUseCase.getTopRatedMovies().asLiveData()
 }
