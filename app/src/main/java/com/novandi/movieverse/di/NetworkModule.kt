@@ -1,5 +1,6 @@
 package com.novandi.movieverse.di
 
+import com.novandi.movieverse.BuildConfig
 import com.novandi.movieverse.data.source.remote.network.ApiService
 import dagger.Module
 import dagger.Provides
@@ -23,7 +24,7 @@ class NetworkModule {
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("accept", "application/json")
-                    .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYzc3ZjMzNmY4NTlkYzM0ZGRiOWRhYzFmODc4ODJiMSIsInN1YiI6IjY1NjdkYmE3MTI3Nzc4MDBhZDVmNTljNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zZdJFd79D7zseXcwgqDkvFe1WZMg3AOAJzdvntiSC5I")
+                    .addHeader("Authorization", "Bearer ${ BuildConfig.AUTHORIZATION }")
                     .build()
                 chain.proceed(request)
             }

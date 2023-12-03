@@ -27,6 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="AUTHORIZATION"
+            android:value="${AUTHORIZATION}"/>
     </application>
 
 </manifest>
