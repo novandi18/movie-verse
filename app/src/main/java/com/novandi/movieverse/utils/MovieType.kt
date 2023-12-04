@@ -5,5 +5,6 @@ enum class MovieType {
     POPULAR,
     TOP_RATED,
     NOW_PLAYING,
-    TRENDING
+    TRENDING,
+    DISCOVER
 }

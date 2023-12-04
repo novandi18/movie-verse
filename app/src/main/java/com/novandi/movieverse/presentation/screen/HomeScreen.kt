@@ -47,7 +47,7 @@ import com.novandi.movieverse.presentation.viewmodel.HomeViewModel
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val popularMovies by viewModel.popularMovies.observeAsState(initial = Resource.Loading())
+    val discoverMovies by viewModel.discoverMovies.observeAsState(initial = Resource.Loading())
     val nowPlayingMovies by viewModel.nowPlayingMovies.observeAsState(initial = Resource.Loading())
     val upcomingMovies by viewModel.upcomingMovies.observeAsState(initial = Resource.Loading())
     val topRatedMovies by viewModel.topRatedMovies.observeAsState(initial = Resource.Loading())
@@ -79,7 +79,7 @@ fun HomeScreen(
             fontWeight = FontWeight.Bold
         )
 
-        CarouselContent(movies = popularMovies)
+        CarouselContent(movies = discoverMovies)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         MovieSection(sectionName = stringResource(id = R.string.now_playing), nowPlayingMovies)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
