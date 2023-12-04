@@ -28,6 +28,7 @@ import com.novandi.movieverse.R
 import com.novandi.movieverse.data.response.Resource
 import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.component.MovieSection
+import com.novandi.movieverse.presentation.ui.component.YourPreference
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
 import com.novandi.movieverse.presentation.viewmodel.ExploreViewModel
@@ -69,6 +70,8 @@ fun ExploreScreen(
 
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         MovieSection(sectionName = stringResource(id = R.string.popular), popularMovies)
+        Spacer(modifier = Modifier.padding(vertical = 16.dp))
+        YourPreference()
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
     }
 }
