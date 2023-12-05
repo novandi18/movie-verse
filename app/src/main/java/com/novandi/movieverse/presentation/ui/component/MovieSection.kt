@@ -30,7 +30,8 @@ import com.novandi.movieverse.presentation.ui.theme.White
 fun MovieSection(
     sectionName: String,
     movies: Resource<List<Movie>>,
-    cardFullWidth: Boolean = false
+    cardFullWidth: Boolean = false,
+    navigateToMovie: (Int) -> Unit
 ) {
     val context = LocalContext.current
     var data by remember { mutableStateOf<List<Movie>?>(null) }
@@ -70,7 +71,11 @@ fun MovieSection(
                     contentPadding = PaddingValues(horizontal = 8.dp)
                 ) {
                     items(data!!.size) { index ->
-                        MovieCard(movie = data!![index], fullWidth = cardFullWidth)
+                        MovieCard(
+                            movie = data!![index],
+                            fullWidth = cardFullWidth,
+                            navigateToMovie = navigateToMovie
+                        )
                     }
                 }
             }
@@ -84,7 +89,8 @@ private fun MovieSectionPreview() {
     MovieVerseTheme {
         MovieSection(
             "NOW PLAYING",
-            Resource.Loading()
+            Resource.Loading(),
+            navigateToMovie = {}
         )
     }
 }

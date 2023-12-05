@@ -31,7 +31,11 @@ import com.novandi.movieverse.presentation.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieCard(movie: Movie, fullWidth: Boolean = false) {
+fun MovieCard(
+    movie: Movie,
+    fullWidth: Boolean = false,
+    navigateToMovie: (Int) -> Unit
+) {
     Card(
         modifier = Modifier.then(
             if (fullWidth) Modifier.fillMaxWidth()
@@ -40,7 +44,7 @@ fun MovieCard(movie: Movie, fullWidth: Boolean = false) {
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
         ),
-        onClick = {}
+        onClick = { navigateToMovie(movie.id) }
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
@@ -90,7 +94,8 @@ fun MovieCard(movie: Movie, fullWidth: Boolean = false) {
 private fun MovieCardPreview() {
     MovieVerseTheme {
         MovieCard(
-            Movie(1, "", "", "", "", 1.1, "", "")
+            Movie(1, "", "", "", "", 1.1, "", ""),
+            navigateToMovie = {}
         )
     }
 }

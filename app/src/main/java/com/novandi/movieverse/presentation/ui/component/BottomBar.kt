@@ -1,5 +1,8 @@
 package com.novandi.movieverse.presentation.ui.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Explore
 import androidx.compose.material.icons.rounded.Home
@@ -18,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.novandi.movieverse.R
 import com.novandi.movieverse.presentation.common.NavigationItem
 import com.novandi.movieverse.presentation.common.Screen
+import com.novandi.movieverse.presentation.navigation.MainNavigation
 import com.novandi.movieverse.presentation.ui.theme.Black
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.White
@@ -25,7 +29,7 @@ import com.novandi.movieverse.presentation.ui.theme.White
 @Composable
 fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentRoute = navBackStackEntry?.destination
     val screens = listOf(
         NavigationItem(
             title = stringResource(id = R.string.home),
@@ -47,37 +51,43 @@ fun BottomBar(navController: NavHostController) {
         )
     )
 
-    NavigationBar(
-        containerColor = Black,
-        contentColor = White
+    AnimatedVisibility(
+        visible = currentRoute?.parent?.route == MainNavigation.MAIN_ROUTE,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it })
     ) {
-        screens.map { item ->
-            NavigationBarItem(
-                selected = currentRoute == item.screen.route,
-                onClick = {
-                    navController.navigate(item.screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+        NavigationBar(
+            containerColor = Black,
+            contentColor = White
+        ) {
+            screens.map { item ->
+                NavigationBarItem(
+                    selected = currentRoute?.route == item.screen.route,
+                    onClick = {
+                        navController.navigate(item.screen.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            restoreState = true
+                            launchSingleTop = true
                         }
-                        restoreState = true
-                        launchSingleTop = true
-                    }
-                },
-                icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.contentDescription
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = item.contentDescription
+                        )
+                    },
+                    label = {
+                        Text(text = item.title)
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        unselectedIconColor = Gray,
+                        selectedIconColor = White,
+                        indicatorColor = Black
                     )
-                },
-                label = {
-                    Text(text = item.title)
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    unselectedIconColor = Gray,
-                    selectedIconColor = White,
-                    indicatorColor = Black
                 )
-            )
+            }
         }
     }
 }

@@ -37,7 +37,8 @@ import com.novandi.movieverse.presentation.viewmodel.TrendingViewModel
 
 @Composable
 fun TrendingScreen(
-    viewModel: TrendingViewModel = hiltViewModel()
+    viewModel: TrendingViewModel = hiltViewModel(),
+    navigateToMovie: (Int) -> Unit
 ) {
     val trendingMovies by viewModel.trendingMovies.observeAsState(Resource.Loading())
     var data by remember { mutableStateOf<List<Movie>?>(null) }
@@ -92,7 +93,7 @@ fun TrendingScreen(
 
         if (!loading && data != null) {
             items(data!!.size) { index ->
-                MovieCard(data!![index], fullWidth = true)
+                MovieCard(data!![index], fullWidth = true, navigateToMovie)
                 Spacer(modifier = Modifier.padding(vertical = 4.dp))
             }
         }
@@ -105,6 +106,8 @@ fun TrendingScreen(
 @Composable
 private fun TrendingPreview() {
     MovieVerseTheme {
-        TrendingScreen()
+        TrendingScreen(
+            navigateToMovie = {}
+        )
     }
 }

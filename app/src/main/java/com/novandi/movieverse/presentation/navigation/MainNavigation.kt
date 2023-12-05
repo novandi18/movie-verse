@@ -12,13 +12,40 @@ import com.novandi.movieverse.presentation.screen.TrendingScreen
 fun NavGraphBuilder.mainGraph(navController: NavController) {
     navigation(startDestination = Screen.Home.route, route = MainNavigation.MAIN_ROUTE) {
         composable(Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(
+                navigateToMovie = { id ->
+                    navController.navigate(
+                        Screen.Movie.createRoute(
+                            fromScreen = Screen.Home.route,
+                            movieId = id
+                        )
+                    )
+                }
+            )
         }
         composable(Screen.Trending.route) {
-            TrendingScreen()
+            TrendingScreen(
+                navigateToMovie = { id ->
+                    navController.navigate(
+                        Screen.Movie.createRoute(
+                            fromScreen = Screen.Trending.route,
+                            movieId = id
+                        )
+                    )
+                }
+            )
         }
         composable(Screen.Explore.route) {
-            ExploreScreen()
+            ExploreScreen(
+                navigateToMovie = { id ->
+                    navController.navigate(
+                        Screen.Movie.createRoute(
+                            fromScreen = Screen.Explore.route,
+                            movieId = id
+                        )
+                    )
+                }
+            )
         }
     }
 }

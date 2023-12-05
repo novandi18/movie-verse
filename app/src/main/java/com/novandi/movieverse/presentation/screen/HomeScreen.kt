@@ -45,7 +45,8 @@ import com.novandi.movieverse.presentation.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    navigateToMovie: (Int) -> Unit
 ) {
     val discoverMovies by viewModel.discoverMovies.observeAsState(initial = Resource.Loading())
     val nowPlayingMovies by viewModel.nowPlayingMovies.observeAsState(initial = Resource.Loading())
@@ -79,19 +80,19 @@ fun HomeScreen(
             fontWeight = FontWeight.Bold
         )
 
-        CarouselContent(movies = discoverMovies)
+        CarouselContent(movies = discoverMovies, navigateToMovie = navigateToMovie)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MovieSection(sectionName = stringResource(id = R.string.now_playing), nowPlayingMovies)
+        MovieSection(sectionName = stringResource(id = R.string.now_playing), nowPlayingMovies, navigateToMovie = navigateToMovie)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MovieSection(sectionName = stringResource(id = R.string.upcoming), upcomingMovies)
+        MovieSection(sectionName = stringResource(id = R.string.upcoming), upcomingMovies, navigateToMovie = navigateToMovie)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MovieSection(sectionName = stringResource(id = R.string.top_rated), topRatedMovies)
+        MovieSection(sectionName = stringResource(id = R.string.top_rated), topRatedMovies, navigateToMovie = navigateToMovie)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
     }
 }
 
 @Composable
-private fun CarouselContent(movies: Resource<List<Movie>>) {
+private fun CarouselContent(movies: Resource<List<Movie>>, navigateToMovie: (Int) -> Unit) {
     var data by remember { mutableStateOf<List<Movie>?>(null) }
     var loading by rememberSaveable { mutableStateOf(false) }
 
@@ -117,7 +118,7 @@ private fun CarouselContent(movies: Resource<List<Movie>>) {
         )
     } else {
         if (data != null) {
-            CardCarousel(movies = data!!)
+            CardCarousel(movies = data!!, navigateToMovie = navigateToMovie)
         }
     }
 }
@@ -126,6 +127,6 @@ private fun CarouselContent(movies: Resource<List<Movie>>) {
 @Composable
 private fun HomePreview() {
     MovieVerseTheme {
-        HomeScreen()
+        HomeScreen(navigateToMovie = {})
     }
 }

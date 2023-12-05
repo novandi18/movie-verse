@@ -35,7 +35,8 @@ import com.novandi.movieverse.presentation.viewmodel.ExploreViewModel
 
 @Composable
 fun ExploreScreen(
-    viewModel: ExploreViewModel = hiltViewModel()
+    viewModel: ExploreViewModel = hiltViewModel(),
+    navigateToMovie: (Int) -> Unit
 ) {
     val popularMovies by viewModel.popularMovies.observeAsState(Resource.Loading())
     var data by remember { mutableStateOf<List<Movie>?>(null) }
@@ -69,8 +70,7 @@ fun ExploreScreen(
         )
 
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MovieSection(sectionName = stringResource(id = R.string.popular), popularMovies)
-        Spacer(modifier = Modifier.padding(vertical = 16.dp))
+        MovieSection(sectionName = stringResource(id = R.string.popular), popularMovies, navigateToMovie = navigateToMovie)
         YourPreference()
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
     }
@@ -80,6 +80,6 @@ fun ExploreScreen(
 @Composable
 private fun ExplorePreview() {
     MovieVerseTheme {
-        ExploreScreen()
+        ExploreScreen(navigateToMovie = {})
     }
 }

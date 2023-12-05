@@ -36,7 +36,8 @@ fun YourPreference() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(156.dp),
+            .height(200.dp)
+            .padding(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(

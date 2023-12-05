@@ -18,7 +18,7 @@ import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 
 @Composable
-fun CardCarousel(movies: List<Movie>) {
+fun CardCarousel(movies: List<Movie>, navigateToMovie: (Int) -> Unit) {
     Card(
         modifier = Modifier
             .height(250.dp)
@@ -31,7 +31,9 @@ fun CardCarousel(movies: List<Movie>) {
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickable { },
+                        .clickable {
+                            navigateToMovie(movies[index].id)
+                        },
                     model = movies[index].poster,
                     contentDescription = movies[index].title,
                     contentScale = ContentScale.Crop,
@@ -47,10 +49,13 @@ fun CardCarousel(movies: List<Movie>) {
 @Composable
 private fun CardCarouselPreview() {
     MovieVerseTheme {
-        CardCarousel(listOf(
-            Movie(1, "", "", "", "", 1.1, "", ""),
-            Movie(1, "", "", "", "", 1.1, "", ""),
-            Movie(1, "", "", "", "", 1.1, "", "")
-        ))
+        CardCarousel(
+            listOf(
+                Movie(1, "", "", "", "", 1.1, "", ""),
+                Movie(1, "", "", "", "", 1.1, "", ""),
+                Movie(1, "", "", "", "", 1.1, "", "")
+            ),
+            {}
+        )
     }
 }
