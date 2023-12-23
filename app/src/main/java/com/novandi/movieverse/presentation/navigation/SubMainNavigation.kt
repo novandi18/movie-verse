@@ -16,7 +16,12 @@ fun NavGraphBuilder.subMainGraph(navController: NavController) {
             arguments = listOf(navArgument("movieId") { type = NavType.IntType })
         ) {
             val movieId = it.arguments?.getInt("movieId") ?: -1
-            MovieScreen(movieId)
+            MovieScreen(
+                movieId = movieId,
+                navigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

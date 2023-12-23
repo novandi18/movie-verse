@@ -1,11 +1,14 @@
-package com.novandi.movieverse.utils
+package com.novandi.movieverse.utils.mappers
 
 import com.novandi.movieverse.data.source.local.entity.MovieEntity
 import com.novandi.movieverse.data.source.remote.response.MovieResponseItems
 import com.novandi.movieverse.domain.model.Movie
+import com.novandi.movieverse.utils.MovieType
+import com.novandi.movieverse.utils.getMovieGenre
+import com.novandi.movieverse.utils.toImageUrl
 
-object DataMappers {
-    fun mapResponsesToEntities(input: List<MovieResponseItems>, movieType: MovieType): List<MovieEntity> {
+object MovieMappers {
+    fun mapResponsesToEntities(input: List<MovieResponseItems>, movieType: MovieType) : List<MovieEntity> {
         val list = ArrayList<MovieEntity>()
         input.map {
             val movie = MovieEntity(
@@ -24,7 +27,7 @@ object DataMappers {
         return list
     }
 
-    fun mapEntitiesToDomain(input: List<MovieEntity>): List<Movie> =
+    fun mapEntitiesToDomain(input: List<MovieEntity>) : List<Movie> =
         input.map {
             Movie(
                 id = it.id,
@@ -37,15 +40,4 @@ object DataMappers {
                 genre = it.genre
             )
         }
-
-    fun mapDomainToEntity(input: Movie): MovieEntity = MovieEntity(
-        id = input.id,
-        title = input.title,
-        poster = input.poster,
-        releaseDate = input.releaseDate,
-        overview = input.overview,
-        voteAverage = input.voteAverage,
-        movieType = input.movieType,
-        genre = input.genre
-    )
 }

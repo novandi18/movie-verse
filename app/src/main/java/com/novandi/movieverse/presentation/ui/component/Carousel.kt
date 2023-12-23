@@ -59,6 +59,6 @@ fun Carousel(
 @Composable
 private fun CarouselPreview() {
     MovieVerseTheme {
-        Carousel(itemsCount = 5) {}
+        Carousel(itemsCount = 20) {}
     }
 }

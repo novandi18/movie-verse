@@ -11,5 +11,5 @@ import com.novandi.movieverse.data.source.local.room.dao.MovieDao
     exportSchema = false
 )
 abstract class MovieDatabase : RoomDatabase() {
-    abstract fun movieDao(): MovieDao
+    abstract fun movieDao() : MovieDao
 }

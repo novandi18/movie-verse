@@ -54,7 +54,7 @@ fun HomeScreen(
     val topRatedMovies by viewModel.topRatedMovies.observeAsState(initial = Resource.Loading())
 
     val largeRadialGradient = object : ShaderBrush() {
-        override fun createShader(size: Size): Shader {
+        override fun createShader(size: Size) : Shader {
             val biggerDimension = maxOf(size.height, size.width)
             return RadialGradientShader(
                 colors = listOf(Red80.copy(.3f), Black),

@@ -13,5 +13,5 @@ import javax.inject.Singleton
 abstract class AppModule {
     @Binds
     @Singleton
-    abstract fun provideMovieUseCase(movieInteractor: MovieInteractor): MovieUseCase
+    abstract fun provideMovieUseCase(movieInteractor: MovieInteractor) : MovieUseCase
 }

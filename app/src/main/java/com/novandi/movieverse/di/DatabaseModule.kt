@@ -16,12 +16,12 @@ import javax.inject.Singleton
 class DatabaseModule {
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): MovieDatabase =
+    fun provideDatabase(@ApplicationContext context: Context) : MovieDatabase =
         Room.databaseBuilder(
             context, MovieDatabase::class.java, "Movie.db"
         ).build()
 
     @Provides
-    fun provideMovieDao(database: MovieDatabase): MovieDao =
+    fun provideMovieDao(database: MovieDatabase) : MovieDao =
         database.movieDao()
 }
