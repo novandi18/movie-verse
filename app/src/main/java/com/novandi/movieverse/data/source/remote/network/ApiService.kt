@@ -1,8 +1,9 @@
 package com.novandi.movieverse.data.source.remote.network
 
-import com.novandi.movieverse.data.source.remote.response.MovieDetailResponseAlt
+import com.novandi.movieverse.data.source.remote.response.MovieDetailResponse
 import com.novandi.movieverse.data.source.remote.response.MovieImagesResponse
 import com.novandi.movieverse.data.source.remote.response.MovieResponse
+import com.novandi.movieverse.data.source.remote.response.MovieReviewsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -58,7 +59,7 @@ interface ApiService {
     suspend fun getMovieDetail(
         @Path("movie_id") id: Int,
         @Query("language") language: String = "en-US"
-    ) : MovieDetailResponseAlt
+    ) : MovieDetailResponse
 
     @GET("movie/{movie_id}/images")
     suspend fun getMovieImages(
@@ -66,4 +67,11 @@ interface ApiService {
         @Query("language") language: String = "en-US",
         @Query("include_image_language") includeImageLanguage: String = "en"
     ) : MovieImagesResponse
+
+    @GET("movie/{movie_id}/reviews")
+    suspend fun getMovieReviews(
+        @Path("movie_id") id: Int,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1,
+    ) : MovieReviewsResponse
 }

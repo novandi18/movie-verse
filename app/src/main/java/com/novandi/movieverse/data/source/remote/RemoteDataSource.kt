@@ -3,9 +3,10 @@ package com.novandi.movieverse.data.source.remote
 import android.util.Log
 import com.novandi.movieverse.data.source.remote.network.ApiResponse
 import com.novandi.movieverse.data.source.remote.network.ApiService
-import com.novandi.movieverse.data.source.remote.response.MovieDetailResponseAlt
+import com.novandi.movieverse.data.source.remote.response.MovieDetailResponse
 import com.novandi.movieverse.data.source.remote.response.MovieImagesResponse
 import com.novandi.movieverse.data.source.remote.response.MovieResponseItems
+import com.novandi.movieverse.data.source.remote.response.MovieReviewsResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -113,7 +114,7 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getMovieDetail(movieId: Int) : Flow<ApiResponse<MovieDetailResponseAlt>> = flow {
+    suspend fun getMovieDetail(movieId: Int) : Flow<ApiResponse<MovieDetailResponse>> = flow {
         try {
             val response = apiService.getMovieDetail(id = movieId)
             emit(ApiResponse.Success(response))
@@ -132,4 +133,16 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
             Log.e("RemoteDataSource", e.toString())
         }
     }.flowOn(Dispatchers.IO)
+
+    suspend fun getMovieReviews(movieId: Int, page: Int): MovieReviewsResponse = apiService.getMovieReviews(id = movieId, page = page)
+
+//    suspend fun getMovieReviews(movieId: Int, page: Int) : Flow<ApiResponse<MovieReviewsResponse>> = flow {
+//        try {
+//            val response = apiService.getMovieReviews(id = movieId, page = page)
+//            emit(ApiResponse.Success(response))
+//        } catch (e : Exception){
+//            emit(ApiResponse.Error(e.toString()))
+//            Log.e("RemoteDataSource", e.toString())
+//        }
+//    }.flowOn(Dispatchers.IO)
 }

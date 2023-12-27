@@ -1,17 +1,22 @@
 package com.novandi.movieverse.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.novandi.movieverse.data.paging.MovieReviewPagingSource
 import com.novandi.movieverse.data.response.NetworkBoundResource
 import com.novandi.movieverse.data.response.NetworkOnlyResource
 import com.novandi.movieverse.data.response.Resource
 import com.novandi.movieverse.data.source.local.LocalDataSource
 import com.novandi.movieverse.data.source.remote.RemoteDataSource
 import com.novandi.movieverse.data.source.remote.network.ApiResponse
-import com.novandi.movieverse.data.source.remote.response.MovieDetailResponseAlt
+import com.novandi.movieverse.data.source.remote.response.MovieDetailResponse
 import com.novandi.movieverse.data.source.remote.response.MovieImagesResponse
 import com.novandi.movieverse.data.source.remote.response.MovieResponseItems
 import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.domain.model.MovieDetail
 import com.novandi.movieverse.domain.model.MovieDetailImages
+import com.novandi.movieverse.domain.model.MoviewReviewItem
 import com.novandi.movieverse.domain.repository.MovieRepository
 import com.novandi.movieverse.utils.AppExecutors
 import com.novandi.movieverse.utils.mappers.MovieMappers
@@ -135,22 +140,28 @@ class MovieRepositoryImpl @Inject constructor(
         }.asFlow()
 
     override fun getMovieDetail(movieId: Int) : Flow<Resource<MovieDetail>> =
-        object : NetworkOnlyResource<MovieDetail, MovieDetailResponseAlt>() {
-            override fun loadFromNetwork(data: MovieDetailResponseAlt): Flow<MovieDetail> =
+        object : NetworkOnlyResource<MovieDetail, MovieDetailResponse>() {
+            override fun loadFromNetwork(data: MovieDetailResponse): Flow<MovieDetail> =
                 MovieDetailMappers.mapResponseToDomain(data)
 
-            override suspend fun createCall(): Flow<ApiResponse<MovieDetailResponseAlt>> =
+            override suspend fun createCall(): Flow<ApiResponse<MovieDetailResponse>> =
                 remoteDataSource.getMovieDetail(movieId)
         }.asFlow()
 
     override fun getMovieImages(movieId: Int) : Flow<Resource<List<MovieDetailImages>>> =
         object : NetworkOnlyResource<List<MovieDetailImages>, MovieImagesResponse>() {
-            override fun loadFromNetwork(data: MovieImagesResponse): Flow<List<MovieDetailImages>> {
-                return MovieDetailMappers.mapImagesResponsesToDomain(data)
-            }
+            override fun loadFromNetwork(data: MovieImagesResponse): Flow<List<MovieDetailImages>> =
+                MovieDetailMappers.mapImagesResponsesToDomain(data)
 
-            override suspend fun createCall(): Flow<ApiResponse<MovieImagesResponse>> {
-                return remoteDataSource.getMovieImages(movieId)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<MovieImagesResponse>> =
+                remoteDataSource.getMovieImages(movieId)
         }.asFlow()
+
+    override fun getMovieReviews(movieId: Int): Flow<PagingData<MoviewReviewItem>> =
+        Pager(
+            config = PagingConfig(pageSize = 15),
+            pagingSourceFactory = {
+                MovieReviewPagingSource(remoteDataSource, movieId)
+            }
+        ).flow
 }

@@ -2,7 +2,7 @@ package com.novandi.movieverse.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieDetailResponseAlt(
+data class MovieDetailResponse(
 
 	@field:SerializedName("original_language")
 	val originalLanguage: String? = null,

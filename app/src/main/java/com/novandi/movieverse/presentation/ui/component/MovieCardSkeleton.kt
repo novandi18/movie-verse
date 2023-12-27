@@ -12,8 +12,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.novandi.movieverse.presentation.ui.theme.Gray
+import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 
 @Composable
 fun MovieCardSkeleton(fullWidth: Boolean = false) {
@@ -56,5 +58,13 @@ fun MovieCardSkeleton(fullWidth: Boolean = false) {
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MovieCardSkeletonPreview() {
+    MovieVerseTheme {
+        MovieCardSkeleton()
     }
 }

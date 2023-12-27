@@ -1,9 +1,11 @@
 package com.novandi.movieverse.domain.usecase
 
+import androidx.paging.PagingData
 import com.novandi.movieverse.data.response.Resource
 import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.domain.model.MovieDetail
 import com.novandi.movieverse.domain.model.MovieDetailImages
+import com.novandi.movieverse.domain.model.MoviewReviewItem
 import com.novandi.movieverse.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -21,4 +23,6 @@ class MovieInteractor @Inject constructor(
         movieRepository.getMovieDetail(movieId)
     override fun getMovieImages(movieId: Int) : Flow<Resource<List<MovieDetailImages>>> =
         movieRepository.getMovieImages(movieId)
+
+    override fun getMovieReviews(movieId: Int): Flow<PagingData<MoviewReviewItem>> = movieRepository.getMovieReviews(movieId)
 }

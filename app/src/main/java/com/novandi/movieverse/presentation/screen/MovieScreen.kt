@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,20 +43,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.novandi.movieverse.R
 import com.novandi.movieverse.data.response.Resource
 import com.novandi.movieverse.domain.model.MovieDetail
 import com.novandi.movieverse.domain.model.MovieDetailImages
+import com.novandi.movieverse.presentation.ui.component.MovieBottomSheet
 import com.novandi.movieverse.presentation.ui.component.MovieCarousel
 import com.novandi.movieverse.presentation.ui.component.MovieDetailSkeleton
 import com.novandi.movieverse.presentation.ui.component.MovieRating
-import com.novandi.movieverse.presentation.ui.component.MovieSection
 import com.novandi.movieverse.presentation.ui.theme.Black
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
@@ -73,11 +76,14 @@ fun MovieScreen(
     movieId: Int,
     navigateBack: () -> Unit
 ) {
+    val movieReviews = viewModel.movieReviews.collectAsLazyPagingItems()
+    var topBarVisibility by rememberSaveable { mutableStateOf(false) }
     val movieImages = viewModel.getMovieImages(movieId)
     val scrollState = rememberScrollState()
-    var topBarVisibility by rememberSaveable { mutableStateOf(false) }
     var movieData by remember { mutableStateOf<MovieDetail?>(null) }
     val context = LocalContext.current
+    val sheetState = rememberModalBottomSheetState()
+    var showReview by remember { mutableStateOf(false) }
 
     if (scrollState.isScrollInProgress) {
         topBarVisibility = scrollState.value >= 400
@@ -96,6 +102,10 @@ fun MovieScreen(
             }
         }
     }
+    
+    LaunchedEffect(true) {
+        viewModel.getMovieReviews(movieId)
+    }
 
     Box(
         modifier = Modifier
@@ -111,27 +121,22 @@ fun MovieScreen(
                 MovieDetailSkeleton()
             } else {
                 MovieImagesContent(movieImages, movieData!!)
-                MovieContent(movieData)
+                MovieContent(movieData, movieReviews.itemCount) { isShowing -> showReview = isShowing }
             }
-            Spacer(modifier = Modifier.padding(vertical = 12.dp))
-            MovieSection(
-                sectionName = "Recommended for you",
-                movies = Resource.Loading(),
-                navigateToMovie = {}
+        }
+
+        if (showReview) {
+            MovieBottomSheet(
+                showReview = { isShowing -> showReview = isShowing },
+                sheetState = sheetState,
+                reviewData = movieReviews
             )
-            Spacer(modifier = Modifier.padding(vertical = 12.dp))
-            MovieSection(
-                sectionName = "Similar Movies",
-                movies = Resource.Loading(),
-                navigateToMovie = {}
-            )
-            Spacer(modifier = Modifier.padding(vertical = 16.dp))
         }
 
         TopAppBar(
             title = {
                 AnimatedVisibility(visible = topBarVisibility) {
-                    Text(text = movieData?.title ?: "")
+                    Text(text = movieData?.title ?: "", maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             },
             navigationIcon = {
@@ -238,7 +243,9 @@ private fun MovieImagesContent(
 
 @Composable
 private fun MovieContent(
-    movie: MovieDetail?
+    movie: MovieDetail?,
+    totalReview: Int,
+    onReviewClick: (Boolean) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -285,7 +292,9 @@ private fun MovieContent(
         Row(
             modifier = Modifier
                 .background(Gray.copy(.2f), RoundedCornerShape(8.dp))
-                .clickable { }
+                .clickable {
+                    onReviewClick(true)
+                }
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -295,11 +304,13 @@ private fun MovieContent(
                 contentDescription = null,
                 tint = White
             )
-            Text(
-                text = "2.8k",
-                color = White,
-                fontSize = 14.sp
-            )
+            if (totalReview > 0) {
+                Text(
+                    text = totalReview.toString(),
+                    color = White,
+                    fontSize = 14.sp
+                )
+            }
         }
     }
 
@@ -308,7 +319,7 @@ private fun MovieContent(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = "Overview",
+            text = stringResource(id = R.string.overview),
             color = Gray
         )
         Text(
@@ -326,7 +337,7 @@ private fun MovieContent(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = "Tagline",
+            text = stringResource(id = R.string.tagline),
             color = Gray
         )
         Text(
