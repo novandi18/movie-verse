@@ -136,13 +136,17 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
     suspend fun getMovieReviews(movieId: Int, page: Int): MovieReviewsResponse = apiService.getMovieReviews(id = movieId, page = page)
 
-//    suspend fun getMovieReviews(movieId: Int, page: Int) : Flow<ApiResponse<MovieReviewsResponse>> = flow {
-//        try {
-//            val response = apiService.getMovieReviews(id = movieId, page = page)
-//            emit(ApiResponse.Success(response))
-//        } catch (e : Exception){
-//            emit(ApiResponse.Error(e.toString()))
-//            Log.e("RemoteDataSource", e.toString())
-//        }
-//    }.flowOn(Dispatchers.IO)
+    suspend fun getSimilarMovies(movieId: Int) : Flow<ApiResponse<List<MovieResponseItems>>> = flow {
+        try {
+            val response = apiService.getSimilarMovies(movieId)
+            if (response.results.isNotEmpty()) {
+                emit(ApiResponse.Success(response.results))
+            } else {
+                emit(ApiResponse.Empty)
+            }
+        } catch (e : Exception){
+            emit(ApiResponse.Error(e.toString()))
+            Log.e("RemoteDataSource", e.toString())
+        }
+    }.flowOn(Dispatchers.IO)
 }

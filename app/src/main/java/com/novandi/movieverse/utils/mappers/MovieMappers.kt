@@ -6,6 +6,8 @@ import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.utils.MovieType
 import com.novandi.movieverse.utils.getMovieGenre
 import com.novandi.movieverse.utils.toImageUrl
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 object MovieMappers {
     fun mapResponsesToEntities(input: List<MovieResponseItems>, movieType: MovieType) : List<MovieEntity> {
@@ -40,4 +42,19 @@ object MovieMappers {
                 genre = it.genre
             )
         }
+
+    fun mapResponsesToDomain(input: List<MovieResponseItems>) : Flow<List<Movie>> =
+        flowOf(
+            input.map {
+                Movie(
+                    id = it.id,
+                    title = it.title,
+                    poster = it.poster.toImageUrl(),
+                    releaseDate = it.releaseDate,
+                    overview = it.overview,
+                    voteAverage = it.voteAverage,
+                    genre = getMovieGenre(it.genres)
+                )
+            }
+        )
 }

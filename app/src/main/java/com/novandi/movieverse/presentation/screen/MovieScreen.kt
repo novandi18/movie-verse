@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -24,6 +26,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -31,12 +34,14 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -60,6 +65,7 @@ import com.novandi.movieverse.presentation.ui.component.MovieBottomSheet
 import com.novandi.movieverse.presentation.ui.component.MovieCarousel
 import com.novandi.movieverse.presentation.ui.component.MovieDetailSkeleton
 import com.novandi.movieverse.presentation.ui.component.MovieRating
+import com.novandi.movieverse.presentation.ui.component.MovieSection
 import com.novandi.movieverse.presentation.ui.theme.Black
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
@@ -84,9 +90,14 @@ fun MovieScreen(
     val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState()
     var showReview by remember { mutableStateOf(false) }
+    val similarMovies by viewModel.similarMovies.observeAsState(initial = Resource.Loading())
 
     if (scrollState.isScrollInProgress) {
         topBarVisibility = scrollState.value >= 400
+    }
+
+    LaunchedEffect(true) {
+        viewModel.getSimilarMovies(movieId)
     }
 
     LaunchedEffect(true) {
@@ -123,6 +134,17 @@ fun MovieScreen(
                 MovieImagesContent(movieImages, movieData!!)
                 MovieContent(movieData, movieReviews.itemCount) { isShowing -> showReview = isShowing }
             }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp))
+            MovieSection(
+                sectionName = stringResource(id = R.string.similar_movies),
+                movies = similarMovies,
+                navigateToMovie = {}
+            )
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp))
         }
 
         if (showReview) {
@@ -141,7 +163,12 @@ fun MovieScreen(
             },
             navigationIcon = {
                 IconButton(
-                    onClick = { navigateBack() }
+                    modifier = Modifier.clip(CircleShape),
+                    onClick = { navigateBack() },
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = Black.copy(.7f),
+                        contentColor = White
+                    )
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.ArrowBack,

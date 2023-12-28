@@ -74,4 +74,11 @@ interface ApiService {
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1,
     ) : MovieReviewsResponse
+
+    @GET("movie/{movie_id}/similar")
+    suspend fun getSimilarMovies(
+        @Path("movie_id") id: Int,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1,
+    ) : MovieResponse
 }

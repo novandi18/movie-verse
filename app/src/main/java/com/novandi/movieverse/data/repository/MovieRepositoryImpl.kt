@@ -164,4 +164,13 @@ class MovieRepositoryImpl @Inject constructor(
                 MovieReviewPagingSource(remoteDataSource, movieId)
             }
         ).flow
+
+    override fun getSimilarMovies(movieId: Int): Flow<Resource<List<Movie>>> =
+        object : NetworkOnlyResource<List<Movie>, List<MovieResponseItems>>() {
+            override fun loadFromNetwork(data: List<MovieResponseItems>): Flow<List<Movie>> =
+                MovieMappers.mapResponsesToDomain(data)
+
+            override suspend fun createCall(): Flow<ApiResponse<List<MovieResponseItems>>> =
+                remoteDataSource.getSimilarMovies(movieId)
+        }.asFlow()
 }
