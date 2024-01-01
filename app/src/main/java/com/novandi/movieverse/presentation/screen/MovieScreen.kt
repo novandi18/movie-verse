@@ -1,6 +1,5 @@
 package com.novandi.movieverse.presentation.screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -85,7 +84,6 @@ fun MovieScreen(
     navigateBack: () -> Unit,
     navigateToMovie: (Int) -> Unit
 ) {
-    Log.d("waduh", movieId.toString())
     val movieReviews = viewModel.movieReviews.collectAsLazyPagingItems()
     var topBarVisibility by rememberSaveable { mutableStateOf(false) }
     val movieImages = viewModel.getMovieImages(movieId)
@@ -170,7 +168,7 @@ fun MovieScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.back),
                         tint = White
                     )
                 }
@@ -246,18 +244,19 @@ private fun MovieImagesContent(
                     )
                 } else {
                     Image(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
                             .drawWithCache {
-                            onDrawWithContent {
-                                drawContent()
-                                drawRect(
-                                    Brush.verticalGradient(
-                                        0f to Black.copy(0f),
-                                        1.4f to Black.copy(1f)
+                                onDrawWithContent {
+                                    drawContent()
+                                    drawRect(
+                                        Brush.verticalGradient(
+                                            0f to Black.copy(0f),
+                                            1.4f to Black.copy(1f)
+                                        )
                                     )
-                                )
-                            }
-                        },
+                                }
+                            },
                         painter = painterResource(id = R.drawable.no_poster_available),
                         contentDescription = null,
                         contentScale = ContentScale.Crop
@@ -309,7 +308,7 @@ private fun MovieContent(
         ) {
             Icon(
                 imageVector = Icons.Rounded.CalendarMonth,
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.release_date),
                 tint = White
             )
             Text(
@@ -327,7 +326,7 @@ private fun MovieContent(
         ) {
             Icon(
                 imageVector = Icons.Rounded.Groups,
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.popularity),
                 tint = White
             )
             Text(
@@ -348,7 +347,7 @@ private fun MovieContent(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Rounded.Comment,
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.reviews_title),
                 tint = White
             )
             if (totalReview > 0) {

@@ -11,7 +11,7 @@ class HomeViewModel @Inject constructor(
     movieUseCase: MovieUseCase
 ) : ViewModel() {
     val upcomingMovies = movieUseCase.getUpcomingMovies().asLiveData()
-    val trendingMovies = movieUseCase.getTrendingMovies().asLiveData()
+    val discoverMovies = movieUseCase.getDiscoverMovies().asLiveData()
     val nowPlayingMovies = movieUseCase.getNowPlayingMovies().asLiveData()
     val topRatedMovies = movieUseCase.getTopRatedMovies().asLiveData()
 }

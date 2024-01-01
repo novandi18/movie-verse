@@ -13,7 +13,7 @@ data class MovieResponse(
     val totalPages: String,
 
     @SerializedName("total_results")
-    val totalResults: String,
+    val totalResults: String
 )
 
 data class MovieResponseItems(

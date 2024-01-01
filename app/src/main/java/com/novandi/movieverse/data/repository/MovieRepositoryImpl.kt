@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.novandi.movieverse.data.paging.MovieReviewPagingSource
+import com.novandi.movieverse.data.paging.MovieTrendingPagingSource
 import com.novandi.movieverse.data.response.NetworkBoundResource
 import com.novandi.movieverse.data.response.NetworkOnlyResource
 import com.novandi.movieverse.data.response.Resource
@@ -103,23 +104,13 @@ class MovieRepositoryImpl @Inject constructor(
             }
         }.asFlow()
 
-    override fun getTrendingMovies() : Flow<Resource<List<Movie>>> =
-        object : NetworkBoundResource<List<Movie>, List<MovieResponseItems>>() {
-            override fun loadFromDB() : Flow<List<Movie>> =
-                localDataSource.getMovies(MovieType.TRENDING).map {
-                    MovieMappers.mapEntitiesToDomain(it)
-                }
-
-            override fun shouldFetch(data: List<Movie>?) : Boolean = data.isNullOrEmpty()
-
-            override suspend fun createCall() : Flow<ApiResponse<List<MovieResponseItems>>> =
-                remoteDataSource.getTrendingMovies()
-
-            override suspend fun saveCallResult(data: List<MovieResponseItems>) {
-                val movies = MovieMappers.mapResponsesToEntities(data, MovieType.TRENDING)
-                localDataSource.insertMovies(movies)
+    override fun getTrendingMovies(): Flow<PagingData<Movie>> =
+        Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                MovieTrendingPagingSource(remoteDataSource)
             }
-        }.asFlow()
+        ).flow
 
     override fun getMovieDetail(movieId: Int) : Flow<Resource<MovieDetail>> =
         object : NetworkOnlyResource<MovieDetail, MovieDetailResponse>() {
@@ -141,7 +132,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     override fun getMovieReviews(movieId: Int): Flow<PagingData<MoviewReviewItem>> =
         Pager(
-            config = PagingConfig(pageSize = 15),
+            config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
                 MovieReviewPagingSource(remoteDataSource, movieId)
             }
@@ -154,5 +145,23 @@ class MovieRepositoryImpl @Inject constructor(
 
             override suspend fun createCall(): Flow<ApiResponse<List<MovieResponseItems>>> =
                 remoteDataSource.getSimilarMovies(movieId)
+        }.asFlow()
+
+    override fun getDiscoverMovies(): Flow<Resource<List<Movie>>>  =
+        object : NetworkBoundResource<List<Movie>, List<MovieResponseItems>>() {
+            override fun loadFromDB() : Flow<List<Movie>> =
+                localDataSource.getMovies(MovieType.DISCOVER).map {
+                    MovieMappers.mapEntitiesToDomain(it)
+                }
+
+            override fun shouldFetch(data: List<Movie>?) : Boolean = data.isNullOrEmpty()
+
+            override suspend fun createCall() : Flow<ApiResponse<List<MovieResponseItems>>> =
+                remoteDataSource.getDiscoverMovies()
+
+            override suspend fun saveCallResult(data: List<MovieResponseItems>) {
+                val movies = MovieMappers.mapResponsesToEntities(data, MovieType.DISCOVER)
+                localDataSource.insertMovies(movies)
+            }
         }.asFlow()
 }

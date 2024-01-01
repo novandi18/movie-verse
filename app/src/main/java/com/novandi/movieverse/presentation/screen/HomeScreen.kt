@@ -48,7 +48,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToMovie: (Int) -> Unit
 ) {
-    val trendingMovies by viewModel.trendingMovies.observeAsState(initial = Resource.Loading())
+    val discoverMovies by viewModel.discoverMovies.observeAsState(initial = Resource.Loading())
     val nowPlayingMovies by viewModel.nowPlayingMovies.observeAsState(initial = Resource.Loading())
     val upcomingMovies by viewModel.upcomingMovies.observeAsState(initial = Resource.Loading())
     val topRatedMovies by viewModel.topRatedMovies.observeAsState(initial = Resource.Loading())
@@ -80,7 +80,7 @@ fun HomeScreen(
             fontWeight = FontWeight.Bold
         )
 
-        CarouselContent(movies = trendingMovies, navigateToMovie = navigateToMovie)
+        CarouselContent(movies = discoverMovies, navigateToMovie = navigateToMovie)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         MovieSection(sectionName = stringResource(id = R.string.now_playing), nowPlayingMovies, navigateToMovie = navigateToMovie)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))

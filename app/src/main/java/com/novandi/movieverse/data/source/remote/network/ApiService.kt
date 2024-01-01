@@ -33,9 +33,11 @@ interface ApiService {
         @Query("language") language: String = "en-US"
     ) : MovieResponse
 
-    @GET("trending/movie/day")
+    @GET("trending/movie/{time_window}")
     suspend fun getTrendingMovies(
-        @Query("language") language: String = "en-US"
+        @Path("time_window") timeWindow: String = "day",
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int
     ) : MovieResponse
 
     @GET("movie/{movie_id}")
@@ -64,4 +66,9 @@ interface ApiService {
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1,
     ) : MovieResponse
+
+    @GET("discover/movie")
+    suspend fun getDiscoverMovies(
+        @Query("language") language: String = "en-US"
+    ): MovieResponse
 }

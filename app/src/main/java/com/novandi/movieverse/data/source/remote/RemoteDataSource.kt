@@ -5,6 +5,7 @@ import com.novandi.movieverse.data.source.remote.network.ApiResponse
 import com.novandi.movieverse.data.source.remote.network.ApiService
 import com.novandi.movieverse.data.source.remote.response.MovieDetailResponse
 import com.novandi.movieverse.data.source.remote.response.MovieImagesResponse
+import com.novandi.movieverse.data.source.remote.response.MovieResponse
 import com.novandi.movieverse.data.source.remote.response.MovieResponseItems
 import com.novandi.movieverse.data.source.remote.response.MovieReviewsResponse
 import kotlinx.coroutines.Dispatchers
@@ -72,19 +73,7 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getTrendingMovies() : Flow<ApiResponse<List<MovieResponseItems>>> = flow {
-        try {
-            val response = apiService.getTrendingMovies()
-            if (response.results.isNotEmpty()) {
-                emit(ApiResponse.Success(response.results))
-            } else {
-                emit(ApiResponse.Empty)
-            }
-        } catch (e : Exception){
-            emit(ApiResponse.Error(e.toString()))
-            Log.e("RemoteDataSource", e.toString())
-        }
-    }.flowOn(Dispatchers.IO)
+    suspend fun getTrendingMovies(page: Int): MovieResponse = apiService.getTrendingMovies(page = page)
 
     suspend fun getMovieDetail(movieId: Int) : Flow<ApiResponse<MovieDetailResponse>> = flow {
         try {
@@ -111,6 +100,20 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun getSimilarMovies(movieId: Int) : Flow<ApiResponse<List<MovieResponseItems>>> = flow {
         try {
             val response = apiService.getSimilarMovies(movieId)
+            if (response.results.isNotEmpty()) {
+                emit(ApiResponse.Success(response.results))
+            } else {
+                emit(ApiResponse.Empty)
+            }
+        } catch (e : Exception){
+            emit(ApiResponse.Error(e.toString()))
+            Log.e("RemoteDataSource", e.toString())
+        }
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun getDiscoverMovies() : Flow<ApiResponse<List<MovieResponseItems>>> = flow {
+        try {
+            val response = apiService.getDiscoverMovies()
             if (response.results.isNotEmpty()) {
                 emit(ApiResponse.Success(response.results))
             } else {

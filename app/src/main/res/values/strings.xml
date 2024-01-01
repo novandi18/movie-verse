@@ -21,4 +21,8 @@
     <string name="similar_movies">Similar Movies</string>
     <string name="no_tagline">No Tagline</string>
     <string name="no_overview">No Overview</string>
+    <string name="reviews_title">Reviews</string>
+    <string name="popularity">Popularity</string>
+    <string name="release_date">Release Date</string>
+    <string name="back">Back</string>
 </resources>

@@ -13,9 +13,10 @@ interface MovieRepository {
     fun getPopularMovies() : Flow<Resource<List<Movie>>>
     fun getNowPlayingMovies() : Flow<Resource<List<Movie>>>
     fun getTopRatedMovies() : Flow<Resource<List<Movie>>>
-    fun getTrendingMovies() : Flow<Resource<List<Movie>>>
+    fun getTrendingMovies() : Flow<PagingData<Movie>>
     fun getMovieDetail(movieId: Int) : Flow<Resource<MovieDetail>>
     fun getMovieImages(movieId: Int) : Flow<Resource<List<MovieDetailImages>>>
     fun getMovieReviews(movieId: Int) : Flow<PagingData<MoviewReviewItem>>
     fun getSimilarMovies(movieId: Int) : Flow<Resource<List<Movie>>>
+    fun getDiscoverMovies() : Flow<Resource<List<Movie>>>
 }
