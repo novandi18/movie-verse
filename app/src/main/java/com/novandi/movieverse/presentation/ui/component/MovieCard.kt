@@ -65,7 +65,8 @@ fun MovieCard(
                 error = painterResource(id = R.drawable.image_error)
             )
             Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                modifier = Modifier.height(100.dp),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = movie.title,
@@ -75,15 +76,19 @@ fun MovieCard(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(
-                    text = movie.genre,
-                    color = White,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Thin,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                MovieRating(rating = movie.voteAverage)
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        text = movie.genre,
+                        color = White,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Thin,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    MovieRating(rating = movie.voteAverage)
+                }
             }
         }
     }
@@ -94,7 +99,7 @@ fun MovieCard(
 private fun MovieCardPreview() {
     MovieVerseTheme {
         MovieCard(
-            Movie(1, "", "", "", "", 1.1, "", ""),
+            Movie(1, "Naruto Shippuden", "", "", "", 1.1, "", ""),
             navigateToMovie = {}
         )
     }

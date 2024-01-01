@@ -97,10 +97,8 @@ fun MovieScreen(
     }
 
     LaunchedEffect(true) {
+        viewModel.getMovieReviews(movieId)
         viewModel.getSimilarMovies(movieId)
-    }
-
-    LaunchedEffect(true) {
         viewModel.getMovie(movieId).collect { uiState ->
             when (uiState) {
                 is Resource.Loading -> {}
@@ -112,10 +110,6 @@ fun MovieScreen(
                 }
             }
         }
-    }
-    
-    LaunchedEffect(true) {
-        viewModel.getMovieReviews(movieId)
     }
 
     Box(

@@ -57,4 +57,17 @@ object MovieMappers {
                 )
             }
         )
+
+    fun mapPagingResponsesToDomain(input: List<MovieResponseItems>) : List<Movie> =
+        input.map {
+            Movie(
+                id = it.id,
+                title = it.title,
+                poster = it.poster.toImageUrl(),
+                releaseDate = it.releaseDate,
+                overview = it.overview,
+                voteAverage = it.voteAverage,
+                genre = getMovieGenre(it.genres)
+            )
+        }
 }

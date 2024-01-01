@@ -121,24 +121,6 @@ class MovieRepositoryImpl @Inject constructor(
             }
         }.asFlow()
 
-    override fun getDiscoverMovies() : Flow<Resource<List<Movie>>> =
-        object : NetworkBoundResource<List<Movie>, List<MovieResponseItems>>() {
-            override fun loadFromDB() : Flow<List<Movie>> =
-                localDataSource.getMovies(MovieType.DISCOVER).map {
-                    MovieMappers.mapEntitiesToDomain(it)
-                }
-
-            override fun shouldFetch(data: List<Movie>?) : Boolean = data.isNullOrEmpty()
-
-            override suspend fun createCall() : Flow<ApiResponse<List<MovieResponseItems>>> =
-                remoteDataSource.getDiscoverMovies()
-
-            override suspend fun saveCallResult(data: List<MovieResponseItems>) {
-                val movies = MovieMappers.mapResponsesToEntities(data, MovieType.DISCOVER)
-                localDataSource.insertMovies(movies)
-            }
-        }.asFlow()
-
     override fun getMovieDetail(movieId: Int) : Flow<Resource<MovieDetail>> =
         object : NetworkOnlyResource<MovieDetail, MovieDetailResponse>() {
             override fun loadFromNetwork(data: MovieDetailResponse): Flow<MovieDetail> =

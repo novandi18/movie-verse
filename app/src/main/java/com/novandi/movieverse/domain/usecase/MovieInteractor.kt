@@ -18,7 +18,6 @@ class MovieInteractor @Inject constructor(
     override fun getNowPlayingMovies() : Flow<Resource<List<Movie>>> = movieRepository.getNowPlayingMovies()
     override fun getTopRatedMovies() : Flow<Resource<List<Movie>>> = movieRepository.getTopRatedMovies()
     override fun getTrendingMovies() : Flow<Resource<List<Movie>>> = movieRepository.getTrendingMovies()
-    override fun getDiscoverMovies() : Flow<Resource<List<Movie>>> = movieRepository.getDiscoverMovies()
     override fun getMovieDetail(movieId: Int) : Flow<Resource<MovieDetail>> = movieRepository.getMovieDetail(movieId)
     override fun getMovieImages(movieId: Int) : Flow<Resource<List<MovieDetailImages>>> = movieRepository.getMovieImages(movieId)
 

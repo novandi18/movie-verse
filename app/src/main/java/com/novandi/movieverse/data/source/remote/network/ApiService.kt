@@ -38,23 +38,6 @@ interface ApiService {
         @Query("language") language: String = "en-US"
     ) : MovieResponse
 
-    @GET("discover/movie")
-    suspend fun getDiscoverMovies(
-        @Query("page") page: Int = 1,
-        @Query("language") language: String = "en-US",
-        @Query("include_adult") includeAdult: Boolean = false,
-        @Query("include_video") includeVideo: Boolean = false,
-        @Query("sort_by") sortBy: String = "popularity.desc"
-    ) : MovieResponse
-
-    @GET("discover/tv")
-    suspend fun getDiscoverTv(
-        @Query("page") page: Int = 1,
-        @Query("language") language: String = "en-US",
-        @Query("include_adult") includeAdult: Boolean = false,
-        @Query("include_video") includeVideo: Boolean = false
-    ) : MovieResponse
-
     @GET("movie/{movie_id}")
     suspend fun getMovieDetail(
         @Path("movie_id") id: Int,

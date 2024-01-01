@@ -3,8 +3,9 @@ package com.novandi.movieverse.data.source.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.novandi.movieverse.utils.Consts
 
-@Entity(tableName = "movie")
+@Entity(tableName = Consts.MOVIE_TABLE_NAME)
 data class MovieEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")

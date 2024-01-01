@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.novandi.movieverse.data.source.local.room.MovieDatabase
 import com.novandi.movieverse.data.source.local.room.dao.MovieDao
+import com.novandi.movieverse.utils.Consts
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ class DatabaseModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context) : MovieDatabase =
         Room.databaseBuilder(
-            context, MovieDatabase::class.java, "Movie.db"
+            context, MovieDatabase::class.java, Consts.DATABASE_NAME
         ).build()
 
     @Provides
