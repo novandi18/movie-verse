@@ -20,6 +20,14 @@ fun NavGraphBuilder.subMainGraph(navController: NavController) {
                 movieId = movieId,
                 navigateBack = {
                     navController.popBackStack()
+                },
+                navigateToMovie = { id ->
+                    navController.navigate(
+                        Screen.Movie.createRoute(
+                            fromScreen = Screen.Home.route,
+                            movieId = id
+                        )
+                    )
                 }
             )
         }

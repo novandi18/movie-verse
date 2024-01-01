@@ -1,7 +1,9 @@
 package com.novandi.movieverse.presentation.screen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -80,8 +82,10 @@ import kotlinx.coroutines.flow.Flow
 fun MovieScreen(
     viewModel: MovieViewModel = hiltViewModel(),
     movieId: Int,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    navigateToMovie: (Int) -> Unit
 ) {
+    Log.d("waduh", movieId.toString())
     val movieReviews = viewModel.movieReviews.collectAsLazyPagingItems()
     var topBarVisibility by rememberSaveable { mutableStateOf(false) }
     val movieImages = viewModel.getMovieImages(movieId)
@@ -134,7 +138,7 @@ fun MovieScreen(
             MovieSection(
                 sectionName = stringResource(id = R.string.similar_movies),
                 movies = similarMovies,
-                navigateToMovie = {}
+                navigateToMovie = navigateToMovie
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -213,31 +217,53 @@ private fun MovieImagesContent(
                     .background(Gray)
             )
         } else {
-            MovieCarousel(
-                itemsCount = movieImagesData!!.size,
-                itemContent = { index ->
-                    AsyncImage(
-                        modifier = Modifier
-                            .fillMaxSize()
+            if (movieImagesData != null) {
+                if (movieImagesData!!.isNotEmpty()) {
+                    MovieCarousel(
+                        itemsCount = movieImagesData!!.size,
+                        itemContent = { index ->
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .drawWithCache {
+                                        onDrawWithContent {
+                                            drawContent()
+                                            drawRect(
+                                                Brush.verticalGradient(
+                                                    0f to Black.copy(0f),
+                                                    1.4f to Black.copy(1f)
+                                                )
+                                            )
+                                        }
+                                    },
+                                model = movieImagesData!![index].filePath.toImageUrlOriginal(),
+                                contentDescription = null,
+                                placeholder = painterResource(id = R.drawable.image_placeholder),
+                                error = painterResource(id = R.drawable.image_error),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                    )
+                } else {
+                    Image(
+                        modifier = Modifier.fillMaxSize()
                             .drawWithCache {
-                                onDrawWithContent {
-                                    drawContent()
-                                    drawRect(
-                                        Brush.verticalGradient(
-                                            0f to Black.copy(0f),
-                                            1.4f to Black.copy(1f)
-                                        )
+                            onDrawWithContent {
+                                drawContent()
+                                drawRect(
+                                    Brush.verticalGradient(
+                                        0f to Black.copy(0f),
+                                        1.4f to Black.copy(1f)
                                     )
-                                }
-                            },
-                        model = movieImagesData!![index].filePath.toImageUrlOriginal(),
+                                )
+                            }
+                        },
+                        painter = painterResource(id = R.drawable.no_poster_available),
                         contentDescription = null,
-                        placeholder = painterResource(id = R.drawable.image_placeholder),
-                        error = painterResource(id = R.drawable.image_error),
                         contentScale = ContentScale.Crop
                     )
                 }
-            )
+            }
 
             Column(
                 modifier = Modifier
@@ -344,7 +370,8 @@ private fun MovieContent(
             color = Gray
         )
         Text(
-            text = movie?.overview.toString(),
+            text = if (movie?.overview.toString() != "") movie?.overview.toString()
+            else stringResource(id = R.string.no_overview),
             color = White
         )
     }
@@ -362,7 +389,8 @@ private fun MovieContent(
             color = Gray
         )
         Text(
-            text = movie?.tagline.toString(),
+            text = if (movie?.tagline.toString() != "") movie?.tagline.toString()
+            else stringResource(id = R.string.no_tagline),
             color = White
         )
     }
@@ -376,6 +404,6 @@ private fun MovieContent(
 @Composable
 private fun MoviePreview() {
     MovieVerseTheme {
-        MovieScreen(movieId = 1, navigateBack = {})
+        MovieScreen(movieId = 1, navigateBack = {}, navigateToMovie = {})
     }
 }

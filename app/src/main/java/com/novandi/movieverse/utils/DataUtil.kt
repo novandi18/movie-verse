@@ -18,10 +18,12 @@ fun getMovieGenre(genreIds: List<Int>): String {
 fun String?.toImageUrlOriginal() : String = "https://image.tmdb.org/t/p/original$this"
 
 fun String.formatDate(): String {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    val date = inputFormat.parse(this)
-    return outputFormat.format(date!!)
+    return if (this != "") {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val date = inputFormat.parse(this)
+        outputFormat.format(date!!)
+    } else "Unknown"
 }
 
 fun Double.doubleToCeil(): String = String.format("%.1f", this)

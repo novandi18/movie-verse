@@ -19,4 +19,6 @@
     <string name="try_again">Try again</string>
     <string name="no_name">No Name</string>
     <string name="similar_movies">Similar Movies</string>
+    <string name="no_tagline">No Tagline</string>
+    <string name="no_overview">No Overview</string>
 </resources>
