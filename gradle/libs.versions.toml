@@ -21,8 +21,7 @@ compose = "1.6.0-beta03"
 uiTooling = "1.5.4"
 secretsGradle = "2.0.1"
 paging = "3.3.0-alpha02"
-appcompat = "1.6.1"
-material = "1.11.0"
+splashscreen = "1.0.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidApplication" }
@@ -67,5 +66,4 @@ android-secrets-gradle = { group = "com.google.android.libraries.mapsplatform.se
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }

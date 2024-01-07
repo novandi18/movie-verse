@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.MovieVerse" parent="android:Theme.Material.Light.NoActionBar" />
+    
+    <style name="Theme.MovieVerse.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/black</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.MovieVerse</item>
+    </style>
 </resources>
