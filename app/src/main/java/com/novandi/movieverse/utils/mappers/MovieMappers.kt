@@ -1,6 +1,7 @@
 package com.novandi.movieverse.utils.mappers
 
 import com.novandi.movieverse.data.source.local.entity.MovieEntity
+import com.novandi.movieverse.data.source.local.entity.MovieTrendingEntity
 import com.novandi.movieverse.data.source.remote.response.MovieResponseItems
 import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.utils.MovieType
@@ -70,4 +71,29 @@ object MovieMappers {
                 genre = getMovieGenre(it.genres)
             )
         }
+
+    fun mapTrendingResponsesToEntity(input: List<MovieResponseItems>, page: Int) : List<MovieTrendingEntity> =
+        input.map {
+            MovieTrendingEntity(
+                id = it.id,
+                title = it.title,
+                poster = it.poster.toImageUrl(),
+                releaseDate = it.releaseDate,
+                overview = it.overview,
+                voteAverage = it.voteAverage,
+                genre = getMovieGenre(it.genres),
+                page = page
+            )
+        }
+
+    fun mapTrendingEntityToDomain(input: MovieTrendingEntity): Movie =
+        Movie(
+            id = input.id,
+            title = input.title,
+            poster = input.poster.toImageUrl(),
+            releaseDate = input.releaseDate,
+            overview = input.overview,
+            voteAverage = input.voteAverage,
+            genre = input.genre
+        )
 }

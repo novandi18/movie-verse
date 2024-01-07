@@ -3,12 +3,13 @@ package com.novandi.movieverse.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import com.novandi.movieverse.data.paging.MovieReviewPagingSource
-import com.novandi.movieverse.data.paging.MovieTrendingPagingSource
 import com.novandi.movieverse.data.response.NetworkBoundResource
 import com.novandi.movieverse.data.response.NetworkOnlyResource
 import com.novandi.movieverse.data.response.Resource
 import com.novandi.movieverse.data.source.local.LocalDataSource
+import com.novandi.movieverse.data.source.local.entity.MovieTrendingEntity
 import com.novandi.movieverse.data.source.remote.RemoteDataSource
 import com.novandi.movieverse.data.source.remote.network.ApiResponse
 import com.novandi.movieverse.data.source.remote.response.MovieDetailResponse
@@ -19,7 +20,6 @@ import com.novandi.movieverse.domain.model.MovieDetail
 import com.novandi.movieverse.domain.model.MovieDetailImages
 import com.novandi.movieverse.domain.model.MoviewReviewItem
 import com.novandi.movieverse.domain.repository.MovieRepository
-import com.novandi.movieverse.utils.AppExecutors
 import com.novandi.movieverse.utils.mappers.MovieMappers
 import com.novandi.movieverse.utils.MovieType
 import com.novandi.movieverse.utils.mappers.MovieDetailMappers
@@ -30,7 +30,7 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val appExecutors: AppExecutors
+    private val movieTrendingPager: Pager<Int, MovieTrendingEntity>
 ) : MovieRepository {
     override fun getUpcomingMovies() : Flow<Resource<List<Movie>>> =
         object : NetworkBoundResource<List<Movie>, List<MovieResponseItems>>() {
@@ -104,13 +104,9 @@ class MovieRepositoryImpl @Inject constructor(
             }
         }.asFlow()
 
-    override fun getTrendingMovies(): Flow<PagingData<Movie>> =
-        Pager(
-            config = PagingConfig(pageSize = 10),
-            pagingSourceFactory = {
-                MovieTrendingPagingSource(remoteDataSource)
-            }
-        ).flow
+    override fun getTrendingMovies(): Flow<PagingData<Movie>> = movieTrendingPager.flow.map { pagingData ->
+        pagingData.map { MovieMappers.mapTrendingEntityToDomain(it) }
+    }
 
     override fun getMovieDetail(movieId: Int) : Flow<Resource<MovieDetail>> =
         object : NetworkOnlyResource<MovieDetail, MovieDetailResponse>() {

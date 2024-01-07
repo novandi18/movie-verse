@@ -53,7 +53,7 @@ fun TrendingScreen(
                     Text(
                         text = "Trending \uD83D\uDD25",
                         color = White,
-                        fontSize = 20.sp,
+                        fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         style = TextStyle(
                             platformStyle = PlatformTextStyle(
@@ -79,7 +79,9 @@ fun TrendingScreen(
                 contentPadding = PaddingValues(8.dp)
             ) {
                 items(movies.itemCount) { index ->
-                    MovieCard(movie = movies[index]!!, navigateToMovie = navigateToMovie)
+                    if (movies[index] != null) {
+                        MovieCard(movie = movies[index]!!, navigateToMovie = navigateToMovie)
+                    }
                 }
 
                 movies.apply {

@@ -79,6 +79,7 @@ dependencies {
 
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
+    implementation(libs.room.paging)
     annotationProcessor(libs.room.compiler)
     debugImplementation(libs.androidx.ui.tooling)
     ksp(libs.room.compiler)

@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class NetworkModule {
     @Singleton
     @Provides
-    fun provideOkHttpClient() : OkHttpClient {
+    fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -36,7 +36,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiConfig(client: OkHttpClient) : ApiService {
+    fun provideApiConfig(client: OkHttpClient): ApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(GsonConverterFactory.create())

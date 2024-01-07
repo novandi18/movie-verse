@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LocalDataSource @Inject constructor(
-    private val movieDao: MovieDao,
+    private val movieDao: MovieDao
 ) {
     fun getMovies(movieType: MovieType) : Flow<List<MovieEntity>> = movieDao.getMovies(movieType.name)
     suspend fun insertMovies(movies: List<MovieEntity>) = movieDao.insertMovie(movies)
