@@ -23,6 +23,7 @@ import com.novandi.core.data.response.Resource
 import com.novandi.core.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
+import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 
 @Composable
 fun MovieSection(
@@ -55,7 +56,8 @@ fun MovieSection(
             text = sectionName,
             color = White,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontFamily = rubikFamily
         )
 
         if (loading) {

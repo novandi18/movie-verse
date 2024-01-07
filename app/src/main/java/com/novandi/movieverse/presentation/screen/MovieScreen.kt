@@ -74,6 +74,7 @@ import com.novandi.movieverse.presentation.ui.theme.White
 import com.novandi.movieverse.presentation.viewmodel.MovieViewModel
 import com.novandi.core.utils.formatDate
 import com.novandi.core.utils.toImageUrlOriginal
+import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -154,7 +155,12 @@ fun MovieScreen(
         TopAppBar(
             title = {
                 AnimatedVisibility(visible = topBarVisibility) {
-                    Text(text = movieData?.title ?: "", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(
+                        text = movieData?.title ?: "",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        fontFamily = rubikFamily
+                    )
                 }
             },
             navigationIcon = {
@@ -274,12 +280,14 @@ private fun MovieImagesContent(
                     text = movie.title,
                     color = White,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = rubikFamily
                 )
                 Text(
                     text = movie.genre,
                     color = White,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    fontFamily = rubikFamily
                 )
                 MovieRating(rating = movie.voteAverage)
             }
@@ -314,7 +322,8 @@ private fun MovieContent(
             Text(
                 text = movie?.releaseDate.toString().formatDate(),
                 color = White,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                fontFamily = rubikFamily
             )
         }
         Row(
@@ -332,7 +341,8 @@ private fun MovieContent(
             Text(
                 text = movie?.voteCount.toString(),
                 color = White,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                fontFamily = rubikFamily
             )
         }
         Row(
@@ -354,7 +364,8 @@ private fun MovieContent(
                 Text(
                     text = totalReview.toString(),
                     color = White,
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    fontFamily = rubikFamily
                 )
             }
         }
@@ -366,12 +377,14 @@ private fun MovieContent(
     ) {
         Text(
             text = stringResource(id = R.string.overview),
-            color = Gray
+            color = Gray,
+            fontFamily = rubikFamily
         )
         Text(
             text = if (movie?.overview.toString() != "") movie?.overview.toString()
             else stringResource(id = R.string.no_overview),
-            color = White
+            color = White,
+            fontFamily = rubikFamily
         )
     }
 
@@ -385,12 +398,14 @@ private fun MovieContent(
     ) {
         Text(
             text = stringResource(id = R.string.tagline),
-            color = Gray
+            color = Gray,
+            fontFamily = rubikFamily
         )
         Text(
             text = if (movie?.tagline.toString() != "") movie?.tagline.toString()
             else stringResource(id = R.string.no_tagline),
-            color = White
+            color = White,
+            fontFamily = rubikFamily
         )
     }
 

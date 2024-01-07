@@ -41,6 +41,7 @@ import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.Red80
 import com.novandi.movieverse.presentation.ui.theme.White
+import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 import com.novandi.movieverse.presentation.viewmodel.HomeViewModel
 
 @Composable
@@ -76,8 +77,9 @@ fun HomeScreen(
                 .padding(start = 18.dp, end = 18.dp, top = 32.dp),
             text = stringResource(id = R.string.discover),
             color = White,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = rubikFamily
         )
 
         CarouselContent(movies = discoverMovies, navigateToMovie = navigateToMovie)

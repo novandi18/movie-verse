@@ -28,6 +28,7 @@ import com.novandi.core.domain.model.Movie
 import com.novandi.movieverse.R
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
+import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,7 +75,8 @@ fun MovieCard(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    fontFamily = rubikFamily
                 )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -85,7 +87,8 @@ fun MovieCard(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Thin,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        fontFamily = rubikFamily
                     )
                     MovieRating(rating = movie.voteAverage)
                 }

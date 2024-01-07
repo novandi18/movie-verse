@@ -24,6 +24,7 @@ import com.novandi.movieverse.R
 import com.novandi.movieverse.presentation.ui.component.MovieSection
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
+import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 import com.novandi.movieverse.presentation.viewmodel.ExploreViewModel
 
 @Composable
@@ -46,7 +47,8 @@ fun ExploreScreen(
             color = White,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            fontFamily = rubikFamily
         )
 
         Spacer(modifier = Modifier.padding(vertical = 16.dp))

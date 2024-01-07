@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.White
 import com.novandi.core.utils.doubleToCeil
+import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 
 @Composable
 fun MovieRating(rating: Double) {
@@ -58,7 +59,8 @@ fun MovieRating(rating: Double) {
         Text(
             text = rating.doubleToCeil(),
             fontSize = 14.sp,
-            color = White
+            color = White,
+            fontFamily = rubikFamily
         )
     }
 }

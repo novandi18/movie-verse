@@ -36,6 +36,7 @@ import com.novandi.movieverse.presentation.ui.theme.Black
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
+import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 import com.novandi.movieverse.presentation.viewmodel.TrendingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,7 +61,8 @@ fun TrendingScreen(
                                 emojiSupportMatch = EmojiSupportMatch.Default
                             )
                         ),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontFamily = rubikFamily
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -105,7 +107,8 @@ fun TrendingScreen(
                                     Text(
                                         text = error.error.localizedMessage!!,
                                         fontSize = 20.sp,
-                                        color = White
+                                        color = White,
+                                        fontFamily = rubikFamily
                                     )
                                     Button(
                                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -115,7 +118,7 @@ fun TrendingScreen(
                                             contentColor = Black
                                         )
                                     ) {
-                                        Text(text = stringResource(id = R.string.try_again), color = Black)
+                                        Text(text = stringResource(id = R.string.try_again), color = Black, fontFamily = rubikFamily)
                                     }
                                 }
                             }
@@ -140,7 +143,8 @@ fun TrendingScreen(
                                     Text(
                                         text = error.error.localizedMessage!!,
                                         fontSize = 20.sp,
-                                        color = White
+                                        color = White,
+                                        fontFamily = rubikFamily
                                     )
                                     Button(
                                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -150,7 +154,7 @@ fun TrendingScreen(
                                             contentColor = Black
                                         )
                                     ) {
-                                        Text(text = stringResource(id = R.string.try_again), color = Black)
+                                        Text(text = stringResource(id = R.string.try_again), color = Black, fontFamily = rubikFamily)
                                     }
                                 }
                             }

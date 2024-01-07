@@ -27,6 +27,7 @@ import com.novandi.core.domain.model.MoviewReviewItem
 import com.novandi.movieverse.presentation.ui.theme.Black
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.White
+import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +52,8 @@ fun MovieBottomSheet(
             text = stringResource(id = R.string.reviews, reviewData.itemCount),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            fontFamily = rubikFamily
         )
 
         LazyColumn(
@@ -86,7 +88,8 @@ fun MovieBottomSheet(
                                 Text(
                                     text = error.error.localizedMessage!!,
                                     fontSize = 20.sp,
-                                    color = White
+                                    color = White,
+                                    fontFamily = rubikFamily
                                 )
                                 Button(
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -96,7 +99,7 @@ fun MovieBottomSheet(
                                         contentColor = Black
                                     )
                                 ) {
-                                    Text(text = stringResource(id = R.string.try_again), color = Black)
+                                    Text(text = stringResource(id = R.string.try_again), color = Black, fontFamily = rubikFamily)
                                 }
                             }
                         }
@@ -123,7 +126,8 @@ fun MovieBottomSheet(
                                 Text(
                                     text = error.error.localizedMessage!!,
                                     fontSize = 20.sp,
-                                    color = White
+                                    color = White,
+                                    fontFamily = rubikFamily
                                 )
                                 Button(
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -133,7 +137,7 @@ fun MovieBottomSheet(
                                         contentColor = Black
                                     )
                                 ) {
-                                    Text(text = stringResource(id = R.string.try_again), color = Black)
+                                    Text(text = stringResource(id = R.string.try_again), color = Black, fontFamily = rubikFamily)
                                 }
                             }
                         }
