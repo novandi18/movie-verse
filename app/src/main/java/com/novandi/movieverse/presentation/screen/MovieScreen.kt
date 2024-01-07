@@ -58,10 +58,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
+import com.novandi.core.data.response.Resource
+import com.novandi.core.domain.model.MovieDetail
+import com.novandi.core.domain.model.MovieDetailImages
 import com.novandi.movieverse.R
-import com.novandi.movieverse.data.response.Resource
-import com.novandi.movieverse.domain.model.MovieDetail
-import com.novandi.movieverse.domain.model.MovieDetailImages
 import com.novandi.movieverse.presentation.ui.component.MovieBottomSheet
 import com.novandi.movieverse.presentation.ui.component.MovieCarousel
 import com.novandi.movieverse.presentation.ui.component.MovieDetailSkeleton
@@ -72,8 +72,8 @@ import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
 import com.novandi.movieverse.presentation.viewmodel.MovieViewModel
-import com.novandi.movieverse.utils.formatDate
-import com.novandi.movieverse.utils.toImageUrlOriginal
+import com.novandi.core.utils.formatDate
+import com.novandi.core.utils.toImageUrlOriginal
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)

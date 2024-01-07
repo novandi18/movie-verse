@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.novandi.movieverse.R
-import com.novandi.movieverse.domain.model.MoviewReviewItem
+import com.novandi.core.domain.model.MoviewReviewItem
 import com.novandi.movieverse.presentation.ui.theme.Black
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.White

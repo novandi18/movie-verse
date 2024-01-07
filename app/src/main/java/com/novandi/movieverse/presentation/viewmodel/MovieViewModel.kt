@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.novandi.movieverse.data.response.Resource
-import com.novandi.movieverse.domain.model.Movie
-import com.novandi.movieverse.domain.model.MoviewReviewItem
-import com.novandi.movieverse.domain.usecase.MovieUseCase
+import com.novandi.core.data.response.Resource
+import com.novandi.core.domain.model.Movie
+import com.novandi.core.domain.model.MoviewReviewItem
+import com.novandi.core.domain.usecase.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.White
-import com.novandi.movieverse.utils.doubleToCeil
+import com.novandi.core.utils.doubleToCeil
 
 @Composable
 fun MovieRating(rating: Double) {

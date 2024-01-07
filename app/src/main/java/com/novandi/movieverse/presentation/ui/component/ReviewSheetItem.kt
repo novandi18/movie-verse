@@ -29,15 +29,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.novandi.core.domain.model.MoviewReviewAuthor
+import com.novandi.core.domain.model.MoviewReviewItem
 import com.novandi.movieverse.R
-import com.novandi.movieverse.domain.model.MoviewReviewAuthor
-import com.novandi.movieverse.domain.model.MoviewReviewItem
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
-import com.novandi.movieverse.utils.formatDateTime
-import com.novandi.movieverse.utils.splitAtIndex
-import com.novandi.movieverse.utils.toImageUrl
+import com.novandi.core.utils.splitAtIndex
+import com.novandi.core.utils.toImageUrl
 
 @Composable
 fun ReviewSheetItem(
@@ -89,7 +88,7 @@ fun ReviewSheetItem(
                     )
                 }
                 Text(
-                    text = formatDateTime(data?.createdAt.toString()),
+                    text = com.novandi.core.utils.formatDateTime(data?.createdAt.toString()),
                     fontSize = 12.sp,
                     color = Gray
                 )

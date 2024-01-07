@@ -24,8 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.novandi.core.domain.model.Movie
 import com.novandi.movieverse.R
-import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
 
@@ -71,7 +71,7 @@ fun MovieCard(
                 Text(
                     text = movie.title,
                     color = White,
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis

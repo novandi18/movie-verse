@@ -19,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.novandi.movieverse.data.response.Resource
-import com.novandi.movieverse.domain.model.Movie
+import com.novandi.core.data.response.Resource
+import com.novandi.core.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
 
@@ -54,7 +54,7 @@ fun MovieSection(
             modifier = Modifier.padding(horizontal = 18.dp),
             text = sectionName,
             color = White,
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
 

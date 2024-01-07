@@ -43,7 +43,6 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.5"
@@ -56,6 +55,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
+
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle)
     implementation(libs.androidx.activity)
@@ -69,34 +70,15 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.compose.navigation)
     implementation(libs.androidx.lifecycle.livedata)
-    implementation(libs.androidx.pager)
     implementation(libs.androidx.material.icons)
     implementation(libs.androidx.livedata)
-
-    api(libs.retrofit)
-    api(libs.retrofit.gson)
-    implementation(libs.okhttp.logging.interceptor)
-
-    implementation(libs.room.ktx)
-    implementation(libs.room.runtime)
-    implementation(libs.room.paging)
-    annotationProcessor(libs.room.compiler)
-    debugImplementation(libs.androidx.ui.tooling)
-    ksp(libs.room.compiler)
 
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
     ksp(libs.dagger.compiler)
     implementation(libs.androidx.hilt.navigation)
 
+    implementation(libs.androidx.pager)
     implementation(libs.androidx.paging)
     implementation(libs.androidx.paging.compose)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.tooling.preview)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

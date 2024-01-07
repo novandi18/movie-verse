@@ -13,8 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.novandi.core.domain.model.Movie
 import com.novandi.movieverse.R
-import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 
 @Composable

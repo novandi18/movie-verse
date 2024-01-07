@@ -2,7 +2,7 @@ package com.novandi.movieverse.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.novandi.movieverse.domain.usecase.MovieUseCase
+import com.novandi.core.domain.usecase.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

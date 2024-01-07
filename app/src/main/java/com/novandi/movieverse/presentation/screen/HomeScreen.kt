@@ -31,9 +31,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.novandi.core.data.response.Resource
+import com.novandi.core.domain.model.Movie
 import com.novandi.movieverse.R
-import com.novandi.movieverse.data.response.Resource
-import com.novandi.movieverse.domain.model.Movie
 import com.novandi.movieverse.presentation.ui.component.CardCarousel
 import com.novandi.movieverse.presentation.ui.component.MovieSection
 import com.novandi.movieverse.presentation.ui.theme.Black
@@ -118,7 +118,9 @@ private fun CarouselContent(movies: Resource<List<Movie>>, navigateToMovie: (Int
         )
     } else {
         if (data != null) {
-            CardCarousel(movies = data!!, navigateToMovie = navigateToMovie)
+            if (data!!.isNotEmpty()) {
+                CardCarousel(movies = data!!, navigateToMovie = navigateToMovie)
+            }
         }
     }
 }
