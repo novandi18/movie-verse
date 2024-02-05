@@ -222,11 +222,14 @@ fun SearchScreen(
                 }
             } else {
                 val searchHistories = viewModel.searchHistories.observeAsState(listOf())
+                val searchHistoriesByQuery = searchHistories.value.filter { search ->
+                    search.keyword.contains(viewModel.searchQuery)
+                }
 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(searchHistories.value.size) {
+                    items(searchHistoriesByQuery.size) {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(0.dp),
@@ -234,7 +237,12 @@ fun SearchScreen(
                                 containerColor = Black,
                                 contentColor = White
                             ),
-                            onClick = {}
+                            onClick = {
+                                localFocus.clearFocus()
+                                keyboardController?.hide()
+                                viewModel.onSearchQueryChange(searchHistories.value[it].keyword)
+                                viewModel.onSearchingChange(true)
+                            }
                         ) {
                             Row(
                                 modifier = Modifier
@@ -244,12 +252,12 @@ fun SearchScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = searchHistories.value[it].keyword,
+                                    text = searchHistoriesByQuery[it].keyword,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     fontSize = 16.sp
                                 )
-                                IconButton(onClick = { viewModel.deleteSearch(searchHistories.value[it].id) }) {
+                                IconButton(onClick = { viewModel.deleteSearch(searchHistoriesByQuery[it].id) }) {
                                     Icon(
                                         imageVector = Icons.Rounded.Delete,
                                         contentDescription = null
