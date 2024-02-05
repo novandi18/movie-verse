@@ -6,6 +6,7 @@ import com.novandi.core.data.source.local.room.MovieDatabase
 import com.novandi.core.data.source.local.room.dao.MovieDao
 import com.novandi.core.data.source.local.room.dao.MovieTrendingDao
 import com.novandi.core.data.source.local.room.dao.RemoteKeyDao
+import com.novandi.core.data.source.local.room.dao.SearchDao
 import com.novandi.core.utils.Consts
 import dagger.Module
 import dagger.Provides
@@ -25,14 +26,15 @@ class DatabaseModule {
         ).build()
 
     @Provides
-    fun provideMovieDao(database: MovieDatabase): MovieDao =
-        database.movieDao()
+    fun provideMovieDao(database: MovieDatabase): MovieDao = database.movieDao()
 
     @Provides
     fun provideMovieTrendingDao(database: MovieDatabase): MovieTrendingDao =
         database.movieTrendingDao()
 
     @Provides
-    fun provideRemoteKeyDao(database: MovieDatabase): RemoteKeyDao =
-        database.remoteKeyDao()
+    fun provideRemoteKeyDao(database: MovieDatabase): RemoteKeyDao = database.remoteKeyDao()
+
+    @Provides
+    fun provideSearchDao(database: MovieDatabase): SearchDao = database.searchDao()
 }

@@ -7,6 +7,7 @@ import com.novandi.core.data.source.remote.response.MovieDetailResponse
 import com.novandi.core.data.source.remote.response.MovieImagesResponse
 import com.novandi.core.data.source.remote.response.MovieResponseItems
 import com.novandi.core.data.source.remote.response.MovieReviewsResponse
+import com.novandi.core.data.source.remote.response.MovieSearchResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -121,4 +122,6 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
             Log.e("RemoteDataSource", e.toString())
         }
     }.flowOn(Dispatchers.IO)
+
+    suspend fun getSearchMovies(query: String, page: Int): MovieSearchResponse = apiService.getSearchMovies(query = query, page = page)
 }

@@ -11,8 +11,10 @@ import java.util.Locale
 fun String?.toImageUrl() : String = "https://image.tmdb.org/t/p/w500$this"
 
 fun getMovieGenre(genreIds: List<Int>): String {
-    val genre = MovieGenres.genres.filter { it.id == genreIds[0] }
-    return genre[0].name
+    return if (genreIds.isNotEmpty()) {
+        val genre = MovieGenres.genres.filter { it.id == genreIds[0] }
+        genre[0].name
+    } else "Unknown"
 }
 
 fun String?.toImageUrlOriginal() : String = "https://image.tmdb.org/t/p/original$this"

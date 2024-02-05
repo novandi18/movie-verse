@@ -5,4 +5,5 @@ object Consts {
     const val MOVIE_TABLE_NAME = "movie"
     const val MOVIE_TRENDING_TABLE_NAME = "movie_trending"
     const val REMOTE_KEY_TABLE_NAME = "remote_key"
+    const val SEARCH_TABLE_NAME = "search"
 }

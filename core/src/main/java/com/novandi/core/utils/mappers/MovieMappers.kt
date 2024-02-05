@@ -3,6 +3,7 @@ package com.novandi.core.utils.mappers
 import com.novandi.core.data.source.local.entity.MovieEntity
 import com.novandi.core.data.source.local.entity.MovieTrendingEntity
 import com.novandi.core.data.source.remote.response.MovieResponseItems
+import com.novandi.core.data.source.remote.response.MovieSearchItems
 import com.novandi.core.domain.model.Movie
 import com.novandi.core.utils.MovieType
 import com.novandi.core.utils.getMovieGenre
@@ -67,6 +68,19 @@ object MovieMappers {
                 poster = it.poster.toImageUrl(),
                 releaseDate = it.releaseDate,
                 overview = it.overview,
+                voteAverage = it.voteAverage,
+                genre = getMovieGenre(it.genres)
+            )
+        }
+
+    fun mapPagingSearchResponsesToDomain(input: List<MovieSearchItems>) : List<Movie> =
+        input.map {
+            Movie(
+                id = it.id,
+                title = it.title.toString(),
+                poster = it.poster.toImageUrl(),
+                releaseDate = it.releaseDate.toString(),
+                overview = it.overview ?: "",
                 voteAverage = it.voteAverage,
                 genre = getMovieGenre(it.genres)
             )

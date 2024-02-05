@@ -4,6 +4,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.novandi.core.data.paging.MovieReviewPagingSource
+import com.novandi.core.data.paging.MovieSearchPagingSource
 import com.novandi.core.data.response.NetworkBoundResource
 import com.novandi.core.data.response.NetworkOnlyResource
 import com.novandi.core.data.response.Resource
@@ -147,7 +149,7 @@ class MovieRepositoryImpl @Inject constructor(
         Pager(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
-                com.novandi.core.data.paging.MovieReviewPagingSource(remoteDataSource, movieId)
+                MovieReviewPagingSource(remoteDataSource, movieId)
             }
         ).flow
 
@@ -159,4 +161,12 @@ class MovieRepositoryImpl @Inject constructor(
             override suspend fun createCall(): Flow<ApiResponse<List<MovieResponseItems>>> =
                 remoteDataSource.getSimilarMovies(movieId)
         }.asFlow()
+
+    override fun getSearchMovies(query: String): Flow<PagingData<Movie>> =
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                MovieSearchPagingSource(remoteDataSource, query)
+            }
+        ).flow
 }

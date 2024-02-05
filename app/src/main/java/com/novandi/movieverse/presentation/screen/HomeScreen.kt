@@ -1,8 +1,10 @@
 package com.novandi.movieverse.presentation.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
@@ -47,7 +54,8 @@ import com.novandi.movieverse.presentation.viewmodel.HomeViewModel
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    navigateToMovie: (Int) -> Unit
+    navigateToMovie: (Int) -> Unit,
+    navigateToSearch: () -> Unit
 ) {
     val discoverMovies by viewModel.discoverMovies.observeAsState(initial = Resource.Loading())
     val nowPlayingMovies by viewModel.nowPlayingMovies.observeAsState(initial = Resource.Loading())
@@ -72,15 +80,28 @@ fun HomeScreen(
             .background(largeRadialGradient)
             .verticalScroll(rememberScrollState())
     ) {
-        Text(
+        Row(
             modifier = Modifier
-                .padding(start = 18.dp, end = 18.dp, top = 32.dp),
-            text = stringResource(id = R.string.discover),
-            color = White,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = rubikFamily
-        )
+                .fillMaxWidth()
+                .padding(start = 18.dp, end = 8.dp, top = 32.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.discover),
+                color = White,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = rubikFamily
+            )
+            IconButton(onClick = navigateToSearch) {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = stringResource(id = R.string.search),
+                    tint = White
+                )
+            }
+        }
 
         CarouselContent(movies = discoverMovies, navigateToMovie = navigateToMovie)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
@@ -131,6 +152,6 @@ private fun CarouselContent(movies: Resource<List<Movie>>, navigateToMovie: (Int
 @Composable
 private fun HomePreview() {
     MovieVerseTheme {
-        HomeScreen(navigateToMovie = {})
+        HomeScreen(navigateToMovie = {}, navigateToSearch = {})
     }
 }

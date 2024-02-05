@@ -2,6 +2,8 @@ package com.novandi.core.di
 
 import com.novandi.core.domain.usecase.MovieInteractor
 import com.novandi.core.domain.usecase.MovieUseCase
+import com.novandi.core.domain.usecase.SearchInteractor
+import com.novandi.core.domain.usecase.SearchUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,4 +16,8 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun provideMovieUseCase(movieInteractor: MovieInteractor) : MovieUseCase
+
+    @Binds
+    @Singleton
+    abstract fun provideSearchUseCase(searchInteractor: SearchInteractor) : SearchUseCase
 }

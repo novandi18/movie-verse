@@ -4,6 +4,7 @@ import com.novandi.core.data.source.remote.response.MovieDetailResponse
 import com.novandi.core.data.source.remote.response.MovieImagesResponse
 import com.novandi.core.data.source.remote.response.MovieResponse
 import com.novandi.core.data.source.remote.response.MovieReviewsResponse
+import com.novandi.core.data.source.remote.response.MovieSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -72,4 +73,11 @@ interface ApiService {
         @Query("page") page: Int = 1,
         @Query("language") language: String = "en-US"
     ): MovieResponse
+
+    @GET("search/movie")
+    suspend fun getSearchMovies(
+        @Query("query") query: String,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1
+    ) : MovieSearchResponse
 }

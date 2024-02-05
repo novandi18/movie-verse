@@ -19,4 +19,5 @@ interface MovieUseCase {
     fun getMovieReviews(movieId: Int) : Flow<PagingData<MoviewReviewItem>>
     fun getSimilarMovies(movieId: Int) : Flow<Resource<List<Movie>>>
     fun getDiscoverMovies() : Flow<Resource<List<Movie>>>
+    fun getSearchMovies(query: String) : Flow<PagingData<Movie>>
 }
