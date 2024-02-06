@@ -72,8 +72,8 @@ class MovieRepositoryImpl @Inject constructor(
     override fun getPopularMovies() : Flow<Resource<List<Movie>>> =
         object : NetworkBoundResource<List<Movie>, List<MovieResponseItems>>() {
             override fun loadFromDB() : Flow<List<Movie>> =
-                localDataSource.getMovies(MovieType.POPULAR).map {
-                    MovieMappers.mapEntitiesToDomain(it)
+                localDataSource.getPopularMovies().map {
+                    MovieMappers.mapPopularEntitiesToDomain(it)
                 }
 
             override fun shouldFetch(data: List<Movie>?) : Boolean = data.isNullOrEmpty()
@@ -82,8 +82,8 @@ class MovieRepositoryImpl @Inject constructor(
                 remoteDataSource.getPopularMovies()
 
             override suspend fun saveCallResult(data: List<MovieResponseItems>) {
-                val movies = MovieMappers.mapResponsesToEntities(data, MovieType.POPULAR)
-                localDataSource.insertMovies(movies)
+                val movies = MovieMappers.mapPopularResponsesToEntities(data)
+                localDataSource.insertPopularMovies(movies)
             }
         }.asFlow()
 

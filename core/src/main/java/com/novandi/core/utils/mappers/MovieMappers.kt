@@ -1,6 +1,7 @@
 package com.novandi.core.utils.mappers
 
 import com.novandi.core.data.source.local.entity.MovieEntity
+import com.novandi.core.data.source.local.entity.MoviePopularEntity
 import com.novandi.core.data.source.local.entity.MovieTrendingEntity
 import com.novandi.core.data.source.remote.response.MovieResponseItems
 import com.novandi.core.data.source.remote.response.MovieSearchItems
@@ -31,6 +32,24 @@ object MovieMappers {
         return list
     }
 
+    fun mapPopularResponsesToEntities(input: List<MovieResponseItems>) : List<MoviePopularEntity> {
+        val list = ArrayList<MoviePopularEntity>()
+        input.map {
+            val movie = MoviePopularEntity(
+                id = it.id,
+                title = it.title,
+                poster = it.poster.toImageUrl(),
+                releaseDate = it.releaseDate,
+                overview = it.overview,
+                voteAverage = it.voteAverage,
+                genre = getMovieGenre(it.genres)
+            )
+            list.add(movie)
+        }
+
+        return list
+    }
+
     fun mapEntitiesToDomain(input: List<MovieEntity>) : List<Movie> =
         input.map {
             Movie(
@@ -41,6 +60,19 @@ object MovieMappers {
                 overview = it.overview,
                 voteAverage = it.voteAverage,
                 movieType = it.movieType,
+                genre = it.genre
+            )
+        }
+
+    fun mapPopularEntitiesToDomain(input: List<MoviePopularEntity>) : List<Movie> =
+        input.map {
+            Movie(
+                id = it.id,
+                title = it.title,
+                poster = it.poster,
+                releaseDate = it.releaseDate,
+                overview = it.overview,
+                voteAverage = it.voteAverage,
                 genre = it.genre
             )
         }
@@ -59,19 +91,6 @@ object MovieMappers {
                 )
             }
         )
-
-    fun mapPagingResponsesToDomain(input: List<MovieResponseItems>) : List<Movie> =
-        input.map {
-            Movie(
-                id = it.id,
-                title = it.title,
-                poster = it.poster.toImageUrl(),
-                releaseDate = it.releaseDate,
-                overview = it.overview,
-                voteAverage = it.voteAverage,
-                genre = getMovieGenre(it.genres)
-            )
-        }
 
     fun mapPagingSearchResponsesToDomain(input: List<MovieSearchItems>) : List<Movie> =
         input.map {

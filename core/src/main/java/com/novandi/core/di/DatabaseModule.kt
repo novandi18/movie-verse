@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.novandi.core.data.source.local.room.MovieDatabase
 import com.novandi.core.data.source.local.room.dao.MovieDao
+import com.novandi.core.data.source.local.room.dao.MoviePopularDao
 import com.novandi.core.data.source.local.room.dao.MovieTrendingDao
 import com.novandi.core.data.source.local.room.dao.RemoteKeyDao
 import com.novandi.core.data.source.local.room.dao.SearchDao
@@ -37,4 +38,7 @@ class DatabaseModule {
 
     @Provides
     fun provideSearchDao(database: MovieDatabase): SearchDao = database.searchDao()
+
+    @Provides
+    fun provideMoviePopularDao(database: MovieDatabase): MoviePopularDao = database.moviePopular()
 }

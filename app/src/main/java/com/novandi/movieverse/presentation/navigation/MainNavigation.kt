@@ -47,6 +47,9 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
                             movieId = id
                         )
                     )
+                },
+                navigateToSearch = {
+                    navController.navigate(Screen.Search.route)
                 }
             )
         }
