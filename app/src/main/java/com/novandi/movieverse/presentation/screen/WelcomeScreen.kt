@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -29,9 +30,11 @@ import com.novandi.movieverse.presentation.ui.theme.Black
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.White
 import com.novandi.movieverse.presentation.ui.theme.rubikFamily
+import com.novandi.movieverse.presentation.viewmodel.WelcomeViewModel
 
 @Composable
 fun WelcomeScreen(
+    viewModel: WelcomeViewModel = hiltViewModel(),
     navigateToHome: () -> Unit
 ) {
     val listComposition by rememberLottieComposition(
@@ -69,7 +72,10 @@ fun WelcomeScreen(
     ) {
         WelcomePager(
             itemsCount = slides.size,
-            navigateToHome = navigateToHome,
+            navigateToHome = {
+                navigateToHome()
+                viewModel.setIsWelcomed()
+            },
             itemContent = { index ->
                 Column(
                     modifier = Modifier
@@ -111,6 +117,6 @@ fun WelcomeScreen(
 @Composable
 private fun WelcomePreview() {
     MovieVerseTheme {
-        WelcomeScreen({})
+        WelcomeScreen(navigateToHome = {})
     }
 }

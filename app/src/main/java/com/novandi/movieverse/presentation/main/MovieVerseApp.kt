@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.novandi.movieverse.presentation.navigation.WelcomeNavigation
 import com.novandi.movieverse.presentation.navigation.mainGraph
 import com.novandi.movieverse.presentation.navigation.subMainGraph
 import com.novandi.movieverse.presentation.navigation.welcomeGraph
@@ -15,7 +14,8 @@ import com.novandi.movieverse.presentation.ui.component.BottomBar
 
 @Composable
 fun MovieVerseApp(
-    navHostController: NavHostController = rememberNavController()
+    navHostController: NavHostController = rememberNavController(),
+    startedDestination: String
 ) {
     Scaffold(
         bottomBar = {
@@ -25,7 +25,7 @@ fun MovieVerseApp(
         NavHost(
             navController = navHostController,
             modifier = Modifier.padding(paddingValues),
-            startDestination = WelcomeNavigation.WELCOME_ROUTE
+            startDestination = startedDestination
         ) {
             welcomeGraph(navHostController)
             mainGraph(navHostController)
