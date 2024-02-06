@@ -22,6 +22,7 @@ uiTooling = "1.6.0"
 secretsGradle = "2.0.1"
 paging = "3.3.0-alpha02"
 splashscreen = "1.0.1"
+lottie = "6.1.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidApplication" }
@@ -67,3 +68,4 @@ androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-r
 androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }

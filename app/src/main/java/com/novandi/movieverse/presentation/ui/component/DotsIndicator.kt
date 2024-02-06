@@ -34,7 +34,7 @@ fun DotsIndicator(
     LazyRow(
         modifier = modifier.wrapContentSize()
     ) {
-        items(5) { index ->
+        items(if (totalDots > 5) 5 else totalDots) { index ->
             IndicatorDot(
                 color = if (selectedIndex == 1 && selectedIndex == index) selectedColor
                 else if (selectedIndex == (totalDots - 1) && index == 4) selectedColor

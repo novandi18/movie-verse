@@ -79,6 +79,8 @@ dependencies {
     ksp(libs.dagger.compiler)
     implementation(libs.androidx.hilt.navigation)
 
+    implementation(libs.lottie.compose)
+
     implementation(libs.androidx.pager)
     implementation(libs.androidx.paging)
     implementation(libs.androidx.paging.compose)

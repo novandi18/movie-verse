@@ -59,6 +59,7 @@ import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 import com.novandi.movieverse.presentation.ui.theme.SemiBlack
 import com.novandi.movieverse.presentation.ui.theme.White
+import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 import com.novandi.movieverse.presentation.viewmodel.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -111,7 +112,8 @@ fun SearchScreen(
                         singleLine = true,
                         textStyle = TextStyle(
                             color = White,
-                            fontSize = 16.sp
+                            fontSize = 16.sp,
+                            fontFamily = rubikFamily
                         ),
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Black,
@@ -255,7 +257,8 @@ fun SearchScreen(
                                     text = searchHistoriesByQuery[it].keyword,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
-                                    fontSize = 16.sp
+                                    fontSize = 16.sp,
+                                    fontFamily = rubikFamily
                                 )
                                 IconButton(onClick = { viewModel.deleteSearch(searchHistoriesByQuery[it].id) }) {
                                     Icon(

@@ -27,4 +27,10 @@
     <string name="back">Back</string>
     <string name="search">Search</string>
     <string name="search_movies">Search movies</string>
+    <string name="welcome_list_title">Ribuan Referensi Film</string>
+    <string name="welcome_list_desc">Temukan ribuan film dari segala penjuru dunia dengan akses yang mudah.</string>
+    <string name="welcome_search_title">Temukan Film Favorit</string>
+    <string name="welcome_search_desc">Cari dan temukan film kesukaan kamu tanpa batasan.</string>
+    <string name="welcome_favorite_title">Review dan Bagikan Pengalaman</string>
+    <string name="welcome_favorite_desc">Review dan bagikan pengalaman kamu selama menonton pada film yang kamu sukai.</string>
 </resources>

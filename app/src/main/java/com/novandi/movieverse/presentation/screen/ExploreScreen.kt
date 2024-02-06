@@ -80,7 +80,8 @@ fun ExploreScreen(
             ) {
                 Text(
                     text = stringResource(id = R.string.search_movies),
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    fontFamily = rubikFamily
                 )
                 Icon(imageVector = Icons.Rounded.Search, contentDescription = stringResource(id = R.string.search))
             }
