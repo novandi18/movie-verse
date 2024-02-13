@@ -3,6 +3,7 @@ package com.novandi.core.utils.mappers
 import com.novandi.core.data.source.local.entity.MovieEntity
 import com.novandi.core.data.source.local.entity.MoviePopularEntity
 import com.novandi.core.data.source.local.entity.MovieTrendingEntity
+import com.novandi.core.data.source.remote.response.MovieResponse
 import com.novandi.core.data.source.remote.response.MovieResponseItems
 import com.novandi.core.data.source.remote.response.MovieSearchItems
 import com.novandi.core.domain.model.Movie
@@ -129,4 +130,6 @@ object MovieMappers {
             voteAverage = input.voteAverage,
             genre = input.genre
         )
+
+    fun moviesResponseToTotal(input: MovieResponse): Flow<Int> = flowOf(input.totalResults)
 }

@@ -8,6 +8,7 @@ import com.novandi.core.data.source.local.room.dao.MoviePopularDao
 import com.novandi.core.data.source.local.room.dao.MovieTrendingDao
 import com.novandi.core.data.source.local.room.dao.RemoteKeyDao
 import com.novandi.core.data.source.local.room.dao.SearchDao
+import com.novandi.core.data.source.local.room.dao.UserDao
 import com.novandi.core.utils.Consts
 import dagger.Module
 import dagger.Provides
@@ -41,4 +42,7 @@ class DatabaseModule {
 
     @Provides
     fun provideMoviePopularDao(database: MovieDatabase): MoviePopularDao = database.moviePopular()
+
+    @Provides
+    fun provideUserDao(database: MovieDatabase): UserDao = database.userDao()
 }

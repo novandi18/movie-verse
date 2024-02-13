@@ -20,4 +20,7 @@ interface MovieRepository {
     fun getSimilarMovies(movieId: Int): Flow<Resource<List<Movie>>>
     fun getDiscoverMovies(): Flow<Resource<List<Movie>>>
     fun getSearchMovies(query: String): Flow<PagingData<Movie>>
+    fun getFavoriteMoviesTotal(accountId: Int): Flow<Resource<Int>>
+    fun getRatedMoviesTotal(accountId: Int): Flow<Resource<Int>>
+    fun getWatchlistMoviesTotal(accountId: Int): Flow<Resource<Int>>
 }

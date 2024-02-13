@@ -15,6 +15,7 @@ import com.novandi.core.data.source.remote.RemoteDataSource
 import com.novandi.core.data.source.remote.network.ApiResponse
 import com.novandi.core.data.source.remote.response.MovieDetailResponse
 import com.novandi.core.data.source.remote.response.MovieImagesResponse
+import com.novandi.core.data.source.remote.response.MovieResponse
 import com.novandi.core.data.source.remote.response.MovieResponseItems
 import com.novandi.core.domain.model.Movie
 import com.novandi.core.domain.model.MovieDetail
@@ -169,4 +170,31 @@ class MovieRepositoryImpl @Inject constructor(
                 MovieSearchPagingSource(remoteDataSource, query)
             }
         ).flow
+
+    override fun getFavoriteMoviesTotal(accountId: Int): Flow<Resource<Int>> =
+        object : NetworkOnlyResource<Int, MovieResponse>() {
+            override fun loadFromNetwork(data: MovieResponse): Flow<Int> =
+                MovieMappers.moviesResponseToTotal(data)
+
+            override suspend fun createCall(): Flow<ApiResponse<MovieResponse>> =
+                remoteDataSource.getFavoriteMovies(accountId)
+        }.asFlow()
+
+    override fun getRatedMoviesTotal(accountId: Int): Flow<Resource<Int>> =
+        object : NetworkOnlyResource<Int, MovieResponse>() {
+            override fun loadFromNetwork(data: MovieResponse): Flow<Int> =
+                MovieMappers.moviesResponseToTotal(data)
+
+            override suspend fun createCall(): Flow<ApiResponse<MovieResponse>> =
+                remoteDataSource.getRatedMovies(accountId)
+        }.asFlow()
+
+    override fun getWatchlistMoviesTotal(accountId: Int): Flow<Resource<Int>> =
+        object : NetworkOnlyResource<Int, MovieResponse>() {
+            override fun loadFromNetwork(data: MovieResponse): Flow<Int> =
+                MovieMappers.moviesResponseToTotal(data)
+
+            override suspend fun createCall(): Flow<ApiResponse<MovieResponse>> =
+                remoteDataSource.getWatchlistMovies(accountId)
+        }.asFlow()
 }

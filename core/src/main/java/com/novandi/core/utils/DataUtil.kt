@@ -1,6 +1,10 @@
 package com.novandi.core.utils
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.ZoneOffset
@@ -8,7 +12,11 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 
-fun String?.toImageUrl() : String = "https://image.tmdb.org/t/p/w500$this"
+fun String?.toImageUrl(): String = "https://image.tmdb.org/t/p/w500$this"
+
+fun String?.toTmdbImageUrl(): String = "https://image.tmdb.org/t/p/w500$this"
+
+fun String?.toGravatarImageUrl(): String = "https://www.gravatar.com/avatar/$this?s=240"
 
 fun getMovieGenre(genreIds: List<Int>): String {
     return if (genreIds.isNotEmpty()) {
@@ -59,4 +67,31 @@ fun formatDateTime(dateStr: String): String {
         minutes > 0 -> "$minutes minutes ago"
         else -> "Just now"
     }
+}
+
+fun isInternetAvailable(context: Context): Boolean {
+    var result = false
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val actNw = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+        result = when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+    } else {
+        connectivityManager.run {
+            connectivityManager.activeNetworkInfo?.run {
+                result = when (type) {
+                    ConnectivityManager.TYPE_WIFI -> true
+                    ConnectivityManager.TYPE_MOBILE -> true
+                    ConnectivityManager.TYPE_ETHERNET -> true
+                    else -> false
+                }
+            }
+        }
+    }
+    return result
 }

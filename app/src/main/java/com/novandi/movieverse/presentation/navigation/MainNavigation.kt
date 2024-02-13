@@ -8,6 +8,7 @@ import com.novandi.movieverse.presentation.common.Screen
 import com.novandi.movieverse.presentation.screen.ExploreScreen
 import com.novandi.movieverse.presentation.screen.HomeScreen
 import com.novandi.movieverse.presentation.screen.TrendingScreen
+import com.novandi.movieverse.presentation.screen.UserScreen
 
 fun NavGraphBuilder.mainGraph(navController: NavController) {
     navigation(startDestination = Screen.Home.route, route = MainNavigation.MAIN_ROUTE) {
@@ -52,6 +53,9 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
                     navController.navigate(Screen.Search.route)
                 }
             )
+        }
+        composable(Screen.User.route) {
+            UserScreen()
         }
     }
 }

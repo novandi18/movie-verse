@@ -1,11 +1,19 @@
 package com.novandi.core.data.source.remote.network
 
+import com.novandi.core.data.source.remote.response.LoginRequest
+import com.novandi.core.data.source.remote.response.AuthResponse
+import com.novandi.core.data.source.remote.response.LogoutRequest
 import com.novandi.core.data.source.remote.response.MovieDetailResponse
 import com.novandi.core.data.source.remote.response.MovieImagesResponse
 import com.novandi.core.data.source.remote.response.MovieResponse
 import com.novandi.core.data.source.remote.response.MovieReviewsResponse
 import com.novandi.core.data.source.remote.response.MovieSearchResponse
+import com.novandi.core.data.source.remote.response.RequestTokenResponse
+import com.novandi.core.data.source.remote.response.UserResponse
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.HTTP
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -72,7 +80,7 @@ interface ApiService {
     suspend fun getDiscoverMovies(
         @Query("page") page: Int = 1,
         @Query("language") language: String = "en-US"
-    ): MovieResponse
+    ) : MovieResponse
 
     @GET("search/movie")
     suspend fun getSearchMovies(
@@ -80,4 +88,42 @@ interface ApiService {
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
     ) : MovieSearchResponse
+
+    @GET("authentication/token/new")
+    suspend fun getRequestToken() : RequestTokenResponse
+
+    @POST("authentication/token/validate_with_login")
+    suspend fun validateAccount(
+        @Body request: LoginRequest
+    ) : AuthResponse
+
+    @POST("authentication/session/new")
+    suspend fun login(
+        @Body request: LoginRequest
+    ) : AuthResponse
+
+    @HTTP(method = "DELETE", path = "authentication/session", hasBody = true)
+    suspend fun logout(
+        @Body request: LogoutRequest
+    ) : AuthResponse
+
+    @GET("account")
+    suspend fun getUser(
+        @Query("session_id") sessionId: String
+    ) : UserResponse
+
+    @GET("account/{account_id}/favorite/movies")
+    suspend fun getFavoriteMovies(
+        @Path("account_id") accountId: Int
+    ) : MovieResponse
+
+    @GET("account/{account_id}/rated/movies")
+    suspend fun getRatedMovies(
+        @Path("account_id") accountId: Int
+    ) : MovieResponse
+
+    @GET("account/{account_id}/watchlist/movies")
+    suspend fun getWatchlistMovies(
+        @Path("account_id") accountId: Int
+    ) : MovieResponse
 }

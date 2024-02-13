@@ -7,11 +7,13 @@ import com.novandi.core.data.source.local.entity.MoviePopularEntity
 import com.novandi.core.data.source.local.entity.MovieTrendingEntity
 import com.novandi.core.data.source.local.entity.RemoteKeyEntity
 import com.novandi.core.data.source.local.entity.SearchEntity
+import com.novandi.core.data.source.local.entity.UserEntity
 import com.novandi.core.data.source.local.room.dao.MovieDao
 import com.novandi.core.data.source.local.room.dao.MoviePopularDao
 import com.novandi.core.data.source.local.room.dao.MovieTrendingDao
 import com.novandi.core.data.source.local.room.dao.RemoteKeyDao
 import com.novandi.core.data.source.local.room.dao.SearchDao
+import com.novandi.core.data.source.local.room.dao.UserDao
 
 @Database(
     entities = [
@@ -19,9 +21,10 @@ import com.novandi.core.data.source.local.room.dao.SearchDao
         MoviePopularEntity::class,
         MovieTrendingEntity::class,
         RemoteKeyEntity::class,
-        SearchEntity::class
+        SearchEntity::class,
+        UserEntity::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class MovieDatabase: RoomDatabase() {
@@ -30,4 +33,5 @@ abstract class MovieDatabase: RoomDatabase() {
     abstract fun movieTrendingDao(): MovieTrendingDao
     abstract fun remoteKeyDao(): RemoteKeyDao
     abstract fun searchDao(): SearchDao
+    abstract fun userDao(): UserDao
 }

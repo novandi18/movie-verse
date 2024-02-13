@@ -4,6 +4,7 @@
     <string name="trending">Trending</string>
     <string name="explore">Explore</string>
     <string name="discover">Discover</string>
+    <string name="user">User</string>
     <string name="now_playing">NOW PLAYING</string>
     <string name="upcoming">UPCOMING</string>
     <string name="top_rated">TOP RATED</string>
@@ -27,10 +28,23 @@
     <string name="back">Back</string>
     <string name="search">Search</string>
     <string name="search_movies">Search movies</string>
-    <string name="welcome_list_title">Ribuan Referensi Film</string>
-    <string name="welcome_list_desc">Temukan ribuan film dari segala penjuru dunia dengan akses yang mudah.</string>
-    <string name="welcome_search_title">Temukan Film Favorit</string>
-    <string name="welcome_search_desc">Cari dan temukan film kesukaan kamu tanpa batasan.</string>
-    <string name="welcome_favorite_title">Review dan Bagikan Pengalaman</string>
-    <string name="welcome_favorite_desc">Review dan bagikan pengalaman kamu selama menonton pada film yang kamu sukai.</string>
+    <string name="welcome_list_title">Thousands of Movie References</string>
+    <string name="welcome_list_desc">Find thousands of movies from all corners of the world with easy access.</string>
+    <string name="welcome_search_title">Find Favorite Movies</string>
+    <string name="welcome_search_desc">Search and find your favorite films without limitations.</string>
+    <string name="welcome_favorite_title">Review and Share Experiences</string>
+    <string name="welcome_favorite_desc">Review and share your experiences while watching movies you like.</string>
+    <string name="unauthenticated">You are not authenticated</string>
+    <string name="unauthenticated_desc">Sign in with your account.</string>
+    <string name="signin_account">Sign in</string>
+    <string name="logout">Logout account</string>
+    <string name="logout_confirm">Logout</string>
+    <string name="logout_desc">Are you sure to logout your account?</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="field_required">Fields are required!</string>
+    <string name="no_internet">There is no internet connection</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="anonymous">Anonymous</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Explore
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.LocalFireDepartment
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -48,6 +49,12 @@ fun BottomBar(navController: NavHostController) {
             icon = Icons.Rounded.LocalFireDepartment,
             screen = Screen.Trending,
             contentDescription = stringResource(id = R.string.trending)
+        ),
+        NavigationItem(
+            title = stringResource(id = R.string.user),
+            icon = Icons.Rounded.Person,
+            screen = Screen.User,
+            contentDescription = stringResource(id = R.string.user)
         )
     )
 
@@ -84,7 +91,9 @@ fun BottomBar(navController: NavHostController) {
                     colors = NavigationBarItemDefaults.colors(
                         unselectedIconColor = Gray,
                         selectedIconColor = White,
-                        indicatorColor = Black
+                        indicatorColor = Black,
+                        unselectedTextColor = Gray,
+                        selectedTextColor = White
                     )
                 )
             }

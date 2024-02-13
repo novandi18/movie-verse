@@ -15,9 +15,19 @@ class DataStoreManager @Inject constructor(
         preferences[Consts.WELCOME_KEY] ?: false
     }
 
+    val sessionId: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[Consts.SESSION_KEY] ?: ""
+    }
+
     suspend fun setIsWelcome(isWelcome: Boolean) {
         dataStore.edit { preferences ->
             preferences[Consts.WELCOME_KEY] = isWelcome
+        }
+    }
+
+    suspend fun setSessionId(isLogin: Boolean, sessionId: String) {
+        dataStore.edit { preferences ->
+            preferences[Consts.SESSION_KEY] = if (isLogin) sessionId else ""
         }
     }
 }
