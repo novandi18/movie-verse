@@ -2,6 +2,9 @@ package com.novandi.core.domain.usecase
 
 import androidx.paging.PagingData
 import com.novandi.core.data.response.Resource
+import com.novandi.core.data.source.remote.response.FavoriteRequest
+import com.novandi.core.data.source.remote.response.WatchlistRequest
+import com.novandi.core.domain.model.GeneralResult
 import com.novandi.core.domain.model.Movie
 import com.novandi.core.domain.model.MovieDetail
 import com.novandi.core.domain.model.MovieDetailImages
@@ -40,4 +43,12 @@ class MovieInteractor @Inject constructor(
         movieRepository.getIsFavorite(accountId, movieId)
     override fun getIsWatchlist(accountId: Int, movieId: Int): Flow<Resource<Boolean>> =
         movieRepository.getIsWatchlist(accountId, movieId)
+    override fun updateWatchlist(
+        accountId: Int,
+        request: WatchlistRequest
+    ): Flow<Resource<GeneralResult>> = movieRepository.updateWatchlist(accountId, request)
+    override fun updateFavorite(
+        accountId: Int,
+        request: FavoriteRequest
+    ): Flow<Resource<GeneralResult>> = movieRepository.updateFavorite(accountId, request)
 }

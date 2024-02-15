@@ -13,10 +13,14 @@ import com.novandi.core.data.source.local.LocalDataSource
 import com.novandi.core.data.source.local.entity.MovieTrendingEntity
 import com.novandi.core.data.source.remote.RemoteDataSource
 import com.novandi.core.data.source.remote.network.ApiResponse
+import com.novandi.core.data.source.remote.response.FavoriteRequest
+import com.novandi.core.data.source.remote.response.GeneralResponse
 import com.novandi.core.data.source.remote.response.MovieDetailResponse
 import com.novandi.core.data.source.remote.response.MovieImagesResponse
 import com.novandi.core.data.source.remote.response.MovieResponse
 import com.novandi.core.data.source.remote.response.MovieResponseItems
+import com.novandi.core.data.source.remote.response.WatchlistRequest
+import com.novandi.core.domain.model.GeneralResult
 import com.novandi.core.domain.model.Movie
 import com.novandi.core.domain.model.MovieDetail
 import com.novandi.core.domain.model.MovieDetailImages
@@ -215,4 +219,26 @@ class MovieRepositoryImpl @Inject constructor(
             override suspend fun createCall(): Flow<ApiResponse<MovieResponse>> =
                 remoteDataSource.getWatchlistMovies(accountId)
         }.asFlow()
+
+    override fun updateWatchlist(
+        accountId: Int,
+        request: WatchlistRequest
+    ): Flow<Resource<GeneralResult>> = object : NetworkOnlyResource<GeneralResult, GeneralResponse>() {
+        override fun loadFromNetwork(data: GeneralResponse): Flow<GeneralResult> =
+            MovieMappers.generalResponseToDomain(data)
+
+        override suspend fun createCall(): Flow<ApiResponse<GeneralResponse>> =
+            remoteDataSource.updateWatchlistMovie(accountId, request)
+    }.asFlow()
+
+    override fun updateFavorite(
+        accountId: Int,
+        request: FavoriteRequest
+    ): Flow<Resource<GeneralResult>> = object : NetworkOnlyResource<GeneralResult, GeneralResponse>() {
+        override fun loadFromNetwork(data: GeneralResponse): Flow<GeneralResult> =
+            MovieMappers.generalResponseToDomain(data)
+
+        override suspend fun createCall(): Flow<ApiResponse<GeneralResponse>> =
+            remoteDataSource.updateFavoriteMovie(accountId, request)
+    }.asFlow()
 }

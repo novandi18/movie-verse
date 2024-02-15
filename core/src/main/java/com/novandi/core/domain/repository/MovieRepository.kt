@@ -2,6 +2,9 @@ package com.novandi.core.domain.repository
 
 import androidx.paging.PagingData
 import com.novandi.core.data.response.Resource
+import com.novandi.core.data.source.remote.response.FavoriteRequest
+import com.novandi.core.data.source.remote.response.WatchlistRequest
+import com.novandi.core.domain.model.GeneralResult
 import com.novandi.core.domain.model.Movie
 import com.novandi.core.domain.model.MovieDetail
 import com.novandi.core.domain.model.MovieDetailImages
@@ -25,4 +28,6 @@ interface MovieRepository {
     fun getWatchlistMoviesTotal(accountId: Int): Flow<Resource<Int>>
     fun getIsFavorite(accountId: Int, movieId: Int): Flow<Resource<Boolean>>
     fun getIsWatchlist(accountId: Int, movieId: Int): Flow<Resource<Boolean>>
+    fun updateWatchlist(accountId: Int, request: WatchlistRequest): Flow<Resource<GeneralResult>>
+    fun updateFavorite(accountId: Int, request: FavoriteRequest): Flow<Resource<GeneralResult>>
 }

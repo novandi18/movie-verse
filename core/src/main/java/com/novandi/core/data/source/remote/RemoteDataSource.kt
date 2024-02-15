@@ -7,6 +7,7 @@ import com.novandi.core.data.source.remote.network.ApiResponse
 import com.novandi.core.data.source.remote.network.ApiService
 import com.novandi.core.data.source.remote.response.LoginRequest
 import com.novandi.core.data.source.remote.response.AuthResponse
+import com.novandi.core.data.source.remote.response.FavoriteRequest
 import com.novandi.core.data.source.remote.response.LogoutRequest
 import com.novandi.core.data.source.remote.response.MovieDetailResponse
 import com.novandi.core.data.source.remote.response.MovieImagesResponse
@@ -16,6 +17,8 @@ import com.novandi.core.data.source.remote.response.MovieReviewsResponse
 import com.novandi.core.data.source.remote.response.MovieSearchResponse
 import com.novandi.core.data.source.remote.response.RequestTokenResponse
 import com.novandi.core.data.source.remote.response.UserResponse
+import com.novandi.core.data.source.remote.response.GeneralResponse
+import com.novandi.core.data.source.remote.response.WatchlistRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -328,6 +331,42 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun getWatchlistMovies(accountId: Int) : Flow<ApiResponse<MovieResponse>> = flow {
         try {
             val response = apiService.getWatchlistMovies(accountId)
+            emit(ApiResponse.Success(response))
+        } catch (e: HttpException) {
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorMessage = try {
+                Gson().fromJson(errorBody, ErrorResponse::class.java)?.message
+            } catch (e: Exception) { null }
+            emit(ApiResponse.Error(errorMessage ?: "Unknown error"))
+            Log.e("RemoteDataSource", errorMessage ?: "Unknown error")
+        } catch (e: Exception) {
+            emit(ApiResponse.Error(e.toString()))
+            Log.e("RemoteDataSource", e.toString())
+        }
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun updateFavoriteMovie(accountId: Int, request: FavoriteRequest)
+        : Flow<ApiResponse<GeneralResponse>> = flow {
+        try {
+            val response = apiService.updateFavoriteMovie(accountId, request)
+            emit(ApiResponse.Success(response))
+        } catch (e: HttpException) {
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorMessage = try {
+                Gson().fromJson(errorBody, ErrorResponse::class.java)?.message
+            } catch (e: Exception) { null }
+            emit(ApiResponse.Error(errorMessage ?: "Unknown error"))
+            Log.e("RemoteDataSource", errorMessage ?: "Unknown error")
+        } catch (e: Exception) {
+            emit(ApiResponse.Error(e.toString()))
+            Log.e("RemoteDataSource", e.toString())
+        }
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun updateWatchlistMovie(accountId: Int, request: WatchlistRequest)
+            : Flow<ApiResponse<GeneralResponse>> = flow {
+        try {
+            val response = apiService.updateWatchlistMovie(accountId, request)
             emit(ApiResponse.Success(response))
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()

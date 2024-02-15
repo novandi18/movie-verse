@@ -10,7 +10,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.novandi.core.data.response.Resource
+import com.novandi.core.data.source.remote.response.FavoriteRequest
+import com.novandi.core.data.source.remote.response.WatchlistRequest
 import com.novandi.core.data.store.DataStoreManager
+import com.novandi.core.domain.model.GeneralResult
 import com.novandi.core.domain.model.Movie
 import com.novandi.core.domain.model.MoviewReviewItem
 import com.novandi.core.domain.usecase.MovieUseCase
@@ -38,6 +41,12 @@ class MovieViewModel @Inject constructor(
 
     private val _isWatchlist = MutableStateFlow<Resource<Boolean>?>(null)
     val isWatchlist: StateFlow<Resource<Boolean>?> get() = _isWatchlist
+
+    private val _updateFavorite = MutableStateFlow<Resource<GeneralResult>?>(null)
+    val updateFavorite: StateFlow<Resource<GeneralResult>?> get() = _updateFavorite
+
+    private val _updateWatchlist = MutableStateFlow<Resource<GeneralResult>?>(null)
+    val updateWatchlist: StateFlow<Resource<GeneralResult>?> get() = _updateWatchlist
 
     val accountId = dataStoreManager.accountId.asLiveData()
 
@@ -99,6 +108,30 @@ class MovieViewModel @Inject constructor(
                 }
                 .collect { result ->
                     _isWatchlist.value = result
+                }
+        }
+    }
+
+    fun updateFavorite(accountId: Int, request: FavoriteRequest) {
+        viewModelScope.launch {
+            movieUseCase.updateFavorite(accountId, request)
+                .catch { err ->
+                    _updateFavorite.value = Resource.Error(err.message.toString())
+                }
+                .collect { result ->
+                    _updateFavorite.value = result
+                }
+        }
+    }
+
+    fun updateWatchlist(accountId: Int, request: WatchlistRequest) {
+        viewModelScope.launch {
+            movieUseCase.updateWatchlist(accountId, request)
+                .catch { err ->
+                    _updateWatchlist.value = Resource.Error(err.message.toString())
+                }
+                .collect { result ->
+                    _updateWatchlist.value = result
                 }
         }
     }

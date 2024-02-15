@@ -2,6 +2,7 @@ package com.novandi.core.data.source.remote.network
 
 import com.novandi.core.data.source.remote.response.LoginRequest
 import com.novandi.core.data.source.remote.response.AuthResponse
+import com.novandi.core.data.source.remote.response.FavoriteRequest
 import com.novandi.core.data.source.remote.response.LogoutRequest
 import com.novandi.core.data.source.remote.response.MovieDetailResponse
 import com.novandi.core.data.source.remote.response.MovieImagesResponse
@@ -10,6 +11,8 @@ import com.novandi.core.data.source.remote.response.MovieReviewsResponse
 import com.novandi.core.data.source.remote.response.MovieSearchResponse
 import com.novandi.core.data.source.remote.response.RequestTokenResponse
 import com.novandi.core.data.source.remote.response.UserResponse
+import com.novandi.core.data.source.remote.response.WatchlistRequest
+import com.novandi.core.data.source.remote.response.GeneralResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
@@ -126,4 +129,16 @@ interface ApiService {
     suspend fun getWatchlistMovies(
         @Path("account_id") accountId: Int
     ) : MovieResponse
+
+    @POST("account/{account_id}/favorite")
+    suspend fun updateFavoriteMovie(
+        @Path("account_id") accountId: Int,
+        @Body request: FavoriteRequest
+    ) : GeneralResponse
+
+    @POST("account/{account_id}/watchlist")
+    suspend fun updateWatchlistMovie(
+        @Path("account_id") accountId: Int,
+        @Body request: WatchlistRequest
+    ) : GeneralResponse
 }

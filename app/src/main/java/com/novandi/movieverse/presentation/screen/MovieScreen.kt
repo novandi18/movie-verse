@@ -68,6 +68,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.novandi.core.data.response.Resource
+import com.novandi.core.data.source.remote.response.FavoriteRequest
+import com.novandi.core.data.source.remote.response.WatchlistRequest
 import com.novandi.core.domain.model.MovieDetail
 import com.novandi.core.domain.model.MovieDetailImages
 import com.novandi.movieverse.R
@@ -108,6 +110,8 @@ fun MovieScreen(
     val accountId by viewModel.accountId.observeAsState()
     val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
     val isWatchlist by viewModel.isWatchlist.collectAsStateWithLifecycle()
+    val updateFavorite by viewModel.updateFavorite.collectAsStateWithLifecycle()
+    val updateWatchlist by viewModel.updateWatchlist.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -151,6 +155,56 @@ fun MovieScreen(
             is Resource.Loading -> {}
             is Resource.Success -> {
                 viewModel.onWatchlistChange(isWatchlist?.data!!)
+            }
+            is Resource.Error -> {}
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(updateFavorite is Resource.Loading) {
+        when (updateFavorite) {
+            is Resource.Loading -> {}
+            is Resource.Success -> {
+                if (updateFavorite!!.data != null) {
+                    if (updateFavorite!!.data?.success == true) {
+                        viewModel.onFavoriteChange(!viewModel.favorite)
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = context.getString(
+                                    if (viewModel.favorite)
+                                        R.string.success_add_favorite else
+                                        R.string.success_remove_favorite
+                                ),
+                                withDismissAction = true
+                            )
+                        }
+                    }
+                }
+            }
+            is Resource.Error -> {}
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(updateWatchlist is Resource.Loading) {
+        when (updateWatchlist) {
+            is Resource.Loading -> {}
+            is Resource.Success -> {
+                if (updateWatchlist!!.data != null) {
+                    if (updateWatchlist!!.data?.success == true) {
+                        viewModel.onWatchlistChange(!viewModel.watchlist)
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = context.getString(
+                                    if (viewModel.watchlist)
+                                        R.string.success_add_watchlist else
+                                        R.string.success_remove_watchlist
+                                ),
+                                withDismissAction = true
+                            )
+                        }
+                    }
+                }
             }
             is Resource.Error -> {}
             else -> {}
@@ -236,15 +290,8 @@ fun MovieScreen(
                     if (accountId != null && accountId!!.isNotEmpty()) {
                         IconButton(
                             onClick = {
-                                viewModel.onFavoriteChange(!viewModel.favorite)
-                                if (viewModel.favorite) {
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = context.getString(R.string.success_add_favorite),
-                                            withDismissAction = true
-                                        )
-                                    }
-                                }
+                                val request = FavoriteRequest(id = movieId, isFavorite = !viewModel.favorite)
+                                viewModel.updateFavorite(accountId!!.toInt(), request)
                             }
                         ) {
                             Icon(
@@ -256,15 +303,8 @@ fun MovieScreen(
                         }
                         IconButton(
                             onClick = {
-                                viewModel.onWatchlistChange(!viewModel.watchlist)
-                                if (viewModel.watchlist) {
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = context.getString(R.string.success_add_watchlist),
-                                            withDismissAction = true
-                                        )
-                                    }
-                                }
+                                val request = WatchlistRequest(id = movieId, isWatchlist = !viewModel.watchlist)
+                                viewModel.updateWatchlist(accountId!!.toInt(), request)
                             }
                         ) {
                             Icon(

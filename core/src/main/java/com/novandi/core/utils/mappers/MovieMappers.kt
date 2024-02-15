@@ -3,9 +3,11 @@ package com.novandi.core.utils.mappers
 import com.novandi.core.data.source.local.entity.MovieEntity
 import com.novandi.core.data.source.local.entity.MoviePopularEntity
 import com.novandi.core.data.source.local.entity.MovieTrendingEntity
+import com.novandi.core.data.source.remote.response.GeneralResponse
 import com.novandi.core.data.source.remote.response.MovieResponse
 import com.novandi.core.data.source.remote.response.MovieResponseItems
 import com.novandi.core.data.source.remote.response.MovieSearchItems
+import com.novandi.core.domain.model.GeneralResult
 import com.novandi.core.domain.model.Movie
 import com.novandi.core.utils.MovieType
 import com.novandi.core.utils.getMovieGenre
@@ -137,4 +139,8 @@ object MovieMappers {
         val data = input.results.filter { it.id == movieId }
         return flowOf(data.isNotEmpty())
     }
+
+    fun generalResponseToDomain(input: GeneralResponse): Flow<GeneralResult> = flowOf(
+        GeneralResult(input.success, input.statusMessage)
+    )
 }
