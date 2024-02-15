@@ -143,4 +143,17 @@ object MovieMappers {
     fun generalResponseToDomain(input: GeneralResponse): Flow<GeneralResult> = flowOf(
         GeneralResult(input.success, input.statusMessage)
     )
+
+    fun mapPagingResponseToDomain(input: List<MovieResponseItems>) : List<Movie> =
+        input.map {
+            Movie(
+                id = it.id,
+                title = it.title,
+                poster = it.poster.toImageUrl(),
+                releaseDate = it.releaseDate,
+                overview = it.overview,
+                voteAverage = it.voteAverage,
+                genre = getMovieGenre(it.genres)
+            )
+        }
 }

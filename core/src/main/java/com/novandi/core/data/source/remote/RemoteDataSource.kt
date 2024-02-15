@@ -380,4 +380,10 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
             Log.e("RemoteDataSource", e.toString())
         }
     }.flowOn(Dispatchers.IO)
+
+    suspend fun getFavoriteMoviesPager(accountId: Int, page: Int) : MovieResponse =
+        apiService.getFavoriteMovies(accountId, page)
+
+    suspend fun getWatchlistMoviesPager(accountId: Int, page: Int) : MovieResponse =
+        apiService.getWatchlistMovies(accountId, page)
 }

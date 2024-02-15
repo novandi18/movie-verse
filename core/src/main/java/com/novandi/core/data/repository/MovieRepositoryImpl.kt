@@ -4,8 +4,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.novandi.core.data.paging.MovieFavoritePagingSource
 import com.novandi.core.data.paging.MovieReviewPagingSource
 import com.novandi.core.data.paging.MovieSearchPagingSource
+import com.novandi.core.data.paging.MovieWatchlistPagingSource
 import com.novandi.core.data.response.NetworkBoundResource
 import com.novandi.core.data.response.NetworkOnlyResource
 import com.novandi.core.data.response.Resource
@@ -241,4 +243,20 @@ class MovieRepositoryImpl @Inject constructor(
         override suspend fun createCall(): Flow<ApiResponse<GeneralResponse>> =
             remoteDataSource.updateFavoriteMovie(accountId, request)
     }.asFlow()
+
+    override fun getFavoriteMovies(accountId: Int): Flow<PagingData<Movie>> =
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                MovieFavoritePagingSource(remoteDataSource, accountId)
+            }
+        ).flow
+
+    override fun getWatchlistMovies(accountId: Int): Flow<PagingData<Movie>> =
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                MovieWatchlistPagingSource(remoteDataSource, accountId)
+            }
+        ).flow
 }

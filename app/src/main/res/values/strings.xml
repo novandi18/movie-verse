@@ -54,4 +54,6 @@
     <string name="success_remove_favorite">Removed from your favorite</string>
     <string name="success_add_watchlist">Saved to your watchlist</string>
     <string name="success_remove_watchlist">Removed from your watchlist</string>
+    <string name="favorite_movies">Favorite Movies</string>
+    <string name="watchlist_movies">Watchlist Movies</string>
 </resources>

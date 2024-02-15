@@ -55,7 +55,14 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
             )
         }
         composable(Screen.User.route) {
-            UserScreen()
+            UserScreen(
+                navigateToFavorite = {
+                    navController.navigate(Screen.Favorite.route)
+                },
+                navigateToWatchlist = {
+                    navController.navigate(Screen.Watchlist.route)
+                }
+            )
         }
     }
 }

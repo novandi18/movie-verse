@@ -117,17 +117,20 @@ interface ApiService {
 
     @GET("account/{account_id}/favorite/movies")
     suspend fun getFavoriteMovies(
-        @Path("account_id") accountId: Int
+        @Path("account_id") accountId: Int,
+        @Query("page") page: Int = 1
     ) : MovieResponse
 
     @GET("account/{account_id}/rated/movies")
     suspend fun getRatedMovies(
-        @Path("account_id") accountId: Int
+        @Path("account_id") accountId: Int,
+        @Query("page") page: Int = 1
     ) : MovieResponse
 
     @GET("account/{account_id}/watchlist/movies")
     suspend fun getWatchlistMovies(
-        @Path("account_id") accountId: Int
+        @Path("account_id") accountId: Int,
+        @Query("page") page: Int = 1
     ) : MovieResponse
 
     @POST("account/{account_id}/favorite")

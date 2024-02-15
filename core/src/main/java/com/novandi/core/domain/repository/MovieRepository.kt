@@ -30,4 +30,6 @@ interface MovieRepository {
     fun getIsWatchlist(accountId: Int, movieId: Int): Flow<Resource<Boolean>>
     fun updateWatchlist(accountId: Int, request: WatchlistRequest): Flow<Resource<GeneralResult>>
     fun updateFavorite(accountId: Int, request: FavoriteRequest): Flow<Resource<GeneralResult>>
+    fun getFavoriteMovies(accountId: Int): Flow<PagingData<Movie>>
+    fun getWatchlistMovies(accountId: Int): Flow<PagingData<Movie>>
 }

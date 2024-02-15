@@ -87,7 +87,9 @@ import com.novandi.movieverse.presentation.viewmodel.UserViewModel
 
 @Composable
 fun UserScreen(
-    viewModel: UserViewModel = hiltViewModel()
+    viewModel: UserViewModel = hiltViewModel(),
+    navigateToFavorite: () -> Unit,
+    navigateToWatchlist: () -> Unit
 ) {
     val requestToken by viewModel.requestToken.collectAsStateWithLifecycle()
     val validateAccount by viewModel.validateAccount.collectAsStateWithLifecycle()
@@ -171,7 +173,7 @@ fun UserScreen(
         .background(Black)) {
         if (sessionId?.isNotEmpty() == true) {
             if (userFromDB == null || userFromDB?.id == 0) viewModel.getUser(sessionId!!)
-            AuthorizedScreen(viewModel, context, userFromDB, sessionId)
+            AuthorizedScreen(viewModel, context, userFromDB, sessionId, navigateToFavorite, navigateToWatchlist)
         } else {
             UnauthorizedScreen(viewModel)
         }
@@ -349,7 +351,9 @@ private fun AuthorizedScreen(
     viewModel: UserViewModel = hiltViewModel(),
     context: Context,
     userFromDB: User? = null,
-    sessionId: String? = null
+    sessionId: String? = null,
+    navigateToFavorite: () -> Unit,
+    navigateToWatchlist: () -> Unit
 ) {
     val user by viewModel.user.collectAsStateWithLifecycle()
     val favoriteMovies by viewModel.favoriteMovies.collectAsStateWithLifecycle()
@@ -537,7 +541,7 @@ private fun AuthorizedScreen(
                 Column(
                     modifier = Modifier
                         .width(64.dp)
-                        .clickable { },
+                        .clickable { navigateToFavorite() },
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (data?.ratedMovies != null) {
@@ -574,7 +578,7 @@ private fun AuthorizedScreen(
                 Column(
                     modifier = Modifier
                         .width(64.dp)
-                        .clickable { },
+                        .clickable { navigateToWatchlist() },
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (data?.ratedMovies != null) {
@@ -646,7 +650,11 @@ private fun AuthorizedScreenPreview() {
             .fillMaxSize()
             .background(Black)
         ) {
-            AuthorizedScreen(context = LocalContext.current)
+            AuthorizedScreen(
+                context = LocalContext.current,
+                navigateToFavorite = {},
+                navigateToWatchlist = {}
+            )
         }
     }
 }

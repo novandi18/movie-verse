@@ -7,8 +7,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.novandi.movieverse.presentation.common.Screen
+import com.novandi.movieverse.presentation.screen.FavoriteScreen
 import com.novandi.movieverse.presentation.screen.MovieScreen
 import com.novandi.movieverse.presentation.screen.SearchScreen
+import com.novandi.movieverse.presentation.screen.WatchlistScreen
 
 fun NavGraphBuilder.subMainGraph(navController: NavController) {
     navigation(startDestination = Screen.Movie.route, route = SubMainNavigation.SUB_MAIN_ROUTE) {
@@ -34,6 +36,36 @@ fun NavGraphBuilder.subMainGraph(navController: NavController) {
         }
         composable(Screen.Search.route) {
             SearchScreen(
+                navigateToMovie = { id ->
+                    navController.navigate(
+                        Screen.Movie.createRoute(
+                            fromScreen = Screen.Search.route,
+                            movieId = id
+                        )
+                    )
+                },
+                navigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Favorite.route) {
+            FavoriteScreen(
+                navigateToMovie = { id ->
+                    navController.navigate(
+                        Screen.Movie.createRoute(
+                            fromScreen = Screen.Search.route,
+                            movieId = id
+                        )
+                    )
+                },
+                navigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Watchlist.route) {
+            WatchlistScreen(
                 navigateToMovie = { id ->
                     navController.navigate(
                         Screen.Movie.createRoute(
