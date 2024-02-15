@@ -311,9 +311,9 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun getRatedMovies(accountId: Int) : Flow<ApiResponse<MovieResponse>> = flow {
+    suspend fun getRatedMovies(accountId: Int, page: Int = 1) : Flow<ApiResponse<MovieResponse>> = flow {
         try {
-            val response = apiService.getRatedMovies(accountId)
+            val response = apiService.getRatedMovies(accountId, page)
             emit(ApiResponse.Success(response))
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()

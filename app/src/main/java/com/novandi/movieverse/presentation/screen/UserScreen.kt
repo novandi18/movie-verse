@@ -374,7 +374,7 @@ private fun AuthorizedScreen(
         }
     }
 
-    LaunchedEffect(key1 = user is Resource.Loading) {
+    LaunchedEffect(user is Resource.Loading) {
         when (user) {
             is Resource.Loading -> {}
             is Resource.Success -> {

@@ -9,6 +9,7 @@ import com.novandi.core.data.source.remote.response.MovieResponseItems
 import com.novandi.core.data.source.remote.response.MovieSearchItems
 import com.novandi.core.domain.model.GeneralResult
 import com.novandi.core.domain.model.Movie
+import com.novandi.core.domain.model.RatedMovie
 import com.novandi.core.utils.MovieType
 import com.novandi.core.utils.getMovieGenre
 import com.novandi.core.utils.toImageUrl
@@ -156,4 +157,29 @@ object MovieMappers {
                 genre = getMovieGenre(it.genres)
             )
         }
+
+    fun mapRatedResponseToDomain(input: MovieResponse, movieId: Int) : Flow<RatedMovie> {
+        val check = input.results.filter { it.id == movieId }
+        val results = check.map {
+            Movie(
+                id = it.id,
+                title = it.title,
+                poster = it.poster.toImageUrl(),
+                releaseDate = it.releaseDate,
+                overview = it.overview,
+                voteAverage = it.voteAverage,
+                genre = getMovieGenre(it.genres),
+                rating = it.rating
+            )
+        }
+
+        return flowOf(
+            RatedMovie(
+                page = input.page,
+                results = results,
+                totalPages = input.totalPages,
+                totalResults = input.totalResults
+            )
+        )
+    }
 }

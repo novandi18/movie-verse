@@ -8,15 +8,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.StarRate
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.novandi.movieverse.R
 import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 
@@ -30,7 +36,9 @@ fun MovieDetailSkeleton() {
                 .background(Gray)
         )
         Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
         ) {
@@ -45,20 +53,9 @@ fun MovieDetailSkeleton() {
             }
         }
 
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                text = "Overview",
-                color = Gray
-            )
-            Box(modifier = Modifier.fillMaxWidth().height(15.dp).background(Gray))
-            Box(modifier = Modifier.fillMaxWidth().height(15.dp).background(Gray))
-            Box(modifier = Modifier.fillMaxWidth(.4f).height(15.dp).background(Gray))
-        }
+        RatingSkeleton()
 
-        Divider(
+        HorizontalDivider(
             color = Gray.copy(.2f)
         )
 
@@ -67,15 +64,72 @@ fun MovieDetailSkeleton() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "Tagline",
+                text = stringResource(id = R.string.overview),
                 color = Gray
             )
-            Box(modifier = Modifier.fillMaxWidth(.8f).height(15.dp).background(Gray))
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(15.dp)
+                .background(Gray))
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(15.dp)
+                .background(Gray))
+            Box(modifier = Modifier
+                .fillMaxWidth(.4f)
+                .height(15.dp)
+                .background(Gray))
         }
 
-        Divider(
+        HorizontalDivider(
             color = Gray.copy(.2f)
         )
+
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.tagline),
+                color = Gray
+            )
+            Box(modifier = Modifier
+                .fillMaxWidth(.8f)
+                .height(15.dp)
+                .background(Gray))
+        }
+
+        HorizontalDivider(
+            color = Gray.copy(.2f)
+        )
+    }
+}
+
+@Composable
+fun RatingSkeleton() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(id = R.string.rate_this_movie),
+            color = Gray
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            repeat(5) {
+                Icon(
+                    modifier = Modifier.size(40.dp),
+                    imageVector = Icons.Default.StarRate,
+                    contentDescription = null,
+                    tint = Gray
+                )
+            }
+        }
     }
 }
 

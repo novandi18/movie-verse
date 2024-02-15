@@ -9,6 +9,7 @@ import com.novandi.core.domain.model.Movie
 import com.novandi.core.domain.model.MovieDetail
 import com.novandi.core.domain.model.MovieDetailImages
 import com.novandi.core.domain.model.MoviewReviewItem
+import com.novandi.core.domain.model.RatedMovie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
@@ -32,4 +33,5 @@ interface MovieRepository {
     fun updateFavorite(accountId: Int, request: FavoriteRequest): Flow<Resource<GeneralResult>>
     fun getFavoriteMovies(accountId: Int): Flow<PagingData<Movie>>
     fun getWatchlistMovies(accountId: Int): Flow<PagingData<Movie>>
+    fun getRatedMovie(accountId: Int, page: Int, movieId: Int): Flow<Resource<RatedMovie>>
 }

@@ -8,5 +8,6 @@ data class Movie(
     val overview: String,
     val voteAverage: Double,
     val genre: String,
-    val movieType: String = ""
+    val movieType: String = "",
+    val rating: Double? = null
 )

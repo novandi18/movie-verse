@@ -36,5 +36,8 @@ data class MovieResponseItems(
     val voteAverage: Double,
 
     @SerializedName("genre_ids")
-    val genres: List<Int>
+    val genres: List<Int>,
+
+    @SerializedName("rating")
+    val rating: Double? = null
 )

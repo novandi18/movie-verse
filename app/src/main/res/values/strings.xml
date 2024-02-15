@@ -56,4 +56,5 @@
     <string name="success_remove_watchlist">Removed from your watchlist</string>
     <string name="favorite_movies">Favorite Movies</string>
     <string name="watchlist_movies">Watchlist Movies</string>
+    <string name="rate_this_movie">Rate this movie</string>
 </resources>

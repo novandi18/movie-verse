@@ -27,6 +27,7 @@ import com.novandi.core.domain.model.Movie
 import com.novandi.core.domain.model.MovieDetail
 import com.novandi.core.domain.model.MovieDetailImages
 import com.novandi.core.domain.model.MoviewReviewItem
+import com.novandi.core.domain.model.RatedMovie
 import com.novandi.core.domain.repository.MovieRepository
 import com.novandi.core.utils.MovieType
 import com.novandi.core.utils.mappers.MovieDetailMappers
@@ -259,4 +260,13 @@ class MovieRepositoryImpl @Inject constructor(
                 MovieWatchlistPagingSource(remoteDataSource, accountId)
             }
         ).flow
+
+    override fun getRatedMovie(accountId: Int, page: Int, movieId: Int): Flow<Resource<RatedMovie>> =
+        object : NetworkOnlyResource<RatedMovie, MovieResponse>() {
+            override fun loadFromNetwork(data: MovieResponse): Flow<RatedMovie> =
+                MovieMappers.mapRatedResponseToDomain(data, movieId)
+
+            override suspend fun createCall(): Flow<ApiResponse<MovieResponse>> =
+                remoteDataSource.getRatedMovies(accountId, page)
+        }.asFlow()
 }

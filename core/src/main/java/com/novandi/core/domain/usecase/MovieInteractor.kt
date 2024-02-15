@@ -9,6 +9,7 @@ import com.novandi.core.domain.model.Movie
 import com.novandi.core.domain.model.MovieDetail
 import com.novandi.core.domain.model.MovieDetailImages
 import com.novandi.core.domain.model.MoviewReviewItem
+import com.novandi.core.domain.model.RatedMovie
 import com.novandi.core.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -55,4 +56,6 @@ class MovieInteractor @Inject constructor(
         movieRepository.getFavoriteMovies(accountId)
     override fun getWatchlistMovies(accountId: Int): Flow<PagingData<Movie>> =
         movieRepository.getWatchlistMovies(accountId)
+    override fun getRatedMovie(accountId: Int, page: Int, movieId: Int): Flow<Resource<RatedMovie>> =
+        movieRepository.getRatedMovie(accountId, page, movieId)
 }

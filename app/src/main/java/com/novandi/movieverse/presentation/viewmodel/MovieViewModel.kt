@@ -1,6 +1,7 @@
 package com.novandi.movieverse.presentation.viewmodel
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +17,7 @@ import com.novandi.core.data.store.DataStoreManager
 import com.novandi.core.domain.model.GeneralResult
 import com.novandi.core.domain.model.Movie
 import com.novandi.core.domain.model.MoviewReviewItem
+import com.novandi.core.domain.model.RatedMovie
 import com.novandi.core.domain.usecase.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,6 +50,9 @@ class MovieViewModel @Inject constructor(
     private val _updateWatchlist = MutableStateFlow<Resource<GeneralResult>?>(null)
     val updateWatchlist: StateFlow<Resource<GeneralResult>?> get() = _updateWatchlist
 
+    private val _ratingMovie = MutableStateFlow<Resource<RatedMovie>?>(null)
+    val ratingMovie: StateFlow<Resource<RatedMovie>?> get() = _ratingMovie
+
     val accountId = dataStoreManager.accountId.asLiveData()
 
     var favorite by mutableStateOf(false)
@@ -56,8 +61,19 @@ class MovieViewModel @Inject constructor(
     var watchlist by mutableStateOf(false)
         private set
 
+    var rating by mutableIntStateOf(0)
+        private set
+
+    var ratingLoading by mutableStateOf(true)
+        private set
+
+    var ratingPage by mutableIntStateOf(1)
+        private set
+
     fun getMovie(movieId: Int) = movieUseCase.getMovieDetail(movieId)
+
     fun getMovieImages(movieId: Int) = movieUseCase.getMovieImages(movieId)
+
     fun getMovieReviews(movieId: Int) {
         viewModelScope.launch {
             movieUseCase.getMovieReviews(movieId)
@@ -68,6 +84,7 @@ class MovieViewModel @Inject constructor(
                 }
         }
     }
+
     fun getSimilarMovies(movieId: Int) {
         viewModelScope.launch {
             movieUseCase.getSimilarMovies(movieId)
@@ -86,6 +103,18 @@ class MovieViewModel @Inject constructor(
 
     fun onWatchlistChange(value: Boolean) {
         watchlist = value
+    }
+
+    fun onRatingChange(rate: Int) {
+        rating = rate
+    }
+
+    fun onRatingLoadingChange(isLoading: Boolean) {
+        ratingLoading = isLoading
+    }
+
+    fun onRatingPageChange(page: Int) {
+        ratingPage = page
     }
 
     fun getIsFavorite(accountId: Int, movieId: Int) {
@@ -132,6 +161,18 @@ class MovieViewModel @Inject constructor(
                 }
                 .collect { result ->
                     _updateWatchlist.value = result
+                }
+        }
+    }
+
+    fun getMovieRating(accountId: Int, page: Int, movieId: Int) {
+        viewModelScope.launch {
+            movieUseCase.getRatedMovie(accountId, page, movieId)
+                .catch { err ->
+                    _ratingMovie.value = Resource.Error(err.message.toString())
+                }
+                .collect { result ->
+                    _ratingMovie.value = result
                 }
         }
     }

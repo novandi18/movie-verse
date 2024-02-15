@@ -85,6 +85,8 @@ import com.novandi.movieverse.presentation.ui.theme.White
 import com.novandi.movieverse.presentation.viewmodel.MovieViewModel
 import com.novandi.core.utils.formatDate
 import com.novandi.core.utils.toImageUrlOriginal
+import com.novandi.movieverse.presentation.ui.component.RatingChanger
+import com.novandi.movieverse.presentation.ui.component.RatingSkeleton
 import com.novandi.movieverse.presentation.ui.theme.Red40
 import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 import kotlinx.coroutines.flow.Flow
@@ -112,6 +114,7 @@ fun MovieScreen(
     val isWatchlist by viewModel.isWatchlist.collectAsStateWithLifecycle()
     val updateFavorite by viewModel.updateFavorite.collectAsStateWithLifecycle()
     val updateWatchlist by viewModel.updateWatchlist.collectAsStateWithLifecycle()
+    val ratingMovie by viewModel.ratingMovie.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -122,7 +125,8 @@ fun MovieScreen(
     LaunchedEffect(true) {
         viewModel.getMovieReviews(movieId)
         viewModel.getSimilarMovies(movieId)
-        if (accountId != null && accountId!!.isNotEmpty()) {
+        viewModel.getMovieRating(accountId!!.toInt(), viewModel.ratingPage, movieId)
+        if (accountId!!.isNotEmpty()) {
             viewModel.getIsFavorite(accountId!!.toInt(), movieId)
             viewModel.getIsWatchlist(accountId!!.toInt(), movieId)
         }
@@ -211,6 +215,31 @@ fun MovieScreen(
         }
     }
 
+    LaunchedEffect(ratingMovie is Resource.Loading) {
+        when (ratingMovie) {
+            is Resource.Loading -> viewModel.onRatingLoadingChange(true)
+            is Resource.Success -> {
+                if (ratingMovie?.data != null) {
+                    if (ratingMovie?.data!!.results.isNotEmpty()) {
+                        if (ratingMovie?.data!!.results[0].rating != null) {
+                            viewModel.onRatingLoadingChange(false)
+                            viewModel.onRatingChange(ratingMovie?.data!!.results[0].rating!!.toInt())
+                        }
+                    } else if (viewModel.ratingPage < ratingMovie?.data!!.totalPages) {
+                        viewModel.onRatingPageChange(viewModel.ratingPage + 1)
+                        viewModel.getMovieRating(accountId!!.toInt(), viewModel.ratingPage, movieId)
+                    } else {
+                        viewModel.onRatingLoadingChange(false)
+                    }
+                }
+            }
+            is Resource.Error -> {
+                viewModel.onRatingLoadingChange(false)
+            }
+            else -> {}
+        }
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -233,7 +262,16 @@ fun MovieScreen(
                     MovieDetailSkeleton()
                 } else {
                     MovieImagesContent(movieImages, movieData!!)
-                    MovieContent(movieData, movieReviews.itemCount) { isShowing -> showReview = isShowing }
+                    MovieContent(
+                        movie = movieData,
+                        totalReview = movieReviews.itemCount,
+                        onReviewClick = { isShowing ->
+                            showReview = isShowing
+                        },
+                        onRatingChange = { viewModel.onRatingChange(it) },
+                        rating = viewModel.rating,
+                        ratingLoading = viewModel.ratingLoading
+                    )
                 }
                 Spacer(modifier = Modifier
                     .fillMaxWidth()
@@ -434,7 +472,10 @@ private fun MovieImagesContent(
 private fun MovieContent(
     movie: MovieDetail?,
     totalReview: Int,
-    onReviewClick: (Boolean) -> Unit
+    onReviewClick: (Boolean) -> Unit,
+    onRatingChange: (Int) -> Unit,
+    rating: Int = 0,
+    ratingLoading: Boolean = false
 ) {
     Row(
         modifier = Modifier
@@ -505,6 +546,32 @@ private fun MovieContent(
             }
         }
     }
+
+    if (ratingLoading) {
+        RatingSkeleton()
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.rate_this_movie),
+                color = Gray,
+                fontFamily = rubikFamily
+            )
+            RatingChanger(
+                onRateChange = onRatingChange,
+                rate = rating
+            )
+        }
+    }
+
+    HorizontalDivider(
+        color = Gray.copy(.2f)
+    )
 
     Column(
         modifier = Modifier.padding(16.dp),
