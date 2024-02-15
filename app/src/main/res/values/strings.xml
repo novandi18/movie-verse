@@ -47,4 +47,9 @@
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
     <string name="anonymous">Anonymous</string>
+    <string name="rated">Rated</string>
+    <string name="favorite">Favorite</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="success_add_favorite">Saved to your favorite</string>
+    <string name="success_add_watchlist">Saved to your watchlist</string>
 </resources>

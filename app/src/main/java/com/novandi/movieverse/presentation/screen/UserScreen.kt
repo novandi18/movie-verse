@@ -150,7 +150,7 @@ fun UserScreen(
                 viewModel.onLoadingChange(false)
                 if (login?.data != null) {
                     if (login?.data!!.success) {
-                        viewModel.setIsLoggedIn(true, login?.data!!.sessionId.toString())
+                        viewModel.setSessionId(true, login?.data!!.sessionId.toString())
                         viewModel.onUsernameChange("")
                         viewModel.onPasswordChange("")
                     } else {
@@ -376,6 +376,7 @@ private fun AuthorizedScreen(
             is Resource.Success -> {
                 if (user?.data != null) {
                     data = user?.data
+                    viewModel.setAccountId(true, user?.data!!.id.toString())
                     viewModel.getFavoriteMoviesTotal(user?.data!!.id)
                     viewModel.getRatedMoviesTotal(user?.data!!.id)
                     viewModel.getWatchlistMoviesTotal(user?.data!!.id)
@@ -434,7 +435,8 @@ private fun AuthorizedScreen(
                 onConfirmation = {
                     viewModel.logout(LogoutRequest(sessionId!!))
                     viewModel.deleteUser()
-                    viewModel.setIsLoggedIn(false, "")
+                    viewModel.setSessionId(false, "")
+                    viewModel.setAccountId(false, "")
                     openLogoutDialog.value = false
                 },
                 dialogTitle = context.getString(R.string.logout),
@@ -445,7 +447,6 @@ private fun AuthorizedScreen(
         }
     }
 
-//    listOf(data?.favoriteMovies, data?.ratedMovies, data?.watchlistMovies).all { it != null }
     if (data != null) {
         Column(
             modifier = Modifier
@@ -518,7 +519,7 @@ private fun AuthorizedScreen(
                         )
                     }
                     Text(
-                        text = "Rated",
+                        text = stringResource(id = R.string.rated),
                         color = White,
                         fontSize = 14.sp,
                         textAlign = TextAlign.Center,
@@ -555,7 +556,7 @@ private fun AuthorizedScreen(
                         )
                     }
                     Text(
-                        text = "Favorite",
+                        text = stringResource(id = R.string.favorite),
                         color = White,
                         fontSize = 14.sp,
                         textAlign = TextAlign.Center,
@@ -592,7 +593,7 @@ private fun AuthorizedScreen(
                         )
                     }
                     Text(
-                        text = "Watchlist",
+                        text = stringResource(id = R.string.watchlist),
                         color = White,
                         fontSize = 14.sp,
                         textAlign = TextAlign.Center,

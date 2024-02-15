@@ -41,7 +41,7 @@ class UserViewModel @Inject constructor(
         private set
 
     val sessionId = dataStoreManager.sessionId.asLiveData()
-    
+
     val userFromDB = userUseCase.getUserFromDB().asLiveData()
 
     private val _requestToken = MutableStateFlow<Resource<RequestToken>?>(null)
@@ -81,9 +81,15 @@ class UserViewModel @Inject constructor(
         loading = isLoading
     }
 
-    fun setIsLoggedIn(isLoggedIn: Boolean, sessionId: String) {
+    fun setSessionId(isLoggedIn: Boolean, sessionId: String) {
         viewModelScope.launch {
             dataStoreManager.setSessionId(isLoggedIn, sessionId)
+        }
+    }
+
+    fun setAccountId(isLoggedIn: Boolean, accountId: String) {
+        viewModelScope.launch {
+            dataStoreManager.setAccountId(isLoggedIn, accountId)
         }
     }
 

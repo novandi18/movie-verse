@@ -23,4 +23,6 @@ interface MovieUseCase {
     fun getFavoriteMoviesTotal(accountId: Int): Flow<Resource<Int>>
     fun getRatedMoviesTotal(accountId: Int): Flow<Resource<Int>>
     fun getWatchlistMoviesTotal(accountId: Int): Flow<Resource<Int>>
+    fun getIsFavorite(accountId: Int, movieId: Int): Flow<Resource<Boolean>>
+    fun getIsWatchlist(accountId: Int, movieId: Int): Flow<Resource<Boolean>>
 }

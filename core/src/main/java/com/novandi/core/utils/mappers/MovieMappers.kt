@@ -132,4 +132,9 @@ object MovieMappers {
         )
 
     fun moviesResponseToTotal(input: MovieResponse): Flow<Int> = flowOf(input.totalResults)
+
+    fun movieIsFavoriteOrWatchlist(input: MovieResponse, movieId: Int): Flow<Boolean> {
+        val data = input.results.filter { it.id == movieId }
+        return flowOf(data.isNotEmpty())
+    }
 }

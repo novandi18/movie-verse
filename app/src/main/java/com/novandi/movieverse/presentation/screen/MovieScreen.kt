@@ -21,13 +21,20 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Comment
+import androidx.compose.material.icons.rounded.Bookmark
+import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -38,6 +45,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -56,6 +64,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.novandi.core.data.response.Resource
@@ -74,8 +83,10 @@ import com.novandi.movieverse.presentation.ui.theme.White
 import com.novandi.movieverse.presentation.viewmodel.MovieViewModel
 import com.novandi.core.utils.formatDate
 import com.novandi.core.utils.toImageUrlOriginal
+import com.novandi.movieverse.presentation.ui.theme.Red40
 import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,6 +105,11 @@ fun MovieScreen(
     val sheetState = rememberModalBottomSheetState()
     var showReview by remember { mutableStateOf(false) }
     val similarMovies by viewModel.similarMovies.observeAsState(initial = Resource.Loading())
+    val accountId by viewModel.accountId.observeAsState()
+    val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
+    val isWatchlist by viewModel.isWatchlist.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     if (scrollState.isScrollInProgress) {
         topBarVisibility = scrollState.value >= 400
@@ -102,6 +118,10 @@ fun MovieScreen(
     LaunchedEffect(true) {
         viewModel.getMovieReviews(movieId)
         viewModel.getSimilarMovies(movieId)
+        if (accountId != null && accountId!!.isNotEmpty()) {
+            viewModel.getIsFavorite(accountId!!.toInt(), movieId)
+            viewModel.getIsWatchlist(accountId!!.toInt(), movieId)
+        }
         viewModel.getMovie(movieId).collect { uiState ->
             when (uiState) {
                 is Resource.Loading -> {}
@@ -115,74 +135,149 @@ fun MovieScreen(
         }
     }
 
-    Box(
+    LaunchedEffect(isFavorite is Resource.Loading) {
+        when (isFavorite) {
+            is Resource.Loading -> {}
+            is Resource.Success -> {
+                viewModel.onFavoriteChange(isFavorite?.data!!)
+            }
+            is Resource.Error -> {}
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(isWatchlist is Resource.Loading) {
+        when (isWatchlist) {
+            is Resource.Loading -> {}
+            is Resource.Success -> {
+                viewModel.onWatchlistChange(isWatchlist?.data!!)
+            }
+            is Resource.Error -> {}
+            else -> {}
+        }
+    }
+
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(Black)
-    ) {
-        Column(
+            .background(Black),
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
+    ) { paddingValues ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
+                .padding(paddingValues)
         ) {
-            if (movieData == null) {
-                MovieDetailSkeleton()
-            } else {
-                MovieImagesContent(movieImages, movieData!!)
-                MovieContent(movieData, movieReviews.itemCount) { isShowing -> showReview = isShowing }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+            ) {
+                if (movieData == null) {
+                    MovieDetailSkeleton()
+                } else {
+                    MovieImagesContent(movieImages, movieData!!)
+                    MovieContent(movieData, movieReviews.itemCount) { isShowing -> showReview = isShowing }
+                }
+                Spacer(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp))
+                MovieSection(
+                    sectionName = stringResource(id = R.string.similar_movies),
+                    movies = similarMovies,
+                    navigateToMovie = navigateToMovie
+                )
+                Spacer(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp))
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp))
-            MovieSection(
-                sectionName = stringResource(id = R.string.similar_movies),
-                movies = similarMovies,
-                navigateToMovie = navigateToMovie
-            )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp))
-        }
 
-        if (showReview) {
-            MovieBottomSheet(
-                showReview = { isShowing -> showReview = isShowing },
-                sheetState = sheetState,
-                reviewData = movieReviews
+            if (showReview) {
+                MovieBottomSheet(
+                    showReview = { isShowing -> showReview = isShowing },
+                    sheetState = sheetState,
+                    reviewData = movieReviews
+                )
+            }
+
+            TopAppBar(
+                title = {
+                    AnimatedVisibility(visible = topBarVisibility) {
+                        Text(
+                            text = movieData?.title ?: "",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            fontFamily = rubikFamily
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(
+                        modifier = Modifier.clip(CircleShape),
+                        onClick = { navigateBack() },
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Black.copy(.7f),
+                            contentColor = White
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                            contentDescription = stringResource(id = R.string.back),
+                            tint = White
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = if (topBarVisibility) Black else Color.Transparent
+                ),
+                actions = {
+                    if (accountId != null && accountId!!.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                                viewModel.onFavoriteChange(!viewModel.favorite)
+                                if (viewModel.favorite) {
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(
+                                            message = context.getString(R.string.success_add_favorite),
+                                            withDismissAction = true
+                                        )
+                                    }
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = if (viewModel.favorite) Icons.Rounded.Favorite else
+                                    Icons.Rounded.FavoriteBorder,
+                                contentDescription = stringResource(id = R.string.favorite),
+                                tint = if (viewModel.favorite) Red40 else White
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                viewModel.onWatchlistChange(!viewModel.watchlist)
+                                if (viewModel.watchlist) {
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(
+                                            message = context.getString(R.string.success_add_watchlist),
+                                            withDismissAction = true
+                                        )
+                                    }
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = if (viewModel.watchlist) Icons.Rounded.Bookmark else
+                                    Icons.Rounded.BookmarkBorder,
+                                contentDescription = stringResource(id = R.string.watchlist),
+                                tint = if (viewModel.watchlist) Color.Yellow else White
+                            )
+                        }
+                    }
+                }
             )
         }
-
-        TopAppBar(
-            title = {
-                AnimatedVisibility(visible = topBarVisibility) {
-                    Text(
-                        text = movieData?.title ?: "",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        fontFamily = rubikFamily
-                    )
-                }
-            },
-            navigationIcon = {
-                IconButton(
-                    modifier = Modifier.clip(CircleShape),
-                    onClick = { navigateBack() },
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = Black.copy(.7f),
-                        contentColor = White
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                        contentDescription = stringResource(id = R.string.back),
-                        tint = White
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = if (topBarVisibility) Black else Color.Transparent
-            )
-        )
     }
 }
 

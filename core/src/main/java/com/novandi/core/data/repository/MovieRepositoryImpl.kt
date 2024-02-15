@@ -197,4 +197,22 @@ class MovieRepositoryImpl @Inject constructor(
             override suspend fun createCall(): Flow<ApiResponse<MovieResponse>> =
                 remoteDataSource.getWatchlistMovies(accountId)
         }.asFlow()
+
+    override fun getIsFavorite(accountId: Int, movieId: Int): Flow<Resource<Boolean>> =
+        object : NetworkOnlyResource<Boolean, MovieResponse>() {
+            override fun loadFromNetwork(data: MovieResponse): Flow<Boolean> =
+                MovieMappers.movieIsFavoriteOrWatchlist(data, movieId)
+
+            override suspend fun createCall(): Flow<ApiResponse<MovieResponse>> =
+                remoteDataSource.getFavoriteMovies(accountId)
+        }.asFlow()
+
+    override fun getIsWatchlist(accountId: Int, movieId: Int): Flow<Resource<Boolean>> =
+        object : NetworkOnlyResource<Boolean, MovieResponse>() {
+            override fun loadFromNetwork(data: MovieResponse): Flow<Boolean> =
+                MovieMappers.movieIsFavoriteOrWatchlist(data, movieId)
+
+            override suspend fun createCall(): Flow<ApiResponse<MovieResponse>> =
+                remoteDataSource.getWatchlistMovies(accountId)
+        }.asFlow()
 }

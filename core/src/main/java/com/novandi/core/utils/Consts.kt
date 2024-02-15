@@ -14,4 +14,5 @@ object Consts {
     const val DATA_PREFERENCES = "data_preferences"
     val WELCOME_KEY = booleanPreferencesKey("welcome_key")
     val SESSION_KEY = stringPreferencesKey("session_key")
+    val ACCOUNT_KEY = stringPreferencesKey("account_key")
 }
