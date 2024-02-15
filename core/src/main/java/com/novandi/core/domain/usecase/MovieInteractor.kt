@@ -3,6 +3,7 @@ package com.novandi.core.domain.usecase
 import androidx.paging.PagingData
 import com.novandi.core.data.response.Resource
 import com.novandi.core.data.source.remote.response.FavoriteRequest
+import com.novandi.core.data.source.remote.response.RatingRequest
 import com.novandi.core.data.source.remote.response.WatchlistRequest
 import com.novandi.core.domain.model.GeneralResult
 import com.novandi.core.domain.model.Movie
@@ -58,4 +59,10 @@ class MovieInteractor @Inject constructor(
         movieRepository.getWatchlistMovies(accountId)
     override fun getRatedMovie(accountId: Int, page: Int, movieId: Int): Flow<Resource<RatedMovie>> =
         movieRepository.getRatedMovie(accountId, page, movieId)
+
+    override fun addRating(movieId: Int, sessionId: String, request: RatingRequest): Flow<Resource<GeneralResult>> =
+        movieRepository.addRating(movieId, sessionId, request)
+
+    override fun deleteRating(movieId: Int, sessionId: String): Flow<Resource<GeneralResult>> =
+        movieRepository.deleteRating(movieId, sessionId)
 }

@@ -27,6 +27,7 @@ import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Groups
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -36,6 +37,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -69,6 +71,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.novandi.core.data.response.Resource
 import com.novandi.core.data.source.remote.response.FavoriteRequest
+import com.novandi.core.data.source.remote.response.RatingRequest
 import com.novandi.core.data.source.remote.response.WatchlistRequest
 import com.novandi.core.domain.model.MovieDetail
 import com.novandi.core.domain.model.MovieDetailImages
@@ -88,6 +91,7 @@ import com.novandi.core.utils.toImageUrlOriginal
 import com.novandi.movieverse.presentation.ui.component.RatingChanger
 import com.novandi.movieverse.presentation.ui.component.RatingSkeleton
 import com.novandi.movieverse.presentation.ui.theme.Red40
+import com.novandi.movieverse.presentation.ui.theme.Red80
 import com.novandi.movieverse.presentation.ui.theme.rubikFamily
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -110,11 +114,14 @@ fun MovieScreen(
     var showReview by remember { mutableStateOf(false) }
     val similarMovies by viewModel.similarMovies.observeAsState(initial = Resource.Loading())
     val accountId by viewModel.accountId.observeAsState()
+    val sessionId by viewModel.sessionId.observeAsState()
     val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
     val isWatchlist by viewModel.isWatchlist.collectAsStateWithLifecycle()
     val updateFavorite by viewModel.updateFavorite.collectAsStateWithLifecycle()
     val updateWatchlist by viewModel.updateWatchlist.collectAsStateWithLifecycle()
     val ratingMovie by viewModel.ratingMovie.collectAsStateWithLifecycle()
+    val updateRating by viewModel.updateRating.collectAsStateWithLifecycle()
+    val deleteRating by viewModel.deleteRating.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -185,7 +192,9 @@ fun MovieScreen(
                     }
                 }
             }
-            is Resource.Error -> {}
+            is Resource.Error -> {
+                Toast.makeText(context, updateFavorite!!.message.toString(), Toast.LENGTH_SHORT).show()
+            }
             else -> {}
         }
     }
@@ -210,7 +219,9 @@ fun MovieScreen(
                     }
                 }
             }
-            is Resource.Error -> {}
+            is Resource.Error -> {
+                Toast.makeText(context, updateWatchlist!!.message.toString(), Toast.LENGTH_SHORT).show()
+            }
             else -> {}
         }
     }
@@ -235,6 +246,47 @@ fun MovieScreen(
             }
             is Resource.Error -> {
                 viewModel.onRatingLoadingChange(false)
+                Toast.makeText(context, ratingMovie!!.message.toString(), Toast.LENGTH_SHORT).show()
+            }
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(updateRating is Resource.Loading) {
+        when (updateRating) {
+            is Resource.Loading -> {}
+            is Resource.Success -> {
+                if (updateRating?.data != null) {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = context.getString(R.string.success_update_rating),
+                            withDismissAction = true
+                        )
+                    }
+                }
+            }
+            is Resource.Error -> {
+                Toast.makeText(context, updateRating!!.message.toString(), Toast.LENGTH_SHORT).show()
+            }
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(deleteRating is Resource.Loading) {
+        when (deleteRating) {
+            is Resource.Loading -> {}
+            is Resource.Success -> {
+                if (deleteRating?.data != null) {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = context.getString(R.string.success_delete_rating),
+                            withDismissAction = true
+                        )
+                    }
+                }
+            }
+            is Resource.Error -> {
+                Toast.makeText(context, deleteRating!!.message.toString(), Toast.LENGTH_SHORT).show()
             }
             else -> {}
         }
@@ -268,9 +320,13 @@ fun MovieScreen(
                         onReviewClick = { isShowing ->
                             showReview = isShowing
                         },
-                        onRatingChange = { viewModel.onRatingChange(it) },
+                        onRatingChange = { rate ->
+                            val request = RatingRequest(rate.toDouble())
+                            viewModel.updateRating(movieId, sessionId!!, request)
+                        },
                         rating = viewModel.rating,
-                        ratingLoading = viewModel.ratingLoading
+                        ratingLoading = viewModel.ratingLoading,
+                        onRatingDelete = { viewModel.deleteRating(movieId, sessionId!!) }
                     )
                 }
                 Spacer(modifier = Modifier
@@ -475,7 +531,8 @@ private fun MovieContent(
     onReviewClick: (Boolean) -> Unit,
     onRatingChange: (Int) -> Unit,
     rating: Int = 0,
-    ratingLoading: Boolean = false
+    ratingLoading: Boolean = false,
+    onRatingDelete: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -566,6 +623,22 @@ private fun MovieContent(
                 onRateChange = onRatingChange,
                 rate = rating
             )
+            if (rating > 0) {
+                TextButton(
+                    modifier = Modifier.padding(vertical = 2.dp),
+                    onClick = onRatingDelete,
+                    colors = ButtonDefaults.textButtonColors(
+                        containerColor = Red80,
+                        contentColor = White
+                    )
+                ) {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        text = stringResource(id = R.string.delete_rating),
+                        fontSize = 14.sp
+                    )
+                }
+            }
         }
     }
 

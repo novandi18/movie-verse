@@ -23,6 +23,7 @@ class NetworkModule {
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("accept", "application/json")
+                    .addHeader("Content-Type", "application/json;charset=utf-8")
                     .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYzc3ZjMzNmY4NTlkYzM0ZGRiOWRhYzFmODc4ODJiMSIsInN1YiI6IjY1NjdkYmE3MTI3Nzc4MDBhZDVmNTljNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zZdJFd79D7zseXcwgqDkvFe1WZMg3AOAJzdvntiSC5I")
                     .build()
                 chain.proceed(request)

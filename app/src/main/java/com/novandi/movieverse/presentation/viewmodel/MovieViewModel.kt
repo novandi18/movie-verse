@@ -12,6 +12,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.novandi.core.data.response.Resource
 import com.novandi.core.data.source.remote.response.FavoriteRequest
+import com.novandi.core.data.source.remote.response.RatingRequest
 import com.novandi.core.data.source.remote.response.WatchlistRequest
 import com.novandi.core.data.store.DataStoreManager
 import com.novandi.core.domain.model.GeneralResult
@@ -53,7 +54,15 @@ class MovieViewModel @Inject constructor(
     private val _ratingMovie = MutableStateFlow<Resource<RatedMovie>?>(null)
     val ratingMovie: StateFlow<Resource<RatedMovie>?> get() = _ratingMovie
 
+    private val _updateRating = MutableStateFlow<Resource<GeneralResult>?>(null)
+    val updateRating: StateFlow<Resource<GeneralResult>?> get() = _updateRating
+
+    private val _deleteRating = MutableStateFlow<Resource<GeneralResult>?>(null)
+    val deleteRating: StateFlow<Resource<GeneralResult>?> get() = _deleteRating
+
     val accountId = dataStoreManager.accountId.asLiveData()
+
+    val sessionId = dataStoreManager.sessionId.asLiveData()
 
     var favorite by mutableStateOf(false)
         private set
@@ -173,6 +182,32 @@ class MovieViewModel @Inject constructor(
                 }
                 .collect { result ->
                     _ratingMovie.value = result
+                }
+        }
+    }
+
+    fun updateRating(movieId: Int, sessionId: String, request: RatingRequest) {
+        viewModelScope.launch {
+            movieUseCase.addRating(movieId, sessionId, request)
+                .catch { err ->
+                    _updateRating.value = Resource.Error(err.message.toString())
+                }
+                .collect { result ->
+                    onRatingChange(request.value.toInt())
+                    _updateRating.value = result
+                }
+        }
+    }
+
+    fun deleteRating(movieId: Int, sessionId: String) {
+        viewModelScope.launch {
+            movieUseCase.deleteRating(movieId, sessionId)
+                .catch { err ->
+                    _deleteRating.value = Resource.Error(err.message.toString())
+                }
+                .collect { result ->
+                    onRatingChange(0)
+                    _deleteRating.value = result
                 }
         }
     }

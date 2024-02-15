@@ -3,6 +3,7 @@ package com.novandi.core.domain.repository
 import androidx.paging.PagingData
 import com.novandi.core.data.response.Resource
 import com.novandi.core.data.source.remote.response.FavoriteRequest
+import com.novandi.core.data.source.remote.response.RatingRequest
 import com.novandi.core.data.source.remote.response.WatchlistRequest
 import com.novandi.core.domain.model.GeneralResult
 import com.novandi.core.domain.model.Movie
@@ -34,4 +35,6 @@ interface MovieRepository {
     fun getFavoriteMovies(accountId: Int): Flow<PagingData<Movie>>
     fun getWatchlistMovies(accountId: Int): Flow<PagingData<Movie>>
     fun getRatedMovie(accountId: Int, page: Int, movieId: Int): Flow<Resource<RatedMovie>>
+    fun addRating(movieId: Int, sessionId: String, request: RatingRequest): Flow<Resource<GeneralResult>>
+    fun deleteRating(movieId: Int, sessionId: String): Flow<Resource<GeneralResult>>
 }

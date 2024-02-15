@@ -18,6 +18,7 @@ import com.novandi.core.data.source.remote.response.MovieSearchResponse
 import com.novandi.core.data.source.remote.response.RequestTokenResponse
 import com.novandi.core.data.source.remote.response.UserResponse
 import com.novandi.core.data.source.remote.response.GeneralResponse
+import com.novandi.core.data.source.remote.response.RatingRequest
 import com.novandi.core.data.source.remote.response.WatchlistRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -386,4 +387,40 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
     suspend fun getWatchlistMoviesPager(accountId: Int, page: Int) : MovieResponse =
         apiService.getWatchlistMovies(accountId, page)
+
+    suspend fun addRatingMovie(movieId: Int, sessionId: String, request: RatingRequest)
+        : Flow<ApiResponse<GeneralResponse>> = flow {
+        try {
+            val response = apiService.addRatingMovie(movieId, sessionId, request)
+            emit(ApiResponse.Success(response))
+        } catch (e: HttpException) {
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorMessage = try {
+                Gson().fromJson(errorBody, ErrorResponse::class.java)?.message
+            } catch (e: Exception) { null }
+            emit(ApiResponse.Error(errorMessage ?: "Unknown error"))
+            Log.e("RemoteDataSource", errorMessage ?: "Unknown error")
+        } catch (e: Exception) {
+            emit(ApiResponse.Error(e.toString()))
+            Log.e("RemoteDataSource", e.toString())
+        }
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun deleteRatingMovie(movieId: Int, sessionId: String)
+        : Flow<ApiResponse<GeneralResponse>> = flow {
+        try {
+            val response = apiService.deleteRatingMovie(movieId, sessionId)
+            emit(ApiResponse.Success(response))
+        } catch (e: HttpException) {
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorMessage = try {
+                Gson().fromJson(errorBody, ErrorResponse::class.java)?.message
+            } catch (e: Exception) { null }
+            emit(ApiResponse.Error(errorMessage ?: "Unknown error"))
+            Log.e("RemoteDataSource", errorMessage ?: "Unknown error")
+        } catch (e: Exception) {
+            emit(ApiResponse.Error(e.toString()))
+            Log.e("RemoteDataSource", e.toString())
+        }
+    }.flowOn(Dispatchers.IO)
 }

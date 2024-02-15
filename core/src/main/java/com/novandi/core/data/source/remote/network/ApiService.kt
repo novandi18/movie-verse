@@ -13,7 +13,9 @@ import com.novandi.core.data.source.remote.response.RequestTokenResponse
 import com.novandi.core.data.source.remote.response.UserResponse
 import com.novandi.core.data.source.remote.response.WatchlistRequest
 import com.novandi.core.data.source.remote.response.GeneralResponse
+import com.novandi.core.data.source.remote.response.RatingRequest
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.POST
@@ -143,5 +145,18 @@ interface ApiService {
     suspend fun updateWatchlistMovie(
         @Path("account_id") accountId: Int,
         @Body request: WatchlistRequest
+    ) : GeneralResponse
+
+    @POST("movie/{movie_id}/rating")
+    suspend fun addRatingMovie(
+        @Path("movie_id") movieId: Int,
+        @Query("session_id") sessionId: String,
+        @Body request: RatingRequest
+    ) : GeneralResponse
+
+    @DELETE("movie/{movie_id}/rating")
+    suspend fun deleteRatingMovie(
+        @Path("movie_id") movieId: Int,
+        @Query("session_id") sessionId: String
     ) : GeneralResponse
 }
