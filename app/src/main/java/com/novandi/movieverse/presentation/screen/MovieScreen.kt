@@ -132,10 +132,12 @@ fun MovieScreen(
     LaunchedEffect(true) {
         viewModel.getMovieReviews(movieId)
         viewModel.getSimilarMovies(movieId)
-        viewModel.getMovieRating(accountId!!.toInt(), viewModel.ratingPage, movieId)
         if (accountId!!.isNotEmpty()) {
+            viewModel.getMovieRating(accountId!!.toInt(), viewModel.ratingPage, movieId)
             viewModel.getIsFavorite(accountId!!.toInt(), movieId)
             viewModel.getIsWatchlist(accountId!!.toInt(), movieId)
+        } else {
+            viewModel.onRatingLoadingChange(false)
         }
         viewModel.getMovie(movieId).collect { uiState ->
             when (uiState) {
@@ -311,7 +313,7 @@ fun MovieScreen(
                     .verticalScroll(scrollState)
             ) {
                 if (movieData == null) {
-                    MovieDetailSkeleton()
+                    MovieDetailSkeleton(isLoggedIn = accountId!!.isNotEmpty())
                 } else {
                     MovieImagesContent(movieImages, movieData!!)
                     MovieContent(
@@ -326,7 +328,8 @@ fun MovieScreen(
                         },
                         rating = viewModel.rating,
                         ratingLoading = viewModel.ratingLoading,
-                        onRatingDelete = { viewModel.deleteRating(movieId, sessionId!!) }
+                        onRatingDelete = { viewModel.deleteRating(movieId, sessionId!!) },
+                        isLoggedIn = accountId!!.isNotEmpty()
                     )
                 }
                 Spacer(modifier = Modifier
@@ -532,7 +535,8 @@ private fun MovieContent(
     onRatingChange: (Int) -> Unit,
     rating: Int = 0,
     ratingLoading: Boolean = false,
-    onRatingDelete: () -> Unit
+    onRatingDelete: () -> Unit,
+    isLoggedIn: Boolean = false
 ) {
     Row(
         modifier = Modifier
@@ -604,47 +608,49 @@ private fun MovieContent(
         }
     }
 
-    if (ratingLoading) {
-        RatingSkeleton()
-    } else {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(id = R.string.rate_this_movie),
-                color = Gray,
-                fontFamily = rubikFamily
-            )
-            RatingChanger(
-                onRateChange = onRatingChange,
-                rate = rating
-            )
-            if (rating > 0) {
-                TextButton(
-                    modifier = Modifier.padding(vertical = 2.dp),
-                    onClick = onRatingDelete,
-                    colors = ButtonDefaults.textButtonColors(
-                        containerColor = Red80,
-                        contentColor = White
-                    )
-                ) {
-                    Text(
-                        modifier = Modifier.padding(horizontal = 12.dp),
-                        text = stringResource(id = R.string.delete_rating),
-                        fontSize = 14.sp
-                    )
+    if (isLoggedIn) {
+        if (ratingLoading) {
+            RatingSkeleton()
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(id = R.string.rate_this_movie),
+                    color = Gray,
+                    fontFamily = rubikFamily
+                )
+                RatingChanger(
+                    onRateChange = onRatingChange,
+                    rate = rating
+                )
+                if (rating > 0) {
+                    TextButton(
+                        modifier = Modifier.padding(vertical = 2.dp),
+                        onClick = onRatingDelete,
+                        colors = ButtonDefaults.textButtonColors(
+                            containerColor = Red80,
+                            contentColor = White
+                        )
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            text = stringResource(id = R.string.delete_rating),
+                            fontSize = 14.sp
+                        )
+                    }
                 }
             }
         }
-    }
 
-    HorizontalDivider(
-        color = Gray.copy(.2f)
-    )
+        HorizontalDivider(
+            color = Gray.copy(.2f)
+        )
+    }
 
     Column(
         modifier = Modifier.padding(16.dp),

@@ -27,7 +27,9 @@ import com.novandi.movieverse.presentation.ui.theme.Gray
 import com.novandi.movieverse.presentation.ui.theme.MovieVerseTheme
 
 @Composable
-fun MovieDetailSkeleton() {
+fun MovieDetailSkeleton(
+    isLoggedIn: Boolean = false
+) {
     Column {
         Box(
             modifier = Modifier
@@ -53,11 +55,13 @@ fun MovieDetailSkeleton() {
             }
         }
 
-        RatingSkeleton()
+        if (isLoggedIn) {
+            RatingSkeleton()
 
-        HorizontalDivider(
-            color = Gray.copy(.2f)
-        )
+            HorizontalDivider(
+                color = Gray.copy(.2f)
+            )
+        }
 
         Column(
             modifier = Modifier.padding(16.dp),
