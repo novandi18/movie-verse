@@ -388,6 +388,9 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun getWatchlistMoviesPager(accountId: Int, page: Int) : MovieResponse =
         apiService.getWatchlistMovies(accountId, page)
 
+    suspend fun getRatedMoviesPager(accountId: Int, page: Int) : MovieResponse =
+        apiService.getRatedMovies(accountId, page)
+
     suspend fun addRatingMovie(movieId: Int, sessionId: String, request: RatingRequest)
         : Flow<ApiResponse<GeneralResponse>> = flow {
         try {

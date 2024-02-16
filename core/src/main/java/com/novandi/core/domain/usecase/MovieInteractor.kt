@@ -57,6 +57,8 @@ class MovieInteractor @Inject constructor(
         movieRepository.getFavoriteMovies(accountId)
     override fun getWatchlistMovies(accountId: Int): Flow<PagingData<Movie>> =
         movieRepository.getWatchlistMovies(accountId)
+    override fun getRatedMovies(accountId: Int): Flow<PagingData<Movie>> =
+        movieRepository.getRatedMovies(accountId)
     override fun getRatedMovie(accountId: Int, page: Int, movieId: Int): Flow<Resource<RatedMovie>> =
         movieRepository.getRatedMovie(accountId, page, movieId)
 

@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.novandi.core.data.paging.MovieFavoritePagingSource
+import com.novandi.core.data.paging.MovieRatedPagingSource
 import com.novandi.core.data.paging.MovieReviewPagingSource
 import com.novandi.core.data.paging.MovieSearchPagingSource
 import com.novandi.core.data.paging.MovieWatchlistPagingSource
@@ -259,6 +260,14 @@ class MovieRepositoryImpl @Inject constructor(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 MovieWatchlistPagingSource(remoteDataSource, accountId)
+            }
+        ).flow
+
+    override fun getRatedMovies(accountId: Int): Flow<PagingData<Movie>> =
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                MovieRatedPagingSource(remoteDataSource, accountId)
             }
         ).flow
 

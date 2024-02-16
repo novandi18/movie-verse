@@ -34,6 +34,7 @@ interface MovieUseCase {
     fun updateFavorite(accountId: Int, request: FavoriteRequest): Flow<Resource<GeneralResult>>
     fun getFavoriteMovies(accountId: Int): Flow<PagingData<Movie>>
     fun getWatchlistMovies(accountId: Int): Flow<PagingData<Movie>>
+    fun getRatedMovies(accountId: Int): Flow<PagingData<Movie>>
     fun getRatedMovie(accountId: Int, page: Int, movieId: Int): Flow<Resource<RatedMovie>>
     fun addRating(movieId: Int, sessionId: String, request: RatingRequest): Flow<Resource<GeneralResult>>
     fun deleteRating(movieId: Int, sessionId: String): Flow<Resource<GeneralResult>>

@@ -89,7 +89,8 @@ import com.novandi.movieverse.presentation.viewmodel.UserViewModel
 fun UserScreen(
     viewModel: UserViewModel = hiltViewModel(),
     navigateToFavorite: () -> Unit,
-    navigateToWatchlist: () -> Unit
+    navigateToWatchlist: () -> Unit,
+    navigateToRated: () -> Unit
 ) {
     val requestToken by viewModel.requestToken.collectAsStateWithLifecycle()
     val validateAccount by viewModel.validateAccount.collectAsStateWithLifecycle()
@@ -173,7 +174,15 @@ fun UserScreen(
         .background(Black)) {
         if (sessionId?.isNotEmpty() == true) {
             if (userFromDB == null || userFromDB?.id == 0) viewModel.getUser(sessionId!!)
-            AuthorizedScreen(viewModel, context, userFromDB, sessionId, navigateToFavorite, navigateToWatchlist)
+            AuthorizedScreen(
+                viewModel,
+                context,
+                userFromDB,
+                sessionId,
+                navigateToFavorite,
+                navigateToWatchlist,
+                navigateToRated
+            )
         } else {
             UnauthorizedScreen(viewModel)
         }
@@ -353,7 +362,8 @@ private fun AuthorizedScreen(
     userFromDB: User? = null,
     sessionId: String? = null,
     navigateToFavorite: () -> Unit,
-    navigateToWatchlist: () -> Unit
+    navigateToWatchlist: () -> Unit,
+    navigationToRated: () -> Unit
 ) {
     val user by viewModel.user.collectAsStateWithLifecycle()
     val favoriteMovies by viewModel.favoriteMovies.collectAsStateWithLifecycle()
@@ -504,7 +514,7 @@ private fun AuthorizedScreen(
                 Column(
                     modifier = Modifier
                         .width(64.dp)
-                        .clickable { },
+                        .clickable { navigationToRated() },
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (data?.ratedMovies != null) {
@@ -653,7 +663,8 @@ private fun AuthorizedScreenPreview() {
             AuthorizedScreen(
                 context = LocalContext.current,
                 navigateToFavorite = {},
-                navigateToWatchlist = {}
+                navigateToWatchlist = {},
+                navigationToRated = {}
             )
         }
     }

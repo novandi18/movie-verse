@@ -61,6 +61,9 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
                 },
                 navigateToWatchlist = {
                     navController.navigate(Screen.Watchlist.route)
+                },
+                navigateToRated = {
+                    navController.navigate(Screen.Rated.route)
                 }
             )
         }
