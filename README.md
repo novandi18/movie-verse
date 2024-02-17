@@ -2,9 +2,15 @@
   <img src="https://i.ibb.co/0hkYTf0/movieverse.png" width="100px"/>
   <h1 align="center">Movie Verse</h1>
   <h3>The Movie Reference Based on TheMovieDB</h3>
-
-  Movie Verse is an innovative Android app that enriches your movie-watching experience by providing a comprehensive database of movie references sourced from TheMovieDB. Built with [Jetpack Compose](https://developer.android.com/jetpack/compose).
 </div>
+
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=kotlin,androidstudio" />
+  </a>
+</p>
+
+Movie Verse is an innovative Android app that enriches your movie-watching experience by providing a comprehensive database of movie references sourced from TheMovieDB. Built with [Jetpack Compose](https://developer.android.com/jetpack/compose).
 
 ## Features
 - **Authentication:** Connect with your TheMovieDB account.
