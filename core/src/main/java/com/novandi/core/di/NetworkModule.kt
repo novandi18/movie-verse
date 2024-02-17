@@ -1,13 +1,10 @@
 package com.novandi.core.di
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
+import com.novandi.core.BuildConfig
 import com.novandi.core.data.source.remote.network.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,24 +18,14 @@ import javax.inject.Singleton
 class NetworkModule {
     @Singleton
     @Provides
-    fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
-        val applicationInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.packageManager.getApplicationInfo(
-                context.packageName,
-                PackageManager.ApplicationInfoFlags.of(0)
-            )
-        } else {
-            context.packageManager
-                .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
-        }
-        val apiKey = applicationInfo.metaData.getString("API_KEY")
+    fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("accept", "application/json")
                     .addHeader("Content-Type", "application/json;charset=utf-8")
-                    .addHeader("Authorization", "Bearer $apiKey")
+                    .addHeader("Authorization", "Bearer ${BuildConfig.AUTHORIZATION}")
                     .build()
                 chain.proceed(request)
             }
