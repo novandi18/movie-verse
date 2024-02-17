@@ -12,7 +12,7 @@
 - **Favorite, Watchlist and Rated:** You can save movies to Favorites, Watchlist and rate them!
 
 ## Demo
-Soon.
+<img src="https://i.ibb.co/mFPXftp/Whats-App-Video-2024-02-17-at-15-28-05-e0c25c55-online-video-cutter-com.gif" />
 
 ## Screenshot
-<img src="https://i.ibb.co/B4tRRgx/movieverse-ss-min.png" />
+<img src="https://i.ibb.co/zF6hGtn/movieverse-ss.png" />
