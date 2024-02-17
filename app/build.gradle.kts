@@ -84,4 +84,12 @@ dependencies {
     implementation(libs.androidx.pager)
     implementation(libs.androidx.paging)
     implementation(libs.androidx.paging.compose)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
