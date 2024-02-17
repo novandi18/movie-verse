@@ -1,4 +1,5 @@
 <div align="center">
+  <img src="https://i.ibb.co/0hkYTf0/movieverse.png" width="100px"/>
   <h1 align="center">Movie Verse</h1>
   <h3>The Movie Reference Based on TheMovieDB</h3>
 
