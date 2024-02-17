@@ -38,5 +38,5 @@ Here's a complete guide to getting your api key: [TMDB - Get Started](https://de
 ### 3. Put your Authorization Token
 Put your Authorization Token into local.properties like this
 ```shell
-AUTHORIZATION: "your_authorization_token"
+AUTHORIZATION = "your_authorization_token"
 ```
