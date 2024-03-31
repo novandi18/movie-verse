@@ -29,6 +29,9 @@
 ## Architecture
 Multi-Module Architecture
 
+## Design Pattern
+Model-View-ViewModel (MVVM)
+
 ## Screenshot
 <img src="https://i.ibb.co/zF6hGtn/movieverse-ss.png" />
 
