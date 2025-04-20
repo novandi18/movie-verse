@@ -33,7 +33,8 @@ Multi-Module Architecture
 Model-View-ViewModel (MVVM)
 
 ## Screenshot
-<img src="https://i.ibb.co/zF6hGtn/movieverse-ss.png" />
+![Movie Verse](https://github.com/user-attachments/assets/c0020ab4-7275-4895-8449-503c1547f8a2)
+
 
 ## Get Started
 ### 1. Clone the repository
