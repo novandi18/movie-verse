@@ -51,3 +51,20 @@ Put your Authorization Token into local.properties like this
 ```shell
 AUTHORIZATION = "your_authorization_token"
 ```
+
+## Demo App
+You can download a demo version of the Movie Verse application (APK) to try it out directly on your Android device.
+[Download Movie Verse Demo APK from Google Drive](https://drive.google.com/file/d/1XuTEwwBb_oYgjnWCEglSsgsjDu7PkGT7/view?usp=sharing)
+
+## Contributing
+Contributions are welcome! We appreciate any help making Movie Verse better.
+
+* **Report Bugs / Suggest Features:** Please open an **Issue** on GitHub.
+* **Submit Code:**
+    1.  Fork the repository.
+    2.  Create a new branch (`git checkout -b my-change`).
+    3.  Make your changes and commit them (`git commit -am 'Add some feature'`).
+    4.  Push to your fork (`git push origin my-change`).
+    5.  Open a **Pull Request** against the `main` (or `develop`) branch.
+
+Thank you for contributing!
